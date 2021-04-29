@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import Ajax from "../../components/Ajax";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,21 +7,20 @@ import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import ClassesDetailPage from "./ClassesDetailPage";
 import { classesSelector, getClasses } from "../../slices/classes";
-import {sidebarSelector, setSidebarData} from "../../slices/sidebar";
+import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
-import {setFormData} from "../../slices/form";
+import { setFormData } from "../../slices/form";
 import Language from "../../components/Language";
 
 const ClassesPage = () => {
-
   const { class1, classes, status } = useSelector(classesSelector);
   // const { classesObj } = useSelector(classesSelector);
 
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
 
@@ -29,10 +28,9 @@ const ClassesPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getClasses(filterOpen));
     let url = window.location.href;
-  
-    dispatch(setSidebarData({url: url}))
- 
-}, [dispatch, location, filterOpen]);
+
+    dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -40,9 +38,9 @@ const ClassesPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Classes</h1>
-            <Language/>
+            <Language />
           </div>
-          <Filter/>
+          <Filter />
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
               <div className="flex items-center justify-between mx-4">
@@ -70,7 +68,6 @@ const ClassesPage = () => {
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
-                
                   <Button
                     type={`button`}
                     title={`Select All`}
@@ -109,12 +106,14 @@ const ClassesPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { classes.length === 0 && status !== `loading` && 
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {classes.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
               {status === `loading` && (
                 <div className="flex items-center justify-center">
@@ -128,23 +127,20 @@ const ClassesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {classes.map((classe1, key) => (
                     <div className="col-span-3" key={key}>
-                    
-                         <Link
-                        onClick={() =>{
+                      <Link
+                        onClick={() => {
                           let checkboxes = {
                             courses: classe1.courses,
                             teachers: classe1.teachers,
                             learners: classe1.learners,
-                          }
-                          dispatch(setFormData({checkboxes: checkboxes}));
-                          dispatch(setDetailData({ isShow: true, classe: classe1 }))
-                        }
-                        }
-                      
+                          };
+                          dispatch(setFormData({ checkboxes: checkboxes }));
+                          dispatch(
+                            setDetailData({ isShow: true, classe: classe1 })
+                          );
+                        }}
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
-                           
-                    
                         <button
                           type="button"
                           className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
@@ -175,7 +171,6 @@ const ClassesPage = () => {
                           </div>
                         </div>
                       </Link>
-                     
                     </div>
                   ))}
                 </div>
@@ -187,15 +182,26 @@ const ClassesPage = () => {
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
+                      <td className="px-2 py-1">Phone</td>
+                      <td className="px-2 py-1"> Email</td>
+                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {classes.map((classe, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({ checkboxes: { types: classe.types } })
+                          );
+                          dispatch(
+                            setDetailData({ isShow: true, classe: classe })
+                          );
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
