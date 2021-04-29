@@ -8,17 +8,18 @@ import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import { postsSelector, getPostsObj } from "../../slices/posts";
 import CommentsDetailPage from "./CommentsDetailPage";
-import {sidebarSelector} from "../../slices/sidebar";
+import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData} from "../../slices/sidebar";
+import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
+import { setFormData } from "../../slices/form";
 const CommentsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const { comment, comments, status } = useSelector(commentsSelector);
   const { postsObj } = useSelector(postsSelector);
   const [mode, setMode] = useState(`grid`);
@@ -29,11 +30,9 @@ const CommentsPage = () => {
     dispatch(getPostsObj());
     dispatch(getComments(filterOpen));
     let url = window.location.href;
- 
-    dispatch(setSidebarData({url: url}))
- 
-}, [dispatch, location, filterOpen]);
 
+    dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -41,9 +40,9 @@ const CommentsPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Comments</h1>
-            <Language/>
+            <Language />
           </div>
-          <Filter/>
+          <Filter />
 
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
@@ -105,12 +104,14 @@ const CommentsPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { comments.length === 0 && status !== `loading` && 
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {comments.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
               {status === `loading` && (
                 <div className="flex items-center justify-center">
@@ -134,7 +135,6 @@ const CommentsPage = () => {
                             })
                           )
                         }
-                     
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
                         <button
@@ -172,13 +172,9 @@ const CommentsPage = () => {
                             <p className="">
                               Updated at: {moment(comment.created_at).fromNow()}
                             </p>
-                            <p className="text-sm text-indigo-700">
-                              Type: {comment.type}
-                            </p>
                           </div>
                         </div>
                       </Link>
-                     
                     </div>
                   ))}
                 </div>
@@ -190,15 +186,28 @@ const CommentsPage = () => {
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
+                      <td className="px-2 py-1">Phone</td>
+                      <td className="px-2 py-1"> Email</td>
+                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {comments.map((comment, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({
+                              checkboxes: { types: comment.types },
+                            })
+                          );
+                          dispatch(
+                            setDetailData({ isShow: true, comment: comment })
+                          );
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"

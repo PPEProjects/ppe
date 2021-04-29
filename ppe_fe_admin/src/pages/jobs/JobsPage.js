@@ -8,17 +8,18 @@ import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import { companiesSelector, getCompaniesObj } from "../../slices/companies";
 import JobsDetailPage from "./JobsDetailPage";
-import {sidebarSelector} from "../../slices/sidebar";
+import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData} from "../../slices/sidebar";
+import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
+import { setFormData } from "../../slices/form";
 const JobsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
 
   const { job, jobs, status } = useSelector(jobsSelector);
   const { companiesObj } = useSelector(companiesSelector);
@@ -30,21 +31,20 @@ const JobsPage = () => {
     dispatch(getCompaniesObj());
     dispatch(getJobs(filterOpen));
     let url = window.location.href;
-   
-    dispatch(setSidebarData({url: url}))
-    
+
+    dispatch(setSidebarData({ url: url }));
   }, [dispatch, location, filterOpen]);
- 
+
   const renderMain = () => {
     return (
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Jobs</h1>
-            <Language/>
+            <Language />
           </div>
-          <Filter/>
-   
+          <Filter />
+
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
               <div className="flex items-center justify-between mx-4">
@@ -84,7 +84,6 @@ const JobsPage = () => {
                     title={`Banned`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-               
                 </div>
                 <div className="flex">
                   <button
@@ -106,12 +105,14 @@ const JobsPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { jobs.length === 0 && status !== `loading` && 
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {jobs.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
               {status === `loading` && (
                 <div className="flex items-center justify-center">
@@ -135,7 +136,6 @@ const JobsPage = () => {
                             })
                           )
                         }
-                     
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
                         <button
@@ -179,7 +179,6 @@ const JobsPage = () => {
                           </div>
                         </div>
                       </Link>
-                  
                     </div>
                   ))}
                 </div>
@@ -191,15 +190,24 @@ const JobsPage = () => {
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
+                      <td className="px-2 py-1">Phone</td>
+                      <td className="px-2 py-1"> Email</td>
+                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {jobs.map((job, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({ checkboxes: { types: job.types } })
+                          );
+                          dispatch(setDetailData({ isShow: true, job: job }));
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"

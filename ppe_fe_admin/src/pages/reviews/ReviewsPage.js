@@ -4,20 +4,21 @@ import { useDispatch, useSelector } from "react-redux";
 import { reviewsSelector, getReviews } from "../../slices/reviews";
 import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
+import { setFormData } from "../../slices/form";
 import { InputIcon, Button } from "../../components/Form";
 import { companiesSelector, getCompaniesObj } from "../../slices/companies";
 import ReviewsDetailPage from "./ReviewsDetailPage";
-import {sidebarSelector} from "../../slices/sidebar";
+import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData} from "../../slices/sidebar";
+import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
 const ReviewsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const { review, reviews, status } = useSelector(reviewsSelector);
   const { companiesObj } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
@@ -28,9 +29,8 @@ const ReviewsPage = () => {
     dispatch(getCompaniesObj());
     dispatch(getReviews(filterOpen));
     let url = window.location.href;
-   
-    dispatch(setSidebarData({url: url}))
-  
+
+    dispatch(setSidebarData({ url: url }));
   }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
@@ -39,10 +39,10 @@ const ReviewsPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Reviews</h1>
-            <Language/>
+            <Language />
           </div>
-          <Filter/>
-          
+          <Filter />
+
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
               <div className="flex items-center justify-between mx-4">
@@ -82,7 +82,6 @@ const ReviewsPage = () => {
                     title={`Banned`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-              
                 </div>
                 <div className="flex">
                   <button
@@ -104,15 +103,16 @@ const ReviewsPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { reviews?.length === 0 && status !== `loading` &&
-                
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {reviews?.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
-             {status === `loading` && (
+              {status === `loading` && (
                 <div className="flex items-center justify-center">
                   <button
                     type="button"
@@ -134,7 +134,6 @@ const ReviewsPage = () => {
                             })
                           )
                         }
-                      
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
                         <button
@@ -176,7 +175,6 @@ const ReviewsPage = () => {
                           </div>
                         </div>
                       </Link>
-                   
                     </div>
                   ))}
                 </div>
@@ -188,15 +186,26 @@ const ReviewsPage = () => {
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
+                      <td className="px-2 py-1">Phone</td>
+                      <td className="px-2 py-1"> Email</td>
+                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {reviews.map((review, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({ checkboxes: { types: review.types } })
+                          );
+                          dispatch(
+                            setDetailData({ isShow: true, review: review })
+                          );
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"

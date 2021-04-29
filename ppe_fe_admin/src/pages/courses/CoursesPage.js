@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import Ajax from "../../components/Ajax";
 import { useDispatch, useSelector } from "react-redux";
@@ -7,34 +7,30 @@ import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import CourseDetailPage from "./CourseDetailPage";
 import { coursesSelector, getCourses } from "../../slices/courses";
-import {sidebarSelector, setSidebarData} from "../../slices/sidebar";
+import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
-import {setFormData} from "../../slices/form";
+import { setFormData } from "../../slices/form";
 import Language from "../../components/Language";
 
 const CoursesPage = () => {
-
   const { course, courses, status } = useSelector(coursesSelector);
- 
 
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCourses(filterOpen));
-   
 
     let url = window.location.href;
-  
-    dispatch(setSidebarData({url: url}))
- 
-}, [dispatch, location, filterOpen]);
+
+    dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -42,9 +38,9 @@ const CoursesPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Courses</h1>
-            <Language/>
+            <Language />
           </div>
-          <Filter/>
+          <Filter />
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
               <div className="flex items-center justify-between mx-4">
@@ -67,7 +63,6 @@ const CoursesPage = () => {
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
-                
                   <Button
                     type={`button`}
                     title={`Select All`}
@@ -104,18 +99,18 @@ const CoursesPage = () => {
                 </div>
               </div>
             </section>
-          
-            
-           
+
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { courses.length === 0 && status !== `loading` &&
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {courses.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
-             
+
               {status === `loading` && (
                 <div className="flex items-center justify-center">
                   <button
@@ -129,33 +124,31 @@ const CoursesPage = () => {
                   {courses.map((course, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
-                        onClick={() =>{
+                        onClick={() => {
                           let checkboxes = {
                             syllabus_ids: course.syllabus_ids,
                             teachers: course.teachers,
-                          }
-                          dispatch(setFormData({checkboxes: checkboxes}));
-                          dispatch(setDetailData({ isShow: true, course: course }))
-                        }
-                        }
-                      
+                          };
+                          dispatch(setFormData({ checkboxes: checkboxes }));
+                          dispatch(
+                            setDetailData({ isShow: true, course: course })
+                          );
+                        }}
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
-                           { Object.keys(course.more.ranking ?? {}).length !==0 && 
-                         
-                         <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
-                             {course.language}  / {course.more.ranking}
-                           </span>
-                       
-                         }
-                             { Object.keys(course.more.ranking ?? {}).length ===0 && 
-                     
+                        {Object.keys(course.more.ranking ?? {}).length !==
+                          0 && (
                           <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
-                              {course.language}
-                            </span>
-                        
-                          }
-                    
+                            {course.language} / {course.more.ranking}
+                          </span>
+                        )}
+                        {Object.keys(course.more.ranking ?? {}).length ===
+                          0 && (
+                          <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
+                            {course.language}
+                          </span>
+                        )}
+
                         <button
                           type="button"
                           className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
@@ -186,7 +179,6 @@ const CoursesPage = () => {
                           </div>
                         </div>
                       </Link>
-                     
                     </div>
                   ))}
                 </div>
@@ -198,15 +190,26 @@ const CoursesPage = () => {
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
+                      <td className="px-2 py-1">Phone</td>
+                      <td className="px-2 py-1"> Email</td>
+                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {courses.map((course, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({ checkboxes: { types: course.types } })
+                          );
+                          dispatch(
+                            setDetailData({ isShow: true, course: course })
+                          );
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
@@ -248,7 +251,6 @@ const CoursesPage = () => {
                 </table>
               )}
             </section>
-        
           </div>
         </div>
       </aside>

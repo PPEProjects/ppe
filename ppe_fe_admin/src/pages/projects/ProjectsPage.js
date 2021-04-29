@@ -6,20 +6,20 @@ import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import ProjectsDetailPage from "./ProjectsDetailPage";
 import { projectsSelector, getProjects } from "../../slices/projects";
-import {sidebarSelector,setSidebarData} from "../../slices/sidebar";
+import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 // import { setSidebarData} from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { Link,useLocation } from "react-router-dom";
-import {setFormData} from "../../slices/form";
+import { Link, useLocation } from "react-router-dom";
+import { setFormData } from "../../slices/form";
 import Language from "../../components/Language";
 
 const ProjectsPage = () => {
   const { project1, projects, status } = useSelector(projectsSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
 
@@ -27,10 +27,9 @@ const ProjectsPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjects(filterOpen));
     let url = window.location.href;
-  
-    dispatch(setSidebarData({url: url}))
- 
-}, [dispatch, location, filterOpen]);
+
+    dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -38,9 +37,9 @@ const ProjectsPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Projects</h1>
-            <Language/>
+            <Language />
           </div>
-          <Filter/>
+          <Filter />
 
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
@@ -64,7 +63,6 @@ const ProjectsPage = () => {
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
-                 
                   <Button
                     type={`button`}
                     title={`Select All`}
@@ -103,12 +101,14 @@ const ProjectsPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { projects.length === 0 && status !== `loading` &&
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {projects.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
               {status === `loading` && (
                 <div className="flex items-center justify-center">
@@ -123,28 +123,31 @@ const ProjectsPage = () => {
                   {projects.map((project, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
-                        onClick={() =>{
-                          dispatch(setFormData({checkboxes: {members: project.members}}));
-                          dispatch(setDetailData({ isShow: true, project: project }))
+                        onClick={() => {
+                          dispatch(
+                            setFormData({
+                              checkboxes: { members: project.members },
+                            })
+                          );
+                          dispatch(
+                            setDetailData({ isShow: true, project: project })
+                          );
                         }}
-         
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
-                             { Object.keys(project.more.ranking ?? {}).length !==0 && 
-                         
-                             <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
-                                 {project.language}  / {project.more.ranking}
-                               </span>
-                           
-                             }
-                                 { Object.keys(project.more.ranking ?? {}).length ===0 && 
-                         
-                         <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
-                             {project.language}
-                           </span>
-                       
-                         }
-                            
+                        {Object.keys(project.more.ranking ?? {}).length !==
+                          0 && (
+                          <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
+                            {project.language} / {project.more.ranking}
+                          </span>
+                        )}
+                        {Object.keys(project.more.ranking ?? {}).length ===
+                          0 && (
+                          <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
+                            {project.language}
+                          </span>
+                        )}
+
                         <button
                           type="button"
                           className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
@@ -164,23 +167,20 @@ const ProjectsPage = () => {
                           </h1>
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="truncate">
-                            
                               Purpose: {project.more.purpose}
                             </p>
                             <p className="truncate">
                               Cost: {project.more.cost}
                             </p>
                             <p className="truncate">
-                            Approach: {project.more.approach}
+                              Approach: {project.more.approach}
                             </p>
                             <p className="truncate">
-                            Deadline: {project.more.deadline}
+                              Deadline: {project.more.deadline}
                             </p>
-                         
                           </div>
                         </div>
                       </Link>
-                    
                     </div>
                   ))}
                 </div>
@@ -192,15 +192,28 @@ const ProjectsPage = () => {
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
+                      <td className="px-2 py-1">Phone</td>
+                      <td className="px-2 py-1"> Email</td>
+                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {projects.map((project, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({
+                              checkboxes: { types: project.types },
+                            })
+                          );
+                          dispatch(
+                            setDetailData({ isShow: true, project: project })
+                          );
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"

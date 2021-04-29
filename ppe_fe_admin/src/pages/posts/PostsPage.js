@@ -7,17 +7,18 @@ import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import PostsDetailPage from "./PostsDetailPage";
 import { postsSelector, getPosts } from "../../slices/posts";
-import {sidebarSelector} from "../../slices/sidebar";
+import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData} from "../../slices/sidebar";
+import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
+import { setFormData } from "../../slices/form";
 const PostsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const { post, posts, status } = useSelector(postsSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
@@ -26,21 +27,20 @@ const PostsPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getPosts(filterOpen));
     let url = window.location.href;
-   
-    dispatch(setSidebarData({url: url}))
-  
+
+    dispatch(setSidebarData({ url: url }));
   }, [dispatch, location, filterOpen]);
-  
+
   const renderMain = () => {
     return (
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Posts</h1>
-            <Language/>
+            <Language />
           </div>
-          <Filter/>
-         
+          <Filter />
+
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
               <div className="flex items-center justify-between mx-4">
@@ -101,14 +101,16 @@ const PostsPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { posts.length === 0 && status !== `loading` && 
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {posts.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
-              
+
               {status === `loading` && (
                 <div className="flex items-center justify-center">
                   <button
@@ -125,7 +127,6 @@ const PostsPage = () => {
                         onClick={() =>
                           dispatch(setDetailData({ isShow: true, post: post }))
                         }
-                   
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
                         <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
@@ -178,7 +179,16 @@ const PostsPage = () => {
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {posts.map((post, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({ checkboxes: { types: post.types } })
+                          );
+                          dispatch(setDetailData({ isShow: true, post: post }));
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
