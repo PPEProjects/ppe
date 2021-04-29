@@ -59,12 +59,7 @@ const CoursesPage = () => {
                   >
                     <span className="mx-2">Add courses</span>
                   </Link>
-                  <button
-                    type="button"
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white "
-                  >
-                    <i className="material-icons">arrow_drop_down</i>
-                  </button>
+                  
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
