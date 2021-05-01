@@ -203,7 +203,18 @@ const CommentsPage = () => {
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {comments.map((comment, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}  onClick={() =>{
+                          dispatch(
+                            setDetailData({
+                              isShow: true,
+                              comment: comment,
+                              post: postsObj[comment.post_id],
+                            })
+                          )
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"

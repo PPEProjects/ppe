@@ -183,7 +183,12 @@ const PostsPage = () => {
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {posts.map((post, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}  onClick={() =>{
+                          dispatch(setDetailData({ isShow: true, post: post }))
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
