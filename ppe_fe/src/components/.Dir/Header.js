@@ -308,7 +308,9 @@ class Header extends Component {
                             </ul>
                             <button
                                 type="button"
-                                onClick={() => this.set_state({openLanguage: `language`})}
+                                onClick={() => this.set_state({openLanguage: openLanguage===`language` ? null: `language`})}
+                             
+
                                 className="bg-transparent text-white h-12 px-2 rounded-sm hover:opacity-75 flex items-center justify-center hover:border-white border border-transparent "
                             >
                                 <figure className="flex items-center">
@@ -377,7 +379,7 @@ class Header extends Component {
                             {!access_token && (
                                 <button
                                     type="button"
-                                    onClick={() => this.set_state({openLanguage: `sign-in`})}
+                                    onClick={() => this.set_state({openLanguage: openLanguage===`sign-in` ? null: `sign-in`})}
                                     className="bg-transparent text-white h-12 px-2 rounded-sm hover:opacity-75 hover:border-white border border-transparent ml-3 "
                                 >
                   <span className="block text-left text-sm text-gray-300">
@@ -403,9 +405,9 @@ class Header extends Component {
                             )}
                             <button
                                 type="button"
-                                className="flex items-center justify-center bg-transparent text-white h-12 px-2 rounded-sm hover:opacity-75 hover:border-white border border-transparent ml-3 "
+                                className="flex items-center justify-center bg-transparent text-white h-12  rounded-sm hover:opacity-75 hover:border-white border border-transparent ml-3 "
                             >
-                                <i className="material-icons ml-1">signal_cellular_alt</i>
+                                
                             </button>
                         </div>
                     </section>
