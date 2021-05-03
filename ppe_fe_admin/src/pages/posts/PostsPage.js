@@ -9,6 +9,7 @@ import PostsDetailPage from "./PostsDetailPage";
 import { postsSelector, getPosts } from "../../slices/posts";
 import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
+import { setFormData } from "../../slices/form";
 import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
@@ -33,7 +34,7 @@ const PostsPage = () => {
   }, [dispatch, location, filterOpen]);
 
   const [text, setText] = useState("Select All ");
- 
+
   const renderMain = () => {
     return (
       <aside className="w-full">
@@ -58,12 +59,6 @@ const PostsPage = () => {
                   >
                     <span className="mx-2">Add posts</span>
                   </Link>
-                  <button
-                    type="button"
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white "
-                  >
-                    <i className="material-icons">arrow_drop_down</i>
-                  </button>
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
@@ -75,7 +70,7 @@ const PostsPage = () => {
                     type={`button`}
                     title={text}
                     className={`bg-gray-300 text-gray-800`}
-                    onClick = {() => setText("Selected")}
+                    onClick={() => setText("Selected")}
                   />
 
                   <Button
@@ -94,14 +89,18 @@ const PostsPage = () => {
                   <button
                     type="button"
                     onClick={() => setMode(`grid`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center"
+                    className={`${
+                      mode === `grid` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
-                  </button> 
+                  </button>
                   <button
                     type="button"
                     onClick={() => setMode(`table`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white"
+                    className={`${
+                      mode === `table` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>

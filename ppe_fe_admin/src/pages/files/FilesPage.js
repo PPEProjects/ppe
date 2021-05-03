@@ -51,7 +51,7 @@ const FilesPage = () => {
     const renderMain = () => {
         return (
             <aside className="w-full">
-                <div className="grid grid-cols-12 gap-4 mx-6 mb-6">
+                <div className="grid grid-cols-12  mx-6 mb-6">
                     <div className="col-span-12 flex items-center justify-between mt-6 ">
                         <h1 className="text-xl font-bold">Files</h1>
                     </div>
