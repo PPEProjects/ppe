@@ -57,7 +57,7 @@ class UsersFormTypeProjects extends Component {
                     <label className="block mt-4">
                         <div className="flex -mb-3"><span className="block font-medium">Phone</span><b
                             className="text-red-600 ml-1">(*)</b></div>
-                        <Input name={`infos[phone]`} type={`tel`} value={user?.infos?.phone}/>
+                        <Input name={`infos[phone]`} type={`number`} value={user?.infos?.phone}/>
                     </label>
 
                     <label className="block mt-4">
