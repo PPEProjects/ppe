@@ -191,8 +191,9 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  <thead className="border-black border-b ">
-                    <tr className="">
+                  {jobs.length!=0 &&
+                   <thead className="border-black border-b ">
+                    <tr className="break-all w-full">
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
@@ -202,10 +203,16 @@ const JobsPage = () => {
                       <td className="px-2 py-1">Stock availability</td>
                     </tr>
                   </thead>
+                  }
+
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
+                  
                     {jobs.map((job, key) => (
+                      
                       <tr>
+                        
                         <td className="px-2 py-1 ">
+                       
                           <button
                             type="button"
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"

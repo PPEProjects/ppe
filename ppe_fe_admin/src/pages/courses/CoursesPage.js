@@ -198,6 +198,7 @@ const CoursesPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
+                  {courses.length!=0 &&
                   <thead className="border-black border-b ">
                     <tr className="">
                       <td className="px-2 py-1"></td>
@@ -209,6 +210,7 @@ const CoursesPage = () => {
                       <td className="px-2 py-1">Stock availability</td>
                     </tr>
                   </thead>
+                  }
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {courses.map((course, key) => (
                       <tr>
