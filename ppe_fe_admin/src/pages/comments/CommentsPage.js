@@ -15,6 +15,7 @@ import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
 import { setFormData } from "../../slices/form";
+import { usersSelector } from "../../slices/users";
 const CommentsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -22,6 +23,7 @@ const CommentsPage = () => {
   const { filterOpen } = useSelector(filterSelector);
   const { comment, comments, status } = useSelector(commentsSelector);
   const { postsObj } = useSelector(postsSelector);
+  const { users } = useSelector(usersSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
 
@@ -180,77 +182,90 @@ const CommentsPage = () => {
                 </div>
               )}
               {status === `success` && mode === `table` && (
-                <table className=" table-auto text-sm w-full">
-                  <thead className="border-black border-b ">
-                    <tr className="">
-                      <td className="px-2 py-1"></td>
-                      <td className="px-2 py-1">ID</td>
-                      <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Phone</td>
-                      <td className="px-2 py-1"> Email</td>
-                      <td className="px-2 py-1"> Class name</td>
-                      <td className="px-2 py-1">Status</td>
-                    </tr>
-                  </thead>
-                  <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {comments.map((comment, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { types: comment.types },
-                            })
-                          );
-                          dispatch(
-                            setDetailData({
-                              isShow: true,
-                              comment: comment,
-                              post: postsObj[comment.post_id],
-                            })
-                          );
-                        }}
-                      >
-                        <td className="px-2 py-1 ">
-                          <button
-                            type="button"
-                            className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
-                          >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
-                          </button>
-                        </td>
-                        <td className="px-2 py-1 ">
-                          <p className="w-10 truncate">{comment.id}</p>
-                        </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
-                          <figure className="flex items-center">
-                            <div className="w-10">
-                              <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                                <img
-                                  alt=""
-                                  src={comment.image}
-                                  className="absolute h-full w-full object-cover"
-                                />
-                              </div>
-                            </div>
-                            <figcaption className="ml-2">
-                              {comment.title}
-                            </figcaption>
-                          </figure>
-                        </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
-                        </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                <div className="overflow-auto">
+                  <table className=" table-auto text-sm w-full">
+                    <thead className="border-black border-b ">
+                      <tr className="">
+                        <td className="px-2 py-1"></td>
+                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1">User</td>
+                        <td className="px-2 py-1 ">Post</td>
+                        <td className="px-2 py-1">Content</td>
+                        <td className="px-2 py-1"> Image</td>
+                        <td className="px-2 py-1"> created at</td>
+                        <td className="px-2 py-1">Status</td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
+                      {comments.map((comment, key) => (
+                        <tr
+                          className="cursor-pointer"
+                          key={key}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: comment.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                comment: comment,
+                                post: postsObj[comment.post_id],
+                              })
+                            );
+                          }}
+                        >
+                          <td className="px-2 py-1 ">
+                            <button
+                              type="button"
+                              className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
+                            >
+                              <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            </button>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-8 truncate">{comment.id}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            
+                            <p className="w-25 truncate">{users[comment?.user_id]?.name ?? comment.user_id}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-25 truncate">{postsObj[comment?.post_id]?.title ?? comment.post_id}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-24 truncate">{comment.content}</p>
+                          </td>
+                          <td className="px-2 py-1 text-indigo-700 ">
+                            <figure className="flex items-center">
+                              <div className="w-10">
+                                <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                                  <img
+                                    alt=""
+                                    src={comment.image}
+                                    className="absolute h-full w-full object-cover"
+                                  />
+                                </div>
+                              </div>
+                              <figcaption className="ml-2">
+                                {comment.title}
+                              </figcaption>
+                            </figure>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-25 truncate">{comment.created_at}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-20 truncate">{comment.status}</p>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </section>
           </div>

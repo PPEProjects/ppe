@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import EditorJs from "react-editor-js";
 import { useDispatch, useSelector } from "react-redux";
-import { formSelector } from "../slices/form";
+import { formSelector, setFormData } from "../slices/form";
 import { EDITOR_JS_TOOLS } from "./Editor.constants";
 
 const Editor = () => {
