@@ -7,17 +7,18 @@ import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import CompaniesDetailPage from "./CompaniesDetailPage";
 import { companiesSelector, getCompanies } from "../../slices/companies";
-import {sidebarSelector} from "../../slices/sidebar";
+import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData} from "../../slices/sidebar";
+import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
+import { setFormData } from "../../slices/form";
 const CompaniesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const { company, companies, status } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
@@ -26,10 +27,9 @@ const CompaniesPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCompanies(filterOpen));
     let url = window.location.href;
-  
-    dispatch(setSidebarData({url: url}))
- 
-}, [dispatch, location, filterOpen]);
+
+    dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -37,10 +37,10 @@ const CompaniesPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Companies</h1>
-            <Language/>
+            <Language />
           </div>
-          <Filter/>
-         
+          <Filter />
+
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
               <div className="flex items-center justify-between mx-4">
@@ -63,7 +63,6 @@ const CompaniesPage = () => {
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
-               
                   <Button
                     type={`button`}
                     title={`Select All`}
@@ -102,12 +101,14 @@ const CompaniesPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { companies.length === 0 && status !== `loading` && 
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {companies.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
               {status === `loading` && (
                 <div className="flex items-center justify-center">
@@ -129,22 +130,19 @@ const CompaniesPage = () => {
                         }
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
-                       
-                         { Object.keys(company.more.ranking ?? {}).length !==0 && 
-                         
-                         <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
-                             {company.language}  / {company.more.ranking}
-                           </span>
-                       
-                         }
-                             { Object.keys(company.more.ranking ?? {}).length ===0 && 
-                     
+                        {Object.keys(company.more.ranking ?? {}).length !==
+                          0 && (
                           <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
-                              {company.language}
-                            </span>
-                        
-                          }
-    
+                            {company.language} / {company.more.ranking}
+                          </span>
+                        )}
+                        {Object.keys(company.more.ranking ?? {}).length ===
+                          0 && (
+                          <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
+                            {company.language}
+                          </span>
+                        )}
+
                         <button
                           type="button"
                           className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
@@ -175,7 +173,6 @@ const CompaniesPage = () => {
                           </div>
                         </div>
                       </Link>
-                    
                     </div>
                   ))}
                 </div>
@@ -187,15 +184,28 @@ const CompaniesPage = () => {
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
+                      <td className="px-2 py-1">Phone</td>
+                      <td className="px-2 py-1"> Email</td>
+                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {companies.map((company, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({
+                              checkboxes: { types: company.types },
+                            })
+                          );
+                          dispatch(
+                            setDetailData({ isShow: true, company: company })
+                          );
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"

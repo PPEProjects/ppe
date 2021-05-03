@@ -8,19 +8,22 @@ import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import { postsSelector, getPostsObj } from "../../slices/posts";
 import CommentsDetailPage from "./CommentsDetailPage";
-import {sidebarSelector} from "../../slices/sidebar";
+import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData} from "../../slices/sidebar";
+import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
+import { setFormData } from "../../slices/form";
+import { usersSelector } from "../../slices/users";
 const CommentsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const { comment, comments, status } = useSelector(commentsSelector);
   const { postsObj } = useSelector(postsSelector);
+  const { users } = useSelector(usersSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
 
@@ -29,11 +32,9 @@ const CommentsPage = () => {
     dispatch(getPostsObj());
     dispatch(getComments(filterOpen));
     let url = window.location.href;
- 
-    dispatch(setSidebarData({url: url}))
- 
-}, [dispatch, location, filterOpen]);
 
+    dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -41,9 +42,9 @@ const CommentsPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Comments</h1>
-            <Language/>
+            <Language />
           </div>
-          <Filter/>
+          <Filter />
 
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
@@ -105,12 +106,14 @@ const CommentsPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { comments.length === 0 && status !== `loading` && 
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {comments.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
               {status === `loading` && (
                 <div className="flex items-center justify-center">
@@ -134,7 +137,6 @@ const CommentsPage = () => {
                             })
                           )
                         }
-                     
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
                         <button
@@ -172,72 +174,98 @@ const CommentsPage = () => {
                             <p className="">
                               Updated at: {moment(comment.created_at).fromNow()}
                             </p>
-                            <p className="text-sm text-indigo-700">
-                              Type: {comment.type}
-                            </p>
                           </div>
                         </div>
                       </Link>
-                     
                     </div>
                   ))}
                 </div>
               )}
               {status === `success` && mode === `table` && (
-                <table className=" table-auto text-sm w-full">
-                  <thead className="border-black border-b ">
-                    <tr className="">
-                      <td className="px-2 py-1"></td>
-                      <td className="px-2 py-1">ID</td>
-                      <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
-                    </tr>
-                  </thead>
-                  <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {comments.map((comment, key) => (
-                      <tr>
-                        <td className="px-2 py-1 ">
-                          <button
-                            type="button"
-                            className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
-                          >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
-                          </button>
-                        </td>
-                        <td className="px-2 py-1 ">
-                          <p className="w-10 truncate">{comment.id}</p>
-                        </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
-                          <figure className="flex items-center">
-                            <div className="w-10">
-                              <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                                <img
-                                  alt=""
-                                  src={comment.image}
-                                  className="absolute h-full w-full object-cover"
-                                />
-                              </div>
-                            </div>
-                            <figcaption className="ml-2">
-                              {comment.title}
-                            </figcaption>
-                          </figure>
-                        </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
-                        </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                <div className="overflow-auto">
+                  <table className=" table-auto text-sm w-full">
+                    <thead className="border-black border-b ">
+                      <tr className="">
+                        <td className="px-2 py-1"></td>
+                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1">User</td>
+                        <td className="px-2 py-1 ">Post</td>
+                        <td className="px-2 py-1">Content</td>
+                        <td className="px-2 py-1"> Image</td>
+                        <td className="px-2 py-1"> created at</td>
+                        <td className="px-2 py-1">Status</td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
+                      {comments.map((comment, key) => (
+                        <tr
+                          className="cursor-pointer"
+                          key={key}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: comment.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                comment: comment,
+                                post: postsObj[comment.post_id],
+                              })
+                            );
+                          }}
+                        >
+                          <td className="px-2 py-1 ">
+                            <button
+                              type="button"
+                              className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
+                            >
+                              <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            </button>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-8 truncate">{comment.id}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            
+                            <p className="w-25 truncate">{users[comment?.user_id]?.name ?? comment.user_id}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-25 truncate">{postsObj[comment?.post_id]?.title ?? comment.post_id}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-24 truncate">{comment.content}</p>
+                          </td>
+                          <td className="px-2 py-1 text-indigo-700 ">
+                            <figure className="flex items-center">
+                              <div className="w-10">
+                                <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                                  <img
+                                    alt=""
+                                    src={comment.image}
+                                    className="absolute h-full w-full object-cover"
+                                  />
+                                </div>
+                              </div>
+                              <figcaption className="ml-2">
+                                {comment.title}
+                              </figcaption>
+                            </figure>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-25 truncate">{comment.created_at}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-20 truncate">{comment.status}</p>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </section>
           </div>

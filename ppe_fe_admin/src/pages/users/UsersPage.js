@@ -4,23 +4,28 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { usersSelector, getUsers } from "../../slices/users";
 import { filterSelector } from "../../slices/filter";
-import { setDetailData ,setDetailData1} from "../../slices/details";
+import { setDetailData, setDetailData1 } from "../../slices/details";
 import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import UserDetailPage from "./UserDetailPage";
-import {sidebarSelector, setSidebarData} from "../../slices/sidebar";
+import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import {setFormData} from "../../slices/form";
+import { setFormData } from "../../slices/form";
 import Language from "../../components/Language";
 
 const UsersPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+<<<<<<< HEAD
   const {url, opens} = useSelector(sidebarSelector);
   const {filterOpen} = useSelector(filterSelector);
   const [search, setSearch] = useState('');
+=======
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
+>>>>>>> 16f4125dc3da1cbb1de7ede4e735a101fa27b4d1
 
-  const { user, users,user1, status } = useSelector(usersSelector);
+  const { user, users, user1, status } = useSelector(usersSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [learners, setLearners] = useState({});
@@ -29,19 +34,17 @@ const UsersPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getUsers(filterOpen));
     let url = window.location.href;
-    dispatch(setSidebarData({url: url}))
+    dispatch(setSidebarData({ url: url }));
 
     fetchData();
     async function fetchData() {
-      let res = await Ajax.get(`/classes`, {learners: `learners`});
+      let res = await Ajax.get(`/classes`, { learners: `learners` });
       setLearners(res.data?.learners);
     }
-   
   }, [dispatch, location, filterOpen]);
-  
 
   const renderMain = () => {
-    console.log('learners', learners)
+    console.log("learners", learners);
     return (
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
@@ -57,10 +60,10 @@ const UsersPage = () => {
               <h1 className="text-xl font-bold">Job hunter</h1>
             )}
 
-            <Language/>
+            <Language />
           </div>
-          <Filter type="user"/>
-          
+          <Filter type="user" />
+
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
               <div className="flex items-center justify-between mx-4">
@@ -83,7 +86,7 @@ const UsersPage = () => {
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
-                  <Button
+                  {/* <Button
                     type={`button`}
                     title={`Confirmed`}
                     className={`bg-gray-300 text-gray-800`}
@@ -93,7 +96,7 @@ const UsersPage = () => {
                     type={`button`}
                     title={`Not yet`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
+                  /> */}
 
                   {/* <Button
                     type={`button`}
@@ -121,12 +124,14 @@ const UsersPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { users.length === 0 && status !== `loading` && 
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {users.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
               {status === `loading` && (
                 <div className="flex items-center justify-center">
@@ -136,8 +141,8 @@ const UsersPage = () => {
                   ></button>
                 </div>
               )}
-              
-               {status === `success` && mode === `grid` && (
+
+              {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {users
                   .filter((user) => {
@@ -152,11 +157,12 @@ const UsersPage = () => {
                   .map((user, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
-                        onClick={() =>{
-                          dispatch(setFormData({checkboxes: {"types":user.types}}))
-                          dispatch(setDetailData({ isShow: true, user: user }))
+                        onClick={() => {
+                          dispatch(
+                            setFormData({ checkboxes: { types: user.types } })
+                          );
+                          dispatch(setDetailData({ isShow: true, user: user }));
                         }}
-                     
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
                         <button
@@ -176,18 +182,24 @@ const UsersPage = () => {
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {user.name}
                           </h1>
-                        
+
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="">
                               Created at: {moment(user.created_at).fromNow()}
                             </p>
-                            {(moment(user.created_at).fromNow()===moment(user.updated_at).fromNow()) && (
-                         <h3 className="text-gray-500 text-xs truncate">Not joined yet</h3>
-                          )}
-                            {(moment(user.created_at).fromNow()!==moment(user.updated_at	).fromNow()) && (
-                         <h3 className="text-gray-500 text-xs truncate">Login at: {moment(user.updated_at).fromNow()}t</h3>
-                          )}
-                          
+                            {moment(user.created_at).fromNow() ===
+                              moment(user.updated_at).fromNow() && (
+                              <h3 className="text-gray-500 text-xs truncate">
+                                Not joined yet
+                              </h3>
+                            )}
+                            {moment(user.created_at).fromNow() !==
+                              moment(user.updated_at).fromNow() && (
+                              <h3 className="text-gray-500 text-xs truncate">
+                                Login at: {moment(user.updated_at).fromNow()}t
+                              </h3>
+                            )}
+
                             <p className="text-sm text-indigo-700 truncate">
                               Roles: {Object.keys(user.types).join(", ")}
                             </p>
@@ -197,13 +209,10 @@ const UsersPage = () => {
                     </div>
                   ))}
                 </div>
-             
               )}
-           
+
               {status === `success` && mode === `table` && (
-                
                 <table className="table-auto text-sm w-full">
-                   
                   <thead className="border-black border-b">
                     <tr className="">
                       <td className="px-2 py-1"></td>
@@ -219,6 +228,7 @@ const UsersPage = () => {
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {users.map((user, key) => (
                       <tr
+<<<<<<< HEAD
                       className="cursor-pointer"
                       key={key}  onClick={() =>{
                         dispatch(setFormData({checkboxes: {"types":user.types}}))
@@ -228,6 +238,17 @@ const UsersPage = () => {
 
 
                         
+=======
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({ checkboxes: { types: user.types } })
+                          );
+                          dispatch(setDetailData({ isShow: true, user: user }));
+                        }}
+                      >
+>>>>>>> 16f4125dc3da1cbb1de7ede4e735a101fa27b4d1
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
@@ -266,19 +287,17 @@ const UsersPage = () => {
                         {/* <td className="py-1 truncate w-24">{user.email}</td> */}
                         <td className="px-2 py-1">{learners[user.id]?.name}</td>
                         <td className="px-2 py-1">
-                          { learners[user.id] &&
-                          <span className={`text-indigo-700`}>Confirmed</span>
-                          }
-                          { !learners[user.id] &&
-                          <span className={`text-red-700`}>Not yet</span>
-                          }
+                          {learners[user.id] && (
+                            <span className={`text-indigo-700`}>Confirmed</span>
+                          )}
+                          {!learners[user.id] && (
+                            <span className={`text-red-700`}>Not yet</span>
+                          )}
                         </td>
                       </tr>
                     ))}
                   </tbody>
-                
                 </table>
-                
               )}
             </section>
           </div>
