@@ -168,7 +168,7 @@ class FormUploadFile extends Component {
                 />
                 <div
                   type="button"
-                  className="cursor-pointer bg-white text-gray-800 h-20 w-20 rounded hover:opacity-75 hover:bg-gray-200 border border-gray-400 flex items-center justify-center"
+                  className="cursor-pointer ml-2 bg-white text-gray-800 h-20 w-20 rounded hover:opacity-75 hover:bg-gray-200 border border-gray-400 flex items-center justify-center"
                 >
                   <i className="text-3xl material-icons">add</i>
                 </div>
@@ -187,7 +187,7 @@ class FormUploadFile extends Component {
                     <i className="text-base font-bold material-icons">close</i>
                   </button>
               
-                  <div className="w-20">
+                  <div className="w-20 pb-2">
                     <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
                       { image &&
                       <img

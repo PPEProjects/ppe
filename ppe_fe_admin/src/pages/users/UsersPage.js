@@ -18,6 +18,7 @@ const UsersPage = () => {
   const dispatch = useDispatch();
   const {url, opens} = useSelector(sidebarSelector);
   const {filterOpen} = useSelector(filterSelector);
+  const [search, setSearch] = useState('');
 
   const { user, users,user1, status } = useSelector(usersSelector);
   const [mode, setMode] = useState(`grid`);
@@ -78,7 +79,7 @@ const UsersPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All Users" />
+                <InputIcon placeholder="Search All Users" onChange={(e) => setSearch(e.target.value)} />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -138,7 +139,17 @@ const UsersPage = () => {
               
                {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {users.map((user, key) => (
+                  {users
+                  .filter((user) => {
+                    if (search === "") {
+                      return user;
+                    } else if (
+                      user.name.toLowerCase().includes(search.toLowerCase())) {
+                      return user;
+                    }
+                  })
+                  
+                  .map((user, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>{
@@ -214,6 +225,9 @@ const UsersPage = () => {
                         dispatch(setDetailData({ isShow: true, user: user }))
                         
                       }}>
+
+
+                        
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
