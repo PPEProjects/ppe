@@ -16,18 +16,13 @@ import Language from "../../components/Language";
 const UsersPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-<<<<<<< HEAD
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
-  const [search, setSearch] = useState('');
-=======
   const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
->>>>>>> 16f4125dc3da1cbb1de7ede4e735a101fa27b4d1
 
   const { user, users, user1, status } = useSelector(usersSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
   const [learners, setLearners] = useState({});
 
   useEffect(() => {
@@ -228,17 +223,6 @@ const UsersPage = () => {
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {users.map((user, key) => (
                       <tr
-<<<<<<< HEAD
-                      className="cursor-pointer"
-                      key={key}  onClick={() =>{
-                        dispatch(setFormData({checkboxes: {"types":user.types}}))
-                        dispatch(setDetailData({ isShow: true, user: user }))
-                        
-                      }}>
-
-
-                        
-=======
                         className="cursor-pointer"
                         key={key}
                         onClick={() => {
@@ -248,7 +232,6 @@ const UsersPage = () => {
                           dispatch(setDetailData({ isShow: true, user: user }));
                         }}
                       >
->>>>>>> 16f4125dc3da1cbb1de7ede4e735a101fa27b4d1
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
