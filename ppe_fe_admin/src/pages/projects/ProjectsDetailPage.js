@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
 import { Button } from "../../components/Form";
@@ -17,7 +17,7 @@ const ProjectsDetailPage = () => {
   const history = useHistory();
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
-  }, []);  
+  }, []);
 
   const renderMain = () => {
     return (
@@ -41,12 +41,9 @@ const ProjectsDetailPage = () => {
                   <li className="text-blue-500 px-3 pb-1 border-b-4 border-blue-600">
                     <a href="#">Detail</a>
                   </li>
-                
                 </ul>
 
                 <div className="flex">
-               
-
                   <Button
                     onClick={() => dispatch(setDetailData({ mode: `edit` }))}
                     type={`button`}
@@ -110,7 +107,7 @@ const ProjectsDetailPage = () => {
                       <section className="grid grid-cols-12 gap-4 ">
                         <div className="col-span-6">
                           <div>
-                            <h2 className="font-medium ">Name</h2>
+                            <h2 className="font-medium truncate w-36">Name</h2>
                             <p className="text-sm text-gray-700">
                               {project.name}
                             </p>

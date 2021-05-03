@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
 import { Button } from "../../components/Form";
@@ -18,8 +18,8 @@ const CourseDetailPage = () => {
   const history = useHistory();
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
-  }, []);  
-  
+  }, []);
+
   const renderMain = () => {
     return (
       <React.Fragment>
@@ -28,7 +28,7 @@ const CourseDetailPage = () => {
             <section className="w-full max-w-3xl mx-auto px-4 py-2 bg-white rounded-lg overflow-hidden shadow-md ">
               <div className=" text-lg flex items-center justify-between ">
                 <h1 className="font-semibold text-gray-700 truncate mr-8">
-                {course.name}
+                  {course.name}
                 </h1>
                 <Button
                   onClick={() => dispatch(setDetailData({ isShow: false }))}
@@ -47,12 +47,9 @@ const CourseDetailPage = () => {
                       Detail
                     </a>
                   </li>
-              
                 </ul>
 
                 <div className="flex">
-                
-
                   <Button
                     onClick={() => dispatch(setDetailData({ mode: `edit` }))}
                     type={`button`}
@@ -116,7 +113,7 @@ const CourseDetailPage = () => {
                       <section className="grid grid-cols-12 gap-4 ">
                         <div className="col-span-6">
                           <div>
-                            <h2 className="font-medium ">Name</h2>
+                            <h2 className="font-medium truncate w-36">Name</h2>
                             <p className="text-sm text-gray-700">
                               {course.name}
                             </p>
