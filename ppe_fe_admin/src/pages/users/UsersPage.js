@@ -55,8 +55,6 @@ const UsersPage = () => {
             {type === `Job hunter` && (
               <h1 className="text-xl font-bold">Job hunter</h1>
             )}
-
-            <Language/>
           </div>
           <Filter type="user"/>
           
