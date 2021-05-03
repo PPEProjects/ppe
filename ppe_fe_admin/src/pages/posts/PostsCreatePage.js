@@ -35,7 +35,7 @@ const PostsCreatePage = () => {
       Alert({ t: res.status, c: res.errors });
       return;
     }
-   
+
     history.goBack();
   };
 
@@ -62,35 +62,43 @@ const PostsCreatePage = () => {
             Essential Information
           </h2>
           <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Display language</span><b className="text-red-600 ml-1"> (*)</b></div>
-                      <Select
-           
-            name={`language`}
-            values={[`English`, `Japanese`, `Vietnamese`]}
-          />
-         </label>
-        
+            <div className="flex -mb-3">
+              <span className="block font-medium">Display language</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Select
+              name={`language`}
+              values={[`English`, `Japanese`, `Vietnamese`]}
+            />
+          </label>
+
           <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Title</span><b className="text-red-600 ml-1"> (*)</b></div>
-                      <Input name={`title`} type={`text`} />
-         </label>
-        
+            <div className="flex -mb-3">
+              <span className="block font-medium">Title</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Input name={`title`} type={`text`} />
+          </label>
 
           <PostsFormDescription
             label={`Description`}
             className={`bg-yellow-200 -mx-4 px-4 py-4`}
+            
           />
-      
-           <label className="block mt-4">
-                      <div className="flex"><span className="block font-medium">Image</span><b className="text-red-600 ml-1"> (*)</b></div>      
-         </label>
-         <FormUploadFile />
+
+          <label className="block mt-4">
+            <div className="flex">
+              <span className="block font-medium">Image</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+          </label>
+          <FormUploadFile />
         </section>
       </main>
 
       <FormFooter
-       tabNumber={1}
-       show={show}
+        tabNumber={1}
+        show={show}
         onShowMinus={() => setShow(show - 1)}
         onShowPlus={() => setShow(show + 1)}
       />
