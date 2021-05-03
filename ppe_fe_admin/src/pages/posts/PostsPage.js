@@ -13,6 +13,7 @@ import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
+import { usersSelector } from "../../slices/users";
 const PostsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const PostsPage = () => {
   const { post, posts, status } = useSelector(postsSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const { users } = useSelector(usersSelector);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -172,60 +174,73 @@ const PostsPage = () => {
                 </div>
               )}
               {status === `success` && mode === `table` && (
-                <table className=" table-auto text-sm w-full">
-                  <thead className="border-black border-b ">
-                    <tr className="">
-                      <td className="px-2 py-1"></td>
-                      <td className="px-2 py-1">ID</td>
-                      <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
-                    </tr>
-                  </thead>
-                  <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {posts.map((post, key) => (
-                      <tr>
-                        <td className="px-2 py-1 ">
-                          <button
-                            type="button"
-                            className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
-                          >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
-                          </button>
-                        </td>
-                        <td className="px-2 py-1 ">
-                          <p className="w-10 truncate">{post.id}</p>
-                        </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
-                          <figure className="flex items-center">
-                            <div className="w-10">
-                              <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                                <img
-                                  alt=""
-                                  src={post.image}
-                                  className="absolute h-full w-full object-cover"
-                                />
-                              </div>
-                            </div>
-                            <figcaption className="ml-2">
-                              {post.title}
-                            </figcaption>
-                          </figure>
-                        </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
-                        </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                <div className="overflow-auto">
+                  <table className=" table-auto text-sm w-full">
+                    <thead className="border-black border-b ">
+                      <tr className="">
+                        <td className="px-2 py-1"></td>
+                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1 ">Title</td>
+                        <td className="px-2 py-1">Description</td>
+                        <td className="px-2 py-1">User</td>
+                        <td className="px-2 py-1">Created at</td>
+                        <td className="px-2 py-1">Status</td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
+                      {posts.map((post, key) => (
+                        <tr
+                          className="cursor-pointer"
+                          key={key}  onClick={() =>{
+                            dispatch(setDetailData({ isShow: true, post: post }))
+                          }}
+                        >
+                          <td className="px-2 py-1 ">
+                            <button
+                              type="button"
+                              className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
+                            >
+                              <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            </button>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-10 truncate">{post.id}</p>
+                          </td>
+                          <td className="px-2 py-1 text-indigo-700 ">
+                            <figure className="flex items-center">
+                              <div className="w-10">
+                                <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                                  <img
+                                    alt=""
+                                    src={post.image}
+                                    className="absolute h-full w-full object-cover"
+                                  />
+                                </div>
+                              </div>
+                              <figcaption className="ml-2">
+                                {post.title}
+                              </figcaption>
+                            </figure>
+                          </td>
+                          <td className="px-2 py-1 ">
+                              <p className="w-20 truncate">{post.description}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-25 truncate">{users[post?.user_id]?.name ?? post.user_id}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-25 truncate">{post.created_at}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-20 truncate">{post.status}</p>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </section>
           </div>

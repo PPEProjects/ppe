@@ -188,10 +188,10 @@ const CommentsPage = () => {
                       <tr className="">
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
-                        <td className="px-2 py-1">User</td>
                         <td className="px-2 py-1 ">Post</td>
                         <td className="px-2 py-1">Content</td>
                         <td className="px-2 py-1"> Image</td>
+                        <td className="px-2 py-1">User</td>
                         <td className="px-2 py-1"> created at</td>
                         <td className="px-2 py-1">Status</td>
                       </tr>
@@ -230,10 +230,6 @@ const CommentsPage = () => {
                             <p className="w-8 truncate">{comment.id}</p>
                           </td>
                           <td className="px-2 py-1 ">
-                            
-                            <p className="w-25 truncate">{users[comment?.user_id]?.name ?? comment.user_id}</p>
-                          </td>
-                          <td className="px-2 py-1 ">
                             <p className="w-25 truncate">{postsObj[comment?.post_id]?.title ?? comment.post_id}</p>
                           </td>
                           <td className="px-2 py-1 ">
@@ -254,6 +250,9 @@ const CommentsPage = () => {
                                 {comment.title}
                               </figcaption>
                             </figure>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-25 truncate">{users[comment?.user_id]?.name ?? comment.user_id}</p>
                           </td>
                           <td className="px-2 py-1 ">
                             <p className="w-25 truncate">{comment.created_at}</p>
