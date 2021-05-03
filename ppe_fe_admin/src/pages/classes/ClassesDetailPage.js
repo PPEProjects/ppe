@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
 import { Button } from "../../components/Form";
@@ -18,8 +18,8 @@ const ClassesDetailPage = () => {
   const history = useHistory();
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
-  }, []);  
-  
+  }, []);
+
   const renderMain = () => {
     return (
       <React.Fragment>
@@ -28,7 +28,7 @@ const ClassesDetailPage = () => {
             <section className="w-full max-w-3xl mx-auto px-4 py-2 bg-white rounded-lg overflow-hidden shadow-md ">
               <div className=" text-lg flex items-center justify-between ">
                 <h1 className="font-semibold text-gray-700 truncate mr-8">
-                {classe?.name}
+                  {classe?.name}
                 </h1>
                 <Button
                   onClick={() => dispatch(setDetailData({ isShow: false }))}
@@ -47,12 +47,9 @@ const ClassesDetailPage = () => {
                       Detail
                     </a>
                   </li>
-              
                 </ul>
 
                 <div className="flex">
-                
-
                   <Button
                     onClick={() => dispatch(setDetailData({ mode: `edit` }))}
                     type={`button`}
@@ -116,7 +113,7 @@ const ClassesDetailPage = () => {
                       <section className="grid grid-cols-12 gap-4 ">
                         <div className="col-span-6">
                           <div>
-                            <h2 className="font-medium ">Name</h2>
+                            <h2 className="font-medium truncate w-36">Name</h2>
                             <p className="text-sm text-gray-700">
                               {classe?.name}
                             </p>
@@ -130,12 +127,15 @@ const ClassesDetailPage = () => {
                           >
                             <span className="">View more fields</span>
                           </button>
-                          <a href={`${window.$api}/classes?csv_download=csv_download&id=${classe?.id}`}
-                              type="button"
-                              className="bg-indigo-700 text-white h-8 w-32 rounded-lg hover:opacity-75 flex items-center justify-center mt-3"
+                          <a
+                            href={`${window.$api}/classes?csv_download=csv_download&id=${classe?.id}`}
+                            type="button"
+                            className="bg-indigo-700 text-white h-8 w-32 rounded-lg hover:opacity-75 flex items-center justify-center mt-3"
                           >
                             <i className="material-icons">save_alt</i>
-                            <span className="ml-2 w-20 truncate">list of learners</span>
+                            <span className="ml-2 w-20 truncate">
+                              list of learners
+                            </span>
                           </a>
                         </div>
                         <div className="col-span-6">

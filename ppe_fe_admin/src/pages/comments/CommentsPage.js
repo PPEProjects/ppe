@@ -58,7 +58,6 @@ const CommentsPage = () => {
                   >
                     <span className="mx-2">Add comments</span>
                   </Link>
-                 
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
@@ -88,14 +87,18 @@ const CommentsPage = () => {
                   <button
                     type="button"
                     onClick={() => setMode(`grid`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center"
+                    className={`${
+                      mode === `grid` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
                   <button
                     type="button"
                     onClick={() => setMode(`table`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white"
+                    className={`${
+                      mode === `table` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
