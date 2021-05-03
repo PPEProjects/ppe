@@ -10,6 +10,7 @@ import {
   Button,
   Checkbox,
   Input,
+  InputNumber,
   Select,
   Textarea,
 } from "../../components/Form";
@@ -88,7 +89,7 @@ const CoursesCreatePage = () => {
               <div className="flex -mb-3">
                 <span className="block font-medium">Ranking</span>
               </div>
-              <Input
+              <InputNumber
                 name={`more[ranking]`}
                 type={`number`}
                 className={`w-full pl-1`}
@@ -140,14 +141,14 @@ const CoursesCreatePage = () => {
               <span className="block font-medium">Tuition</span>
               <b className="text-red-600 ml-1"> (*)</b>
             </div>
-            <Input name={`more[price]`} type={`number`} />
+            <InputNumber name={`more[price]`} type={`number`} />
           </label>
           <label className="block mt-4">
             <div className="flex -mb-3">
               <span className="block font-medium">Discount to</span>
               <b className="text-red-600 ml-1"> (*)</b>
             </div>
-            <Input name={`more[discount]`} type={`number`} />
+            <InputNumber name={`more[discount]`} type={`number`} />
           </label>
         </section>
         <section

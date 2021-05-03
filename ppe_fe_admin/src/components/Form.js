@@ -47,7 +47,34 @@ export function Input(props) {
         </label>
     );
 }
+export function InputNumber(props) {
+    let {title, name, type, placeholder, value, className, readOnly} = props;
+    placeholder = placeholder ?? ``;
+    className = className ?? ``;
+    const [value1, setValue1] = useState(value);
+    useEffect(() => {
+        if (props.onChange) {
+            props.onChange(value1);
+        }
+    }, [value1]);
+    return (
+        <label className={`${className} block mt-4`}>
+            <span className="block font-medium">{title}</span>
+            <input
+                type={`number`}
+                name={name}
+                min= {`0`}
 
+                className={`${readOnly ? `bg-gray-200` : ``} 
+        border w-full h-10 border-gray-400 hover:border-gray-500 px-3 mt-2 rounded-md outline-none focus:border-blue-700`}
+                placeholder={placeholder}
+                value={value1 ?? value}
+                onChange={(e) => setValue1(Math.abs(e.target.value))}
+                readOnly={readOnly}
+            />
+        </label>
+    );
+}
 export function InputIcon({icon, placeholder, className}) {
     placeholder = placeholder ?? ``;
     className = className ?? ``;
