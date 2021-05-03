@@ -5,37 +5,36 @@ import { useDispatch, useSelector } from "react-redux";
 import { schoolsSelector, getSchools } from "../../slices/schools";
 import { setDetailData } from "../../slices/details";
 import { classesSelector, getClassesObj } from "../../slices/classes";
-import { usersSelector, getUsersObj,getUsers } from "../../slices/users";
+import { usersSelector, getUsersObj, getUsers } from "../../slices/users";
 import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import SchoolsDetailPage from "./SchoolsDetailPage";
-import {  useLocation } from "react-router-dom";
-import {sidebarSelector, setSidebarData} from "../../slices/sidebar";
+import { useLocation } from "react-router-dom";
+import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
-import {setFormData} from "../../slices/form";
+import { setFormData } from "../../slices/form";
 import Language from "../../components/Language";
 
-const SchoolsPage = () => { 
+const SchoolsPage = () => {
   const { classesObj } = useSelector(classesSelector);
   const { usersObj } = useSelector(usersSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const { school, schools, status } = useSelector(schoolsSelector);
   const [mode, setMode] = useState(`grid`);
 
   const [type, setType] = useState(``);
 
   useEffect(() => {
-     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
+    setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getClassesObj());
     dispatch(getSchools(filterOpen));
     let url = window.location.href;
- 
-    dispatch(setSidebarData({url: url}))
-   
+
+    dispatch(setSidebarData({ url: url }));
   }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
@@ -44,12 +43,10 @@ const SchoolsPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Schools</h1>
-            <Language/>
+            <Language />
           </div>
- <Filter/>
+          <Filter />
 
-         
-      
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
               <div className="flex items-center justify-between mx-4">
@@ -64,16 +61,11 @@ const SchoolsPage = () => {
                   >
                     <span className="mx-2">Add schools</span>
                   </Link>
-                  <button
-                    type="button"
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white "
-                  >
-                    <i className="material-icons">arrow_drop_down</i>
-                  </button>
+                 
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All syllabuses" />
+                <InputIcon placeholder="Search All schoolses" />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -115,12 +107,14 @@ const SchoolsPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { schools.length === 0 && status !== `loading` &&
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {schools.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
               {status === `loading` && (
                 <div className="flex items-center justify-center">
@@ -134,15 +128,16 @@ const SchoolsPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {schools.map((school, key) => (
                     <div className="col-span-3" key={key}>
-                    <Link
-                        onClick={() =>{
+                      <Link
+                        onClick={() => {
                           let checkboxes = {
                             leaders: school.leaders,
-                          }
-                          dispatch(setFormData({checkboxes: checkboxes}));
-                          dispatch(setDetailData({ isShow: true, school: school }))
-                        }
-                        }
+                          };
+                          dispatch(setFormData({ checkboxes: checkboxes }));
+                          dispatch(
+                            setDetailData({ isShow: true, school: school })
+                          );
+                        }}
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
                         <button
@@ -159,24 +154,21 @@ const SchoolsPage = () => {
                           />
                         </div>
                         <div className="mx-2 my-2">
-                          
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {school.name}
                           </h2>
                           {/* <h2 className="truncate-2y text-sm leading-5 text-gray-500 font-semibold">
-                            {usersObj[syllabuse.user_id]?.name}
+                            {usersObj[schoolse.user_id]?.name}
                           </h2> */}
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="">
-                              Created at:{" "}
-                              {moment(school.created_at).fromNow()}
+                              Created at: {moment(school.created_at).fromNow()}
                             </p>
                             <p className="">
-                              Updated at:{" "}
-                              {moment(school.created_at).fromNow()}
+                              Updated at: {moment(school.created_at).fromNow()}
                             </p>
                             <p className="text-sm text-indigo-700 truncate">
-                              Address:   {school.infos.address}
+                              Address: {school.infos.address}
                             </p>
                           </div>
                         </div>
@@ -192,15 +184,28 @@ const SchoolsPage = () => {
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
+                      <td className="px-2 py-1">Phone</td>
+                      <td className="px-2 py-1"> Email</td>
+                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {schools.map((syllabus, key) => (
-                      <tr>
+                    {schools.map((school, key) => (
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({
+                              checkboxes: { types: school.types },
+                            })
+                          );
+                          dispatch(
+                            setDetailData({ isShow: true, school: school })
+                          );
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
@@ -212,7 +217,7 @@ const SchoolsPage = () => {
                           </button>
                         </td>
                         <td className="px-2 py-1 ">
-                          <p className="w-10 truncate">{syllabus.id}</p>
+                          <p className="w-10 truncate">{school.id}</p>
                         </td>
                         <td className="px-2 py-1 text-indigo-700 ">
                           <figure className="flex items-center">
@@ -220,13 +225,13 @@ const SchoolsPage = () => {
                               <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
                                 <img
                                   alt=""
-                                  src={syllabus.image}
+                                  src={school.image}
                                   className="absolute h-full w-full object-cover"
                                 />
                               </div>
                             </div>
                             <figcaption className="ml-2">
-                              {syllabus.name}
+                              {school.name}
                             </figcaption>
                           </figure>
                         </td>

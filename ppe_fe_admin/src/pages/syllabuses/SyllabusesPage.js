@@ -5,36 +5,36 @@ import { useDispatch, useSelector } from "react-redux";
 import { syllabusesSelector, getSyllabuses } from "../../slices/syllabuses";
 import { setDetailData } from "../../slices/details";
 import { coursesSelector, getCoursesObj } from "../../slices/courses";
-import { usersSelector, getUsersObj,getUsers } from "../../slices/users";
+import { usersSelector, getUsersObj, getUsers } from "../../slices/users";
 import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import SyllabusesDetailPage from "./SyllabusesDetailPage";
-import {  useLocation } from "react-router-dom";
-import {sidebarSelector, setSidebarData} from "../../slices/sidebar";
+import { useLocation } from "react-router-dom";
+import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import Language from "../../components/Language";
+import { setFormData } from "../../slices/form";
 
 const SyllabusesPage = () => {
   const { coursesObj } = useSelector(coursesSelector);
   const { usersObj } = useSelector(usersSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const {url, opens} = useSelector(sidebarSelector);
-  const {filterOpen} = useSelector(filterSelector);
+  const { url, opens } = useSelector(sidebarSelector);
+  const { filterOpen } = useSelector(filterSelector);
   const { syllabuse, syllabuses, status } = useSelector(syllabusesSelector);
   const [mode, setMode] = useState(`grid`);
 
   const [type, setType] = useState(``);
 
   useEffect(() => {
-     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
+    setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCoursesObj());
     dispatch(getSyllabuses(filterOpen));
     let url = window.location.href;
- 
-    dispatch(setSidebarData({url: url}))
-   
+
+    dispatch(setSidebarData({ url: url }));
   }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
@@ -43,12 +43,10 @@ const SyllabusesPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Syllabuses</h1>
-            <Language/>
+            <Language />
           </div>
- <Filter/>
+          <Filter />
 
-         
-      
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
               <div className="flex items-center justify-between mx-4">
@@ -63,12 +61,7 @@ const SyllabusesPage = () => {
                   >
                     <span className="mx-2">Add syllabuses</span>
                   </Link>
-                  <button
-                    type="button"
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white "
-                  >
-                    <i className="material-icons">arrow_drop_down</i>
-                  </button>
+                 
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
@@ -114,12 +107,14 @@ const SyllabusesPage = () => {
             </section>
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
-            <div>
-                  { syllabuses.length === 0 &&  status !== `loading` &&
-                    <div>
-                      <h2 className="text-2xl text-center	font-light">Not data found</h2>
-                    </div>
-                  }
+              <div>
+                {syllabuses.length === 0 && status !== `loading` && (
+                  <div>
+                    <h2 className="text-2xl text-center	font-light">
+                      Not data found
+                    </h2>
+                  </div>
+                )}
               </div>
               {status === `loading` && (
                 <div className="flex items-center justify-center">
@@ -181,15 +176,28 @@ const SyllabusesPage = () => {
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
+                      <td className="px-2 py-1">Phone</td>
+                      <td className="px-2 py-1"> Email</td>
+                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {syllabuses.map((syllabus, key) => (
-                      <tr>
+                      <tr
+                        className="cursor-pointer"
+                        key={key}
+                        onClick={() => {
+                          dispatch(
+                            setFormData({
+                              checkboxes: { types: syllabus.types },
+                            })
+                          );
+                          dispatch(
+                            setDetailData({ isShow: true, syllabus: syllabus })
+                          );
+                        }}
+                      >
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
