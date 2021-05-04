@@ -110,7 +110,7 @@ const CoursesCreatePage = () => {
               <span className="block font-medium">Content of the course</span>
               <b className="text-red-600 ml-1"> (*)</b>
             </div>
-            <Editor />
+            <Editor type="create" />
           </label>
         </section>
         <section

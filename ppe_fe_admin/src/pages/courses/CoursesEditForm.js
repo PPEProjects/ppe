@@ -111,7 +111,7 @@ const CoursesEditForm = () => {
                     <label className="block mt-4">
                         <div className="flex -mb-3"><span className="block font-medium">Content of the course</span><b
                             className="text-red-600 ml-1"> (*)</b></div>
-                        <Editor/>
+                        <Editor type="edit"/>
                     </label>
                     {/*<CoursesFormDescription*/}
                     {/*    label={`Course description`}*/}

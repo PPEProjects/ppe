@@ -48,23 +48,22 @@ export function Input(props) {
   );
 }
 export function InputNumber(props) {
-    let {title, name, type, placeholder, value, className, readOnly} = props;
-    placeholder = placeholder ?? ``;
-    className = className ?? ``;
-    const [value1, setValue1] = useState(value);
-    useEffect(() => {
-        if (props.onChange) {
-            props.onChange(value1);
-        }
-    }, [value1]);
-    return (
-        <label className={`${className} block mt-4`}>
-            <span className="block font-medium">{title}</span>
-            <input
-                type={`number`}
-                name={name}
-                min= {`0`}
-
+  let { title, name, type, placeholder, value, className, readOnly } = props;
+  placeholder = placeholder ?? ``;
+  className = className ?? ``;
+  const [value1, setValue1] = useState(value);
+  useEffect(() => {
+    if (props.onChange) {
+      props.onChange(value1);
+    }
+  }, [value1]);
+  return (
+    <label className={`${className} block mt-4`}>
+      <span className="block font-medium">{title}</span>
+      <input type={`number`} name={name} min={`0`}></input>
+    </label>
+  );
+}
 
 export function InputIcon({ icon, placeholder, className }) {
   placeholder = placeholder ?? ``;
@@ -127,9 +126,7 @@ export function Checkbox(props) {
   let { title, name, value, values, ids, checks } = props;
   ids = ids ?? values;
   console.log("name", name);
-
   useEffect(() => {}, [dispatch]);
-
   const handleChecks = (id, val) => {
     let checkboxes1 = JSON.parse(JSON.stringify(checkboxes));
     checkboxes1 = checkboxes1 ?? {};
@@ -139,10 +136,8 @@ export function Checkbox(props) {
     console.log("id", id);
     checkboxes1[name][id] = val;
     console.log("checkboxes1 1", checkboxes1);
-
     dispatch(setFormData({ checkboxes: checkboxes1 }));
   };
-
   return (
     <section className=" mt-4">
       <span className="block font-medium">{title}</span>
