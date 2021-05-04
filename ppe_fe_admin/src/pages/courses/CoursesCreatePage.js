@@ -169,9 +169,10 @@ const CoursesCreatePage = () => {
             </div>
           </label>
           <Checkbox
-            name={`teachers`}
-            ids={users.map(({ id }) => id)}
-            values={users.map(({ name }) => name)}
+        title={`Syllabuses`}
+        name={`syllabus_ids`}
+        ids={syllabuses.map(({ id }) => id)}
+        values={syllabuses.map(({ name }) => name)}
           />
           <label className="block mt-4">
             <div className="flex -mb-3">

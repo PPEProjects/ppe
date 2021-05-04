@@ -17,16 +17,17 @@ const Editor = ({editorData}) => {
         }
         handle()
     }, [editorData, editorInstance])
+    
 
     return (
         // <section className={`border border-gray-400 rounded-md py-5 mt-4`}>
             <EditorJs
-                tools={EDITOR_JS_TOOLS}
                 // onChange={async (e) => {
                 //     const data = await editorInstance.save()
                 //     dispatch(setFormData({editorData: data?.blocks}))
                 // }}
                 instanceRef={instance => setEditorInstance(instance)}
+             
                 // data={data}
                 // data={editorData ?? {
                 //     "time": 1617627692481,

@@ -74,11 +74,11 @@ const CoursesPage = () => {
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
 
-                  <Button
+                  {/* <Button
                     type={`button`}
                     title={`Banned`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
+                  /> */}
                 </div>
                 <div className="flex">
                   <button
