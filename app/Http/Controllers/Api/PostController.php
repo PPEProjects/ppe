@@ -20,8 +20,6 @@ class PostController extends BaseController
     public function index(Request $request)
     {
         //
-        \Illuminate\Support\Facades\Log::channel('single')->info('1', []);
-        
         $data = [];
         if($request->keyBy){
             $data['posts'] = Post::select('*')
