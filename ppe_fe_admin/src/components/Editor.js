@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
 import EditorJs from "react-editor-js";
 import { useDispatch, useSelector } from "react-redux";
-import { formSelector } from "../slices/form";
+import { formSelector, setFormData } from "../slices/form";
 import { EDITOR_JS_TOOLS } from "./Editor.constants";
 
-const Editor = () => {
+const Editor = ({type}) => {
   const [editorInstance, setEditorInstance] = useState(null);
   const { editorData } = useSelector(formSelector);
   const dispatch = useDispatch();
   const [isFirst, setIsFirst] = useState(false);
 
   useEffect(() => {
+    console.log("type", type)
     const handle = async () => {
       if (!editorInstance || isFirst) return;
       await editorInstance.isReady;
-      editorInstance.blocks.render({ blocks: editorData ?? [] });
+      switch (type) {
+        case "edit":
+          editorInstance.blocks.render({ blocks: editorData ?? [] });
+          break;
+      
+        default:
+          break;
+      }
+      // editorInstance.blocks.render({ blocks: editorData ?? [] });
       setIsFirst(true);
     };
     handle();
