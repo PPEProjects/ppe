@@ -60,7 +60,16 @@ export function InputNumber(props) {
   return (
     <label className={`${className} block mt-4`}>
       <span className="block font-medium">{title}</span>
-      <input type={`number`} name={name} min={`0`}></input>
+      <input
+        type={type}
+        name={name}
+        className={`${readOnly ? `bg-gray-200` : ``} 
+        border w-full h-10 border-gray-400 hover:border-gray-500 px-3 mt-2 rounded-md outline-none focus:border-blue-700`}
+        placeholder={placeholder}
+        value={value1 ?? value}
+        onChange={(e) => setValue1(Math.abs(e.target.value))}
+        readOnly={readOnly}
+      />
     </label>
   );
 }

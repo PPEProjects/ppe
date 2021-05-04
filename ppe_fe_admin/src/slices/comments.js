@@ -46,9 +46,10 @@ export function setCommentData(data) {
 
 export function deleteComment(comment) {
   return async (dispatch) => {
+    console.log(comment)
     let confirm = await Confirm({
       t: `Confirm`,
-      c: [`Do you want to delete: ${comment.name}`],
+      c: [`Do you want to delete: ${comment.image}`],
     });
     if (!confirm) return;
     let params = { chooses: {} };
