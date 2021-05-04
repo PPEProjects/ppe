@@ -126,11 +126,16 @@ const CompaniesPage = () => {
                   {companies.map((company, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
-                        onClick={() =>
+                        onClick={() => {
+                          dispatch(
+                            setFormData({
+                              checkboxes: { members: company.members },
+                            })
+                          );
                           dispatch(
                             setDetailData({ isShow: true, company: company })
-                          )
-                        }
+                          );
+                        }}
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
                         {Object.keys(company.more.ranking ?? {}).length !==
