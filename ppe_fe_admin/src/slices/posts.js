@@ -52,7 +52,7 @@ export function deletePost(post) {
   return async (dispatch) => {
     let confirm = await Confirm({
       t: `Confirm`,
-      c: [`Do you want to delete: ${post.name}`],
+      c: [`Do you want to delete: ${post.title}`],
     });
     if (!confirm) return;
     let params = { chooses: {} };

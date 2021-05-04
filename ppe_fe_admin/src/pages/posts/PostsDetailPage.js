@@ -65,7 +65,7 @@ const PostsDetailPage = () => {
                   <Button
                     onClick={() => dispatch(deletePost(post))}
                     type={`button`}
-                    title={`Delete`}
+                    title={`Delete 123`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
                 </div>
