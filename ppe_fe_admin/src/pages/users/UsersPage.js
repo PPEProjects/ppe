@@ -17,12 +17,16 @@ const UsersPage = () => {
   const dispatch = useDispatch();
   const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
-  const { search, setSearch } = useState("");
+  // const { search, setSearch } = useState("");
 
   const { user, users, user1, status } = useSelector(usersSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
-  // const [search, setSearch] = useState(``);
+  const [search, setSearch] = useState(``);
+  useEffect(()=> {
+    console.log('search', search)
+  }, [search])
+
   const [learners, setLearners] = useState({});
 
   useEffect(() => {
@@ -154,15 +158,15 @@ const UsersPage = () => {
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {users
-                    // .filter((user) => {
-                    //   if (search === "") {
-                    //     return user;
-                    //   } else if (
-                    //     user.name.toLowerCase().includes(search.toLowerCase())
-                    //   ) {
-                    //     return user;
-                    //   }
-                    // })
+                    .filter((user) => {
+                      if (search === "") {
+                        return user;
+                      } else if (
+                        (user.name??``).toLowerCase().includes((search??``).toLowerCase())
+                      ) {
+                        return user;
+                      }
+                    })
                     .map((user, key) => (
                       <div className="col-span-3" key={key}>
                         <Link

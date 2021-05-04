@@ -39,7 +39,6 @@ const ReleasesPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Releases</h1>
-            <Language />
           </div>
           <Filter />
           <div className="col-span-9 ">

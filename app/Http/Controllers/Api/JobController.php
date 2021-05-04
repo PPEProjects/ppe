@@ -19,8 +19,6 @@ class JobController extends BaseController
      */
     public function index(Request $request)
     {
-        \Illuminate\Support\Facades\Log::channel('single')->info('11', []);
-        
         //
         $data = [];
         if($request->keyBy){
@@ -61,8 +59,6 @@ class JobController extends BaseController
             return response()->json($data);
         }
         $data['jobs'] = Job::selectRaw("jobs.*, REPLACE(JSON_EXTRACT(jobs.more, '$.ranking'), '\"', '') AS ranking");
-        \Illuminate\Support\Facades\Log::channel('single')->info('1', []);
-        
         if ($request->status) {
             \Illuminate\Support\Facades\Log::channel('single')->info('2', []);
             

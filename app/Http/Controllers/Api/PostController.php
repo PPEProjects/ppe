@@ -29,9 +29,10 @@ class PostController extends BaseController
             $data['posts'] = File::getImageDescription($data['posts']);
             return response()->json($data);
         }
-        if($request->lang){
+        if($request->lang && !$request->status){
             $data['posts'] = Post::select('*')
                 ->where('language', $request->lang)
+                ->whereRaw("(status IS NULL OR status != 'Deleted')")
                 ->orderBy('id', 'desc')
                 ->get()
                 ->toArray();
