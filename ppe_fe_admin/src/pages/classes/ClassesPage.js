@@ -55,7 +55,6 @@ const ClassesPage = () => {
                   >
                     <span className="mx-2">Add classes</span>
                   </Link>
-                  
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
@@ -85,14 +84,18 @@ const ClassesPage = () => {
                   <button
                     type="button"
                     onClick={() => setMode(`grid`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center"
+                    className={`${
+                      mode === `grid` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
                   <button
                     type="button"
                     onClick={() => setMode(`table`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white"
+                    className={`${
+                      mode === `table` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -172,6 +175,7 @@ const ClassesPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
+                  {classes.length!=0 &&
                   <thead className="border-black border-b ">
                     <tr className="">
                       <td className="px-2 py-1"></td>
@@ -183,6 +187,7 @@ const ClassesPage = () => {
                       <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
+                  }
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {classes.map((classe, key) => (
                       <tr

@@ -61,7 +61,6 @@ const SchoolsPage = () => {
                   >
                     <span className="mx-2">Add schools</span>
                   </Link>
-                 
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
@@ -91,14 +90,18 @@ const SchoolsPage = () => {
                   <button
                     type="button"
                     onClick={() => setMode(`grid`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center"
+                    className={`${
+                      mode === `grid` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
                   <button
                     type="button"
                     onClick={() => setMode(`table`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white"
+                    className={`${
+                      mode === `table` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -179,17 +182,18 @@ const SchoolsPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
+                  {schools.length!=0 &&
                   <thead className="border-black border-b ">
                     <tr className="">
                       <td className="px-2 py-1"></td>
                       <td className="px-2 py-1">ID</td>
                       <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Phone</td>
-                      <td className="px-2 py-1"> Email</td>
-                      <td className="px-2 py-1"> Class name</td>
+                      <td className="px-2 py-1">Address</td>
+                      <td className="px-2 py-1"> Created at</td>
                       <td className="px-2 py-1">Status</td>
                     </tr>
                   </thead>
+                  }
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {schools.map((school, key) => (
                       <tr
@@ -236,11 +240,14 @@ const SchoolsPage = () => {
                           </figure>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
+                          <p className="truncate w-24">{school.infos.address}</p>
                         </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                        <td className="px-2 py-1 ">
+                          <p className="w-25 truncate">{school.created_at}</p>
+                        </td>
+                        <td className="px-2 py-1 ">
+                          <p className="w-20 truncate">{school.status}</p>
+                        </td>
                       </tr>
                     ))}
                   </tbody>

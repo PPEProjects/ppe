@@ -1,52 +1,60 @@
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from "react";
 import ReactDOM from "react-dom";
 import moment from "moment";
-import { Button,Select } from "../../components/Form";
+import { Button, Select } from "../../components/Form";
 import { useDispatch, useSelector } from "react-redux";
 import { detailsSelector, setDetailData } from "../../slices/details";
 import { deleteUser } from "../../slices/users";
 import UsersEditForm from "./UsersEditForm";
 // import { classesSelector, getSchools } from "../../slices/classes";
 import Ajax from "../../components/Ajax";
-import {usersSelector, setUserData} from "../../slices/users";
-import {classesSelector, getClasses} from "../../slices/classes";
-import {filterSelector, setFilterData} from "../../slices/filter";
+import { usersSelector, setUserData } from "../../slices/users";
+import { classesSelector, getClasses } from "../../slices/classes";
+import { filterSelector, setFilterData } from "../../slices/filter";
 
 const UserDetailPage = () => {
   const dispatch = useDispatch();
   const { isShow, mode, user } = useSelector(detailsSelector);
-  const [userType, setUserType] = useState('')
+  const [userType, setUserType] = useState("");
   const { classes } = useSelector(classesSelector);
-  const [classeId, setClasseId] = useState('')
-  useEffect( () => {
+  const [classeId, setClasseId] = useState("");
+  useEffect(() => {
     fetchData();
     async function fetchData() {
-        let res = await Ajax.put(`/classes/${classeId}`,
-            { user_change_class: "user_change_class", learners: {[user.id]: "on"} });
-        // dispatch(setUserData({users:res.data.users, classe_id: classeId}));
+      let res = await Ajax.put(`/classes/${classeId}`, {
+        user_change_class: "user_change_class",
+        learners: { [user.id]: "on" },
+      });
+      // dispatch(setUserData({users:res.data.users, classe_id: classeId}));
     }
-}, [classeId]);
-  useEffect( () => {
+  }, [classeId]);
+  useEffect(() => {
     fetchData();
     async function fetchData() {
-        let res = await Ajax.get(`/users`, { types: [userType], status: `Activated` });
-        dispatch(setUserData({users:res.data.users}));
+      let res = await Ajax.get(`/users`, {
+        types: [userType],
+        status: `Activated`,
+      });
+      dispatch(setUserData({ users: res.data.users }));
     }
-}, [userType]);
-useEffect(() => {
-  dispatch(getClasses(`Activated`));
-}, [dispatch]);
+  }, [userType]);
+  useEffect(() => {
+    dispatch(getClasses(`Activated`));
+  }, [dispatch]);
 
   const renderMain = () => {
     return (
-     //
+      //
       <React.Fragment>
         <section className="bg-black-60 fixed top-0 left-0 right-0 bottom-0 z-30">
           <div className="absolute absolute-x absolute-y w-full px-4">
             <section className="w-full max-w-3xl mx-auto px-4 py-2 bg-white rounded-lg overflow-hidden shadow-md ">
               <div className=" text-lg flex items-center justify-between ">
                 <h1 className="font-semibold text-gray-700 truncate mr-8 flex items-center">
-                  <span className="inline-block truncate ">{Object.keys(user.types).join(', ')}</span> : {user.name}
+                  <span className="inline-block truncate ">
+                    {Object.keys(user.types).join(", ")}
+                  </span>{" "}
+                  : {user.name}
                 </h1>
                 <Button
                   onClick={() => dispatch(setDetailData({ isShow: false }))}
@@ -65,7 +73,6 @@ useEffect(() => {
                       Detail
                     </a>
                   </li>
-               
                 </ul>
 
                 <div className="flex">
@@ -133,11 +140,13 @@ useEffect(() => {
                         <div className="col-span-6">
                           <div>
                             <h2 className="font-medium ">Name</h2>
-                            <p className="text-sm text-gray-700">{user.name}</p>
+                            <p className="text-sm text-gray-700 truncate w-36">
+                              {user.name}
+                            </p>
                           </div>
                           <div className="mt-3">
                             <h2 className="font-medium">Email</h2>
-                            <p className="text-sm text-gray-700">
+                            <p className="text-sm text-gray-700 truncate w-36">
                               {user.email}
                             </p>
                           </div>
@@ -160,17 +169,21 @@ useEffect(() => {
                           >
                             <span className="">View more fields</span>
                           </button>
-                        {user.types['Japanese learner'] &&
+                          {user.types["Japanese learner"] && (
                             <label className="block mt-4">
-                            <div className="flex -mb-3"><span className="block font-medium">Classes</span></div>
-                            <Select
-                              onChange={(val) => setClasseId(val)}
-                              name={`classeId`}
-                              ids={classes.map(({ id }) => id)}
-                              values={classes.map(({ name }) => name)}
-                            />
-                          </label>
-                        }
+                              <div className="flex -mb-3">
+                                <span className="block font-medium">
+                                  Classes
+                                </span>
+                              </div>
+                              <Select
+                                onChange={(val) => setClasseId(val)}
+                                name={`classeId`}
+                                ids={classes.map(({ id }) => id)}
+                                values={classes.map(({ name }) => name)}
+                              />
+                            </label>
+                          )}
                         </div>
                         <div className="col-span-6">
                           <div className="w-full">

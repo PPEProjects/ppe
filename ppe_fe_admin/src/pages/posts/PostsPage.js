@@ -9,10 +9,12 @@ import PostsDetailPage from "./PostsDetailPage";
 import { postsSelector, getPosts } from "../../slices/posts";
 import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
+import { setFormData } from "../../slices/form";
 import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
+import { usersSelector } from "../../slices/users";
 const PostsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -21,6 +23,7 @@ const PostsPage = () => {
   const { post, posts, status } = useSelector(postsSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const { users } = useSelector(usersSelector);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -31,7 +34,7 @@ const PostsPage = () => {
   }, [dispatch, location, filterOpen]);
 
   const [text, setText] = useState("Select All ");
- 
+
   const renderMain = () => {
     return (
       <aside className="w-full">
@@ -56,12 +59,6 @@ const PostsPage = () => {
                   >
                     <span className="mx-2">Add posts</span>
                   </Link>
-                  <button
-                    type="button"
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white "
-                  >
-                    <i className="material-icons">arrow_drop_down</i>
-                  </button>
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
@@ -73,7 +70,7 @@ const PostsPage = () => {
                     type={`button`}
                     title={text}
                     className={`bg-gray-300 text-gray-800`}
-                    onClick = {() => setText("Selected")}
+                    onClick={() => setText("Selected")}
                   />
 
                   <Button
@@ -92,14 +89,18 @@ const PostsPage = () => {
                   <button
                     type="button"
                     onClick={() => setMode(`grid`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center"
+                    className={`${
+                      mode === `grid` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
-                  </button> 
+                  </button>
                   <button
                     type="button"
                     onClick={() => setMode(`table`)}
-                    className="bg-gray-200 text-gray-800 h-10 w-10 rounded rounded-l-none hover:opacity-75 flex items-center justify-center border-l-2 border-white"
+                    className={`${
+                      mode === `table` ? `bg-gray-200` : ``
+                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -172,60 +173,73 @@ const PostsPage = () => {
                 </div>
               )}
               {status === `success` && mode === `table` && (
-                <table className=" table-auto text-sm w-full">
-                  <thead className="border-black border-b ">
-                    <tr className="">
-                      <td className="px-2 py-1"></td>
-                      <td className="px-2 py-1">ID</td>
-                      <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Item Group ID</td>
-                      <td className="px-2 py-1">Brand</td>
-                      <td className="px-2 py-1">Price</td>
-                      <td className="px-2 py-1">Stock availability</td>
-                    </tr>
-                  </thead>
-                  <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {posts.map((post, key) => (
-                      <tr>
-                        <td className="px-2 py-1 ">
-                          <button
-                            type="button"
-                            className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
-                          >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
-                          </button>
-                        </td>
-                        <td className="px-2 py-1 ">
-                          <p className="w-10 truncate">{post.id}</p>
-                        </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
-                          <figure className="flex items-center">
-                            <div className="w-10">
-                              <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                                <img
-                                  alt=""
-                                  src={post.image}
-                                  className="absolute h-full w-full object-cover"
-                                />
-                              </div>
-                            </div>
-                            <figcaption className="ml-2">
-                              {post.title}
-                            </figcaption>
-                          </figure>
-                        </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
-                        </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                <div className="overflow-auto">
+                  <table className=" table-auto text-sm w-full">
+                    <thead className="border-black border-b ">
+                      <tr className="">
+                        <td className="px-2 py-1"></td>
+                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1 ">Title</td>
+                        <td className="px-2 py-1">Description</td>
+                        <td className="px-2 py-1">User</td>
+                        <td className="px-2 py-1">Created at</td>
+                        <td className="px-2 py-1">Status</td>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
+                      {posts.map((post, key) => (
+                        <tr
+                          className="cursor-pointer"
+                          key={key}  onClick={() =>{
+                            dispatch(setDetailData({ isShow: true, post: post }))
+                          }}
+                        >
+                          <td className="px-2 py-1 ">
+                            <button
+                              type="button"
+                              className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
+                            >
+                              <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            </button>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-10 truncate">{post.id}</p>
+                          </td>
+                          <td className="px-2 py-1 text-indigo-700 ">
+                            <figure className="flex items-center">
+                              <div className="w-10">
+                                <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                                  <img
+                                    alt=""
+                                    src={post.image}
+                                    className="absolute h-full w-full object-cover"
+                                  />
+                                </div>
+                              </div>
+                              <figcaption className="ml-2">
+                                {post.title}
+                              </figcaption>
+                            </figure>
+                          </td>
+                          <td className="px-2 py-1 ">
+                              <p className="w-20 truncate">{post.description}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-25 truncate">{users[post?.user_id]?.name ?? post.user_id}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-25 truncate">{post.created_at}</p>
+                          </td>
+                          <td className="px-2 py-1 ">
+                            <p className="w-20 truncate">{post.status}</p>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               )}
             </section>
           </div>

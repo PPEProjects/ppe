@@ -47,6 +47,24 @@ export function Input(props) {
     </label>
   );
 }
+export function InputNumber(props) {
+    let {title, name, type, placeholder, value, className, readOnly} = props;
+    placeholder = placeholder ?? ``;
+    className = className ?? ``;
+    const [value1, setValue1] = useState(value);
+    useEffect(() => {
+        if (props.onChange) {
+            props.onChange(value1);
+        }
+    }, [value1]);
+    return (
+        <label className={`${className} block mt-4`}>
+            <span className="block font-medium">{title}</span>
+            <input
+                type={`number`}
+                name={name}
+                min= {`0`}
+
 
 export function InputIcon({ icon, placeholder, className }) {
   placeholder = placeholder ?? ``;
