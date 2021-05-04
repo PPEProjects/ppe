@@ -65,7 +65,7 @@ export function InputNumber(props) {
   );
 }
 
-export function InputIcon({ icon, placeholder, className }) {
+export function InputIcon({ icon, placeholder, className,...props }) {
   placeholder = placeholder ?? ``;
   className = className ?? ``;
   icon = icon ?? `search`;
@@ -75,7 +75,8 @@ export function InputIcon({ icon, placeholder, className }) {
         <i className="material-icons absolute absolute-y ml-3 text-gray-500">
           {icon}
         </i>
-        <input
+        <input 
+         {...props}
           type="text"
           className="h-10 w-full pr-3 pl-10"
           placeholder={placeholder}

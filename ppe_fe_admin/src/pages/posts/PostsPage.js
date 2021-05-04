@@ -24,6 +24,7 @@ const PostsPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const { users } = useSelector(usersSelector);
+  const [search, setSearch] = useState(``);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -62,7 +63,7 @@ const PostsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All posts" />
+                <InputIcon placeholder="Search All posts" onChange={(e) => setSearch(e.target.value)}  />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -129,7 +130,17 @@ const PostsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {posts.map((post, key) => (
+                  {posts
+                   .filter((post) => {
+                    if (search === "") {
+                      return post;
+                    } else if (
+                      (post.name??``).toLowerCase().includes((search??``).toLowerCase())
+                    ) {
+                      return post;
+                    }
+                  })
+                  .map((post, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>

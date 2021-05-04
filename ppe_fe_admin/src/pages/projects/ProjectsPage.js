@@ -22,6 +22,7 @@ const ProjectsPage = () => {
   const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -58,7 +59,7 @@ const ProjectsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All projects" />
+                <InputIcon placeholder="Search All projects"  onChange={(e) => setSearch(e.target.value)} />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -123,7 +124,17 @@ const ProjectsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {projects.map((project, key) => (
+                  {projects
+                    .filter((project) => {
+                      if (search === "") {
+                        return project;
+                      } else if (
+                        (project.name??``).toLowerCase().includes((search??``).toLowerCase())
+                      ) {
+                        return project;
+                      }
+                    })
+                  .map((project, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {

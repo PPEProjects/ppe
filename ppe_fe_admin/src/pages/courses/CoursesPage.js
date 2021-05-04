@@ -22,6 +22,9 @@ const CoursesPage = () => {
   const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
+
+
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -58,7 +61,7 @@ const CoursesPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All courses" />
+                <InputIcon placeholder="Search All courses" onChange={(e) => setSearch(e.target.value)} />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -124,7 +127,17 @@ const CoursesPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {courses.map((course, key) => (
+                  {courses
+                   .filter((course) => {
+                    if (search === "") {
+                      return course;
+                    } else if (
+                      (course.name??``).toLowerCase().includes((search??``).toLowerCase())
+                    ) {
+                      return course;
+                    }
+                  })
+                  .map((course, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
