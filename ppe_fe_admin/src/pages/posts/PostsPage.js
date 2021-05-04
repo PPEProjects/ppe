@@ -164,7 +164,6 @@ const PostsPage = () => {
                             <p className="">
                               Updated at: {moment(post.created_at).fromNow()}
                             </p>
-                            <p className="text-sm text-indigo-700">Type:</p>
                           </div>
                         </div>
                       </Link>
@@ -175,25 +174,28 @@ const PostsPage = () => {
               {status === `success` && mode === `table` && (
                 <div className="overflow-auto">
                   <table className=" table-auto text-sm w-full">
-                  {posts.length!=0 &&
-                    <thead className="border-black border-b ">
-                      <tr className="">
-                        <td className="px-2 py-1"></td>
-                        <td className="px-2 py-1">ID</td>
-                        <td className="px-2 py-1 ">Title</td>
-                        <td className="px-2 py-1">Description</td>
-                        <td className="px-2 py-1">User</td>
-                        <td className="px-2 py-1">Created at</td>
-                        <td className="px-2 py-1">Status</td>
-                      </tr>
-                    </thead>
-                    }
+                    {posts.length != 0 && (
+                      <thead className="border-black border-b ">
+                        <tr className="">
+                          <td className="px-2 py-1"></td>
+                          <td className="px-2 py-1">ID</td>
+                          <td className="px-2 py-1 ">Title</td>
+                          <td className="px-2 py-1">Description</td>
+                          <td className="px-2 py-1">User</td>
+                          <td className="px-2 py-1">Created at</td>
+                          <td className="px-2 py-1">Status</td>
+                        </tr>
+                      </thead>
+                    )}
                     <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                       {posts.map((post, key) => (
                         <tr
                           className="cursor-pointer"
-                          key={key}  onClick={() =>{
-                            dispatch(setDetailData({ isShow: true, post: post }))
+                          key={key}
+                          onClick={() => {
+                            dispatch(
+                              setDetailData({ isShow: true, post: post })
+                            );
                           }}
                         >
                           <td className="px-2 py-1 ">
@@ -226,10 +228,12 @@ const PostsPage = () => {
                             </figure>
                           </td>
                           <td className="px-2 py-1 ">
-                              <p className="w-20 truncate">{post.description}</p>
+                            <p className="w-20 truncate">{post.description}</p>
                           </td>
                           <td className="px-2 py-1 ">
-                            <p className="w-25 truncate">{users[post?.user_id]?.name ?? post.user_id}</p>
+                            <p className="w-25 truncate">
+                              {users[post?.user_id]?.name ?? post.user_id}
+                            </p>
                           </td>
                           <td className="px-2 py-1 ">
                             <p className="w-25 truncate">{post.created_at}</p>
