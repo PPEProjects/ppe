@@ -38,7 +38,6 @@ const TasksPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Tasks</h1>
-           
           </div>
           <Filter />
 
@@ -52,7 +51,7 @@ const TasksPage = () => {
                 <div className="flex ">
                   <Link
                     to={`/TasksCreatePage`}
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-r-none hover:opacity-75 flex items-center justify-center ml-3"
+                    className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
                     <span className="mx-2">Add tasks</span>
                   </Link>
@@ -87,7 +86,7 @@ const TasksPage = () => {
                     onClick={() => setMode(`grid`)}
                     className={`${
                       mode === `grid` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
@@ -96,7 +95,7 @@ const TasksPage = () => {
                     onClick={() => setMode(`table`)}
                     className={`${
                       mode === `table` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -185,19 +184,19 @@ const TasksPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {tasks.length!=0 &&
-                  <thead className="border-black border-b ">
-                    <tr className="">
-                      <td className="px-2 py-1"></td>
-                      <td className="px-2 py-1">ID</td>
-                      <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Phone</td>
-                      <td className="px-2 py-1"> Email</td>
-                      <td className="px-2 py-1"> Class name</td>
-                      <td className="px-2 py-1">Status</td>
-                    </tr>
-                  </thead>
-                  }
+                  {tasks.length != 0 && (
+                    <thead className="border-black border-b ">
+                      <tr className="">
+                        <td className="px-2 py-1"></td>
+                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1 ">Name</td>
+                        <td className="px-2 py-1">Phone</td>
+                        <td className="px-2 py-1"> Email</td>
+                        <td className="px-2 py-1"> Class name</td>
+                        <td className="px-2 py-1">Status</td>
+                      </tr>
+                    </thead>
+                  )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {tasks.map((task, key) => (
                       <tr
