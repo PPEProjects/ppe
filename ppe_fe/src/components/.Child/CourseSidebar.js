@@ -85,7 +85,7 @@ class CourseSidebar extends Component {
               >
                 <img
                   alt=""
-                  src={file?.files[0]}
+                  // src={file?.files[0]}
                   className="absolute h-full w-full object-cover"
                 />
               </a>
