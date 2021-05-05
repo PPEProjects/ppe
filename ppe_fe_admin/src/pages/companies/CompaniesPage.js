@@ -127,11 +127,11 @@ const CompaniesPage = () => {
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { members: company.members },
-                            })
-                          );
+                          let checkboxes = {
+                            syllabus_ids: company.syllabus_ids,
+                            teachers: company.teachers,
+                          };
+                          dispatch(setFormData({ checkboxes: checkboxes }));
                           dispatch(
                             setDetailData({ isShow: true, company: company })
                           );
@@ -152,7 +152,7 @@ const CompaniesPage = () => {
                         )}
 
                         <button
-                          type="button"
+                          type="button" 
                           className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
                           <i className="text-xl material-icons">done</i>
