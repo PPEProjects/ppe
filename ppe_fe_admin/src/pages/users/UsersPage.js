@@ -15,17 +15,17 @@ import { InputIcon, Button } from "../../components/Form";
 import UserDetailPage from "./UserDetailPage";
 import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { setFormData, formSelector } from "../../slices/form";
+import { setFormData, formSelector, setFormSelects } from "../../slices/form";
 
 const UsersPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
-  let { selects } = useSelector(formSelector);
+  const { selects } = useSelector(formSelector);
 
   const { users, status } = useSelector(usersSelector);
-  const selectedUsers = useMemo(() => users.filter((user) => user.checked), [
+  const selectsUser = useMemo(() => users.filter((user) => selects[user.id]), [
     users,
   ]);
   const [mode, setMode] = useState(`grid`);
@@ -98,24 +98,28 @@ const UsersPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`${selectedUsers.length} Selected`}
+                    title={`${Object.keys(selects).length} Selected`}
                     onClick={() => {
-                      dispatch(selectedAll({ checked: true }));
+                      dispatch(setFormSelects('all', users))
+                      // dispatch(selectedAll({ checked: true }));
                     }}
                     className={`bg-gray-300 text-gray-800`}
                   />
                   <Button
                     type={`button`}
-                    title={`x ${selectedUsers.length} Select All`}
+                    title={`x ${selectsUser.length} Select All`}
                     onClick={() => {
-                      dispatch(selectedAll({ checked: true }));
-                    }}
+                      console.log('1')
+                      dispatch(setFormSelects('all', users))
+                    }/*{
+                      // dispatch(selectedAll({ checked: true }));
+                    }*/}
                     className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
-                    disabled={selectedUsers.length === 0}
+                    disabled={selectsUser.length === 0}
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 mx-2`}
                   />
@@ -258,17 +262,10 @@ const UsersPage = () => {
                         <td className="pl-4 pr-2 py-1 ">
                           <button
                             type="button"
-                            onClick={() => {
-                              dispatch(
-                                checkUser({
-                                  id: user.id,
-                                  checked: !user.checked,
-                                })
-                              );
-                            }}
+                            onClick={() => dispatch(setFormSelects(user.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            {user.checked && (
+                            {selects[user.id] && (
                               <i className="group-hover:block text-xl material-icons absolute absolute-x absolute-y">
                                 done
                               </i>
