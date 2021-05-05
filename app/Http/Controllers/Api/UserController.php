@@ -134,8 +134,6 @@ class UserController extends BaseController
      */
     public function store(Request $request)
     {
-        \Illuminate\Support\Facades\Log::channel('single')->info('1', []);
-
         if ($request->userCheckExits) {
             $validator = Validator::make($request->all(), [
                 'email' => 'exists:users',
@@ -224,8 +222,11 @@ class UserController extends BaseController
         if ($request->admin_register) {
             $data = $request->except(['admin_register']);
             \Illuminate\Support\Facades\Log::channel('single')->info('$data', [$data]);
-            
-            $validator = User::validator($request, ['name', 'infos']);
+            if(isset($request->types['Japanese instructor'])){
+                $validator = User::validator($request, ['name', 'infos']);
+            } else {
+                $validator = User::validator($request, ['infos']);
+            }
             if ($validator && $validator->fails()) {
                 return $this->checkSendError($validator);
             }
