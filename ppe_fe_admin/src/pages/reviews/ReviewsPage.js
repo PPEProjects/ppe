@@ -173,7 +173,6 @@ const ReviewsPage = () => {
                             <p className="">
                               Updated at: {moment(review.created_at).fromNow()}
                             </p>
-                            <p className="text-sm text-indigo-700">Type:</p>
                           </div>
                         </div>
                       </Link>
