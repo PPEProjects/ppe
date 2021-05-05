@@ -1,28 +1,37 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { usersSelector, getUsers } from "../../slices/users";
+import {
+  usersSelector,
+  getUsers,
+  checkUser,
+  selectedAll,
+} from "../../slices/users";
 import { filterSelector } from "../../slices/filter";
-import { setDetailData, setDetailData1 } from "../../slices/details";
+import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import UserDetailPage from "./UserDetailPage";
 import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { setFormData } from "../../slices/form";
+import { setFormData, formSelector } from "../../slices/form";
 
 const UsersPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
-  // const { search, setSearch } = useState("");
+  let { selects } = useSelector(formSelector);
 
-  const { user, users, user1, status } = useSelector(usersSelector);
+  const { users, status } = useSelector(usersSelector);
+  const selectedUsers = useMemo(() => users.filter((user) => user.checked), [
+    users,
+  ]);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
+
   useEffect(() => {
     console.log("search", search);
   }, [search]);
@@ -33,7 +42,7 @@ const UsersPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getUsers(filterOpen));
     let url = window.location.href;
-    dispatch(setSidebarData({ url: url }));
+    dispatch(setSidebarData({ url }));
 
     fetchData();
     async function fetchData() {
@@ -48,7 +57,7 @@ const UsersPage = () => {
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
-            {type === `` && <h1 className="text-xl font-bold">Users</h1>}
+            {/* {type === `` && <h1 className="text-xl font-bold">Users</h1>}
             {type === `Japanese learner` && (
               <h1 className="text-xl font-bold">Japanese learner</h1>
             )}
@@ -57,7 +66,9 @@ const UsersPage = () => {
             )}
             {type === `Job hunter` && (
               <h1 className="text-xl font-bold">Job hunter</h1>
-            )}
+            )} */}
+
+            <h1 className="text-xl font-bold">{type || "Users"}</h1>
           </div>
           <Filter type="user" />
 
@@ -85,35 +96,31 @@ const UsersPage = () => {
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
-                  {/* <Button
+                  <Button
                     type={`button`}
-                    title={`Confirmed`}
+                    title={`${selectedUsers.length} Selected`}
+                    onClick={() => {
+                      dispatch(selectedAll({ checked: true }));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
                   />
-
                   <Button
                     type={`button`}
-                    title={`Not yet`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
-
-                  {/* <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
-                </div>
-                <div className="flex">
-                  <Button
-                    type={`button`}
-                    title={`Select All`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    title={`x ${selectedUsers.length} Select All`}
+                    onClick={() => {
+                      dispatch(selectedAll({ checked: true }));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
+
                   <Button
                     type={`button`}
+                    disabled={selectedUsers.length === 0}
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 mx-2`}
                   />
+                </div>
+                <div className="flex">
                   <button
                     type="button"
                     onClick={() => setMode(`grid`)}
@@ -171,17 +178,7 @@ const UsersPage = () => {
                     })
                     .map((user, key) => (
                       <div className="col-span-3" key={key}>
-                        <Link
-                          onClick={() => {
-                            dispatch(
-                              setFormData({ checkboxes: { types: user.types } })
-                            );
-                            dispatch(
-                              setDetailData({ isShow: true, user: user })
-                            );
-                          }}
-                          className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                        >
+                        <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                           <button
                             type="button"
                             className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
@@ -196,7 +193,19 @@ const UsersPage = () => {
                             />
                           </div>
                           <div className="mx-2 my-2">
-                            <h1 className="truncate-2y text-sm leading-5 font-semibold">
+                            <h1
+                              className="truncate-2y text-sm leading-5 font-semibold"
+                              onClick={() => {
+                                dispatch(
+                                  setFormData({
+                                    checkboxes: { types: user.types },
+                                  })
+                                );
+                                dispatch(
+                                  setDetailData({ isShow: true, user: user })
+                                );
+                              }}
+                            >
                               {user.name}
                             </h1>
 
@@ -230,7 +239,7 @@ const UsersPage = () => {
 
               {status === `success` && mode === `table` && (
                 <table className="table-auto text-sm w-full">
-                  {users.length != 0 && (
+                  {users.length !== 0 && (
                     <thead className="border-black border-b">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -244,25 +253,26 @@ const UsersPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {users.map((user, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({ checkboxes: { types: user.types } })
-                          );
-                          dispatch(setDetailData({ isShow: true, user: user }));
-                        }}
-                      >
-                        <td className="px-2 py-1 ">
+                    {users.map((user) => (
+                      <tr key={user.id}>
+                        <td className="pl-4 pr-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => {
+                              dispatch(
+                                checkUser({
+                                  id: user.id,
+                                  checked: !user.checked,
+                                })
+                              );
+                            }}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {user.checked && (
+                              <i className="group-hover:block text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
                         <td className="px-2 py-1 ">
@@ -279,7 +289,19 @@ const UsersPage = () => {
                                 />
                               </div>
                             </div>
-                            <figcaption className="ml-2 truncate w-24">
+                            <figcaption
+                              className="ml-2 truncate w-24 cursor-pointer"
+                              onClick={() => {
+                                dispatch(
+                                  setFormData({
+                                    checkboxes: { types: user.types },
+                                  })
+                                );
+                                dispatch(
+                                  setDetailData({ isShow: true, user: user })
+                                );
+                              }}
+                            >
                               {user.name}
                             </figcaption>
                           </figure>
