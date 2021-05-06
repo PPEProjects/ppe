@@ -28,6 +28,21 @@ class CompanyController extends BaseController
             $data['companies'] = File::get_images($data['companies']);
             return response()->json($data);
         }
+        if($request->lang ){
+            $data['companies'] = Company::selectRaw("*, REPLACE(JSON_EXTRACT(more, '$.ranking'), '\"', '') AS ranking")
+                ->where('language', $request->lang)
+                ->orderBy('ranking', 'asc')
+                ->orderBy('id', 'desc');
+            if ($request->status) {
+                $data['companies'] = $data['companies']->where('status', $request->status);
+            }
+            $data['companies'] = $data['companies']
+                ->get()
+                ->toArray();
+            $data['companies'] = File::get_images($data['companies']);
+            $data['companies'] = Company::getMore($data['companies']);
+            return response()->json($data);
+        }
         $data['companies'] = Company::selectRaw("*, REPLACE(JSON_EXTRACT(more, '$.ranking'), '\"', '') AS ranking");
         if ($request->status) {
             $data['companies'] = $data['companies']->where('status', $request->status);

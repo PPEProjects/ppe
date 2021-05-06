@@ -7,8 +7,6 @@ const Filter = (props) => {
   const dispatch = useDispatch();
   const { filterOpen } = useSelector(filterSelector);
 
-  useEffect(() => {}, [dispatch]);
-
   const handleFilterClick = (e, val) => {
     if (e) {
       e.preventDefault();
@@ -20,7 +18,7 @@ const Filter = (props) => {
     <React.Fragment>
       <div className="col-span-3 bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 pt-3 pb-24 ">
         <section className="">
-          <b className="px-3 font-semibold ">Filter by 123</b>
+          <b className="px-3 font-semibold ">Filter by</b>
           <hr className="my-2" />
           <ul className="px-3">
             <li className="">

@@ -24,6 +24,7 @@ const PostsPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const { users } = useSelector(usersSelector);
+  const [search, setSearch] = useState(``);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -55,14 +56,14 @@ const PostsPage = () => {
                 <div className="flex ">
                   <Link
                     to={`/PostsCreatePage`}
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-r-none hover:opacity-75 flex items-center justify-center ml-3"
+                    className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
                     <span className="mx-2">Add posts</span>
                   </Link>
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All posts" />
+                <InputIcon placeholder="Search All posts" onChange={(e) => setSearch(e.target.value)}  />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -91,7 +92,7 @@ const PostsPage = () => {
                     onClick={() => setMode(`grid`)}
                     className={`${
                       mode === `grid` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
@@ -100,7 +101,7 @@ const PostsPage = () => {
                     onClick={() => setMode(`table`)}
                     className={`${
                       mode === `table` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -129,7 +130,17 @@ const PostsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {posts.map((post, key) => (
+                  {posts
+                   .filter((post) => {
+                    if (search === "") {
+                      return post;
+                    } else if (
+                      (post.name??``).toLowerCase().includes((search??``).toLowerCase())
+                    ) {
+                      return post;
+                    }
+                  })
+                  .map((post, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -164,7 +175,6 @@ const PostsPage = () => {
                             <p className="">
                               Updated at: {moment(post.created_at).fromNow()}
                             </p>
-                            <p className="text-sm text-indigo-700">Type:</p>
                           </div>
                         </div>
                       </Link>
@@ -175,25 +185,28 @@ const PostsPage = () => {
               {status === `success` && mode === `table` && (
                 <div className="overflow-auto">
                   <table className=" table-auto text-sm w-full">
-                  {posts.length!=0 &&
-                    <thead className="border-black border-b ">
-                      <tr className="">
-                        <td className="px-2 py-1"></td>
-                        <td className="px-2 py-1">ID</td>
-                        <td className="px-2 py-1 ">Title</td>
-                        <td className="px-2 py-1">Description</td>
-                        <td className="px-2 py-1">User</td>
-                        <td className="px-2 py-1">Created at</td>
-                        <td className="px-2 py-1">Status</td>
-                      </tr>
-                    </thead>
-                    }
+                    {posts.length != 0 && (
+                      <thead className="border-black border-b ">
+                        <tr className="">
+                          <td className="px-2 py-1"></td>
+                          <td className="px-2 py-1">ID</td>
+                          <td className="px-2 py-1 ">Title</td>
+                          <td className="px-2 py-1">Description</td>
+                          <td className="px-2 py-1">User</td>
+                          <td className="px-2 py-1">Created at</td>
+                          <td className="px-2 py-1">Status</td>
+                        </tr>
+                      </thead>
+                    )}
                     <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                       {posts.map((post, key) => (
                         <tr
                           className="cursor-pointer"
-                          key={key}  onClick={() =>{
-                            dispatch(setDetailData({ isShow: true, post: post }))
+                          key={key}
+                          onClick={() => {
+                            dispatch(
+                              setDetailData({ isShow: true, post: post })
+                            );
                           }}
                         >
                           <td className="px-2 py-1 ">
@@ -226,10 +239,12 @@ const PostsPage = () => {
                             </figure>
                           </td>
                           <td className="px-2 py-1 ">
-                              <p className="w-20 truncate">{post.description}</p>
+                            <p className="w-20 truncate">{post.description}</p>
                           </td>
                           <td className="px-2 py-1 ">
-                            <p className="w-25 truncate">{users[post?.user_id]?.name ?? post.user_id}</p>
+                            <p className="w-25 truncate">
+                              {users[post?.user_id]?.name ?? post.user_id}
+                            </p>
                           </td>
                           <td className="px-2 py-1 ">
                             <p className="w-25 truncate">{post.created_at}</p>

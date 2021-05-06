@@ -33,7 +33,11 @@ class ProjectController extends BaseController
         if($request->lang){
             $data['projects'] = Project::select('*')
                 ->where('language', $request->lang)
-                ->orderBy('id', 'desc')
+                ->orderBy('id', 'desc');
+            if ($request->status) {
+                $data['projects'] = $data['projects']->where('status', $request->status);
+            }
+            $data['projects'] = $data['projects']
                 ->get()
                 ->toArray();
             $data['projects'] = File::getImageDescription($data['projects']);

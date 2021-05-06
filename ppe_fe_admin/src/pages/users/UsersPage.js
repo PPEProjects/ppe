@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { usersSelector, getUsers } from "../../slices/users";
+import {
+  usersSelector,
+  getUsers,
+  checkUser,
+  selectedAll,
+} from "../../slices/users";
 import { filterSelector } from "../../slices/filter";
-import { setDetailData, setDetailData1 } from "../../slices/details";
+import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import UserDetailPage from "./UserDetailPage";
 import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import { setFormData } from "../../slices/form";
+import { setFormData, formSelector, setFormSelects } from "../../slices/form";
 
 // const UsersPage = () => {
 //   const location = useLocation();
@@ -335,7 +340,7 @@ const UsersPage = React.memo(props => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getUsers(filterOpen));
     let url = window.location.href;
-    dispatch(setSidebarData({ url: url }));
+    dispatch(setSidebarData({ url }));
 
     fetchData();
     async function fetchData() {
@@ -350,7 +355,7 @@ const UsersPage = React.memo(props => {
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
-            {type === `` && <h1 className="text-xl font-bold">Users</h1>}
+            {/* {type === `` && <h1 className="text-xl font-bold">Users</h1>}
             {type === `Japanese learner` && (
               <h1 className="text-xl font-bold">Japanese learner</h1>
             )}
@@ -359,8 +364,9 @@ const UsersPage = React.memo(props => {
             )}
             {type === `Job hunter` && (
               <h1 className="text-xl font-bold">Job hunter</h1>
-            )}
-            {console.log("new type", type)}
+            )} */}
+
+            <h1 className="text-xl font-bold">{type || "Users"}</h1>
           </div>
           <Filter type="user" />
 
@@ -374,7 +380,7 @@ const UsersPage = React.memo(props => {
                 <div className="flex ">
                   <Link
                     to={`/UsersCreatePage?type=${type}`}
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-r-none hover:opacity-75 flex items-center justify-center ml-3"
+                    className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
                     <span className="mx-2">{type}</span>
                   </Link>
@@ -387,24 +393,36 @@ const UsersPage = React.memo(props => {
                 />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
-                <div className="flex items-center"></div>
-                <div className="flex">
+                <div className="flex items-center">
+                  <Button
+                    type={`button`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects('all', users))
+                      // dispatch(selectedAll({ checked: true }));
+                    }}
+                    className={`bg-gray-300 text-gray-800`}
+                  />
                   <Button
                     type={`button`}
                     title={`Select All`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
+
                   <Button
                     type={`button`}
+                    disabled={selectsUser.length === 0}
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 mx-2`}
                   />
+                </div>
+                <div className="flex">
                   <button
                     type="button"
                     onClick={() => setMode(`grid`)}
                     className={`${
                       mode === `grid` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
@@ -413,7 +431,7 @@ const UsersPage = React.memo(props => {
                     onClick={() => setMode(`table`)}
                     className={`${
                       mode === `table` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -481,7 +499,19 @@ const UsersPage = React.memo(props => {
                             />
                           </div>
                           <div className="mx-2 my-2">
-                            <h1 className="truncate-2y text-sm leading-5 font-semibold">
+                            <h1
+                              className="truncate-2y text-sm leading-5 font-semibold"
+                              onClick={() => {
+                                dispatch(
+                                  setFormData({
+                                    checkboxes: { types: user.types },
+                                  })
+                                );
+                                dispatch(
+                                  setDetailData({ isShow: true, user: user })
+                                );
+                              }}
+                            >
                               {user.name}
                             </h1>
 
@@ -515,7 +545,7 @@ const UsersPage = React.memo(props => {
 
               {status === `success` && mode === `table` && (
                 <table className="table-auto text-sm w-full">
-                  {users.length != 0 && (
+                  {users.length !== 0 && (
                     <thead className="border-black border-b">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -529,25 +559,19 @@ const UsersPage = React.memo(props => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {users.map((user, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({ checkboxes: { types: user.types } })
-                          );
-                          dispatch(setDetailData({ isShow: true, user: user }));
-                        }}
-                      >
-                        <td className="px-2 py-1 ">
+                    {users.map((user) => (
+                      <tr key={user.id}>
+                        <td className="pl-4 pr-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(user.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[user.id] && (
+                              <i className="group-hover:block text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
                         <td className="px-2 py-1 ">
@@ -564,7 +588,19 @@ const UsersPage = React.memo(props => {
                                 />
                               </div>
                             </div>
-                            <figcaption className="ml-2 truncate w-24">
+                            <figcaption
+                              className="ml-2 truncate w-24 cursor-pointer"
+                              onClick={() => {
+                                dispatch(
+                                  setFormData({
+                                    checkboxes: { types: user.types },
+                                  })
+                                );
+                                dispatch(
+                                  setDetailData({ isShow: true, user: user })
+                                );
+                              }}
+                            >
                               {user.name}
                             </figcaption>
                           </figure>
