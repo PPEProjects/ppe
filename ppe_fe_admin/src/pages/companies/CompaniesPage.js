@@ -25,7 +25,7 @@ const CompaniesPage = () => {
   const [search, setSearch] = useState(``);
   const [companiesSearch, setUsersSearch] = useState(companies);
   useEffect(() => {
-    const companiesSearch = companies.filter((course) => {    
+    const companiesSearch = companies.filter((company) => {    
                       if (
                         (company.name ?? ``)
                           .toLowerCase()
