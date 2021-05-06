@@ -28,7 +28,9 @@ const ReviewsPage = () => {
   useEffect(() => {
     const reviewsSearch = reviews.filter((review) => {
       if (
-        (review.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+        (review.title ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
       ) {
         return review;
       }
