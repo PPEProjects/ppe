@@ -58,7 +58,10 @@ const TasksPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All tasks" onChange={(e) => setSearch(e.target.value)}  />
+                <InputIcon
+                  placeholder="Search All tasks"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -123,73 +126,72 @@ const TasksPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {tasks 
-                  .filter((task) => {
-                    if (search === "") {
-                      return task;
-                    } else if (
-                      (task.name??``).toLowerCase().includes((search??``).toLowerCase())
-                    ) {
-                      return task;
-                    }
-                  })
-                  .map((task, key) => (
-                    <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() =>
-                          dispatch(
-                            setDetailData({
-                              isShow: true,
-                              task: task,
-                              project: projectsObj[task.project_id],
-                            })
-                          )
-                        }
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
-                        <button
-                          type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                  {tasks
+                    .filter((task) => {
+                      if (search === "") {
+                        return task;
+                      } else if (
+                        (task.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return task;
+                      }
+                    })
+                    .map((task, key) => (
+                      <div className="col-span-3" key={key}>
+                        <Link
+                          onClick={() =>
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                task: task,
+                                project: projectsObj[task.project_id],
+                              })
+                            )
+                          }
+                          className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                         >
-                          <i className="text-xl material-icons">done</i>
-                        </button>
+                          <button
+                            type="button"
+                            className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          >
+                            <i className="text-xl material-icons">done</i>
+                          </button>
 
-                        <div className="mx-2">
-                          <h1 className="truncate-2y text-sm leading-5 font-semibold">
-                            {task.name}
-                          </h1>
-                        </div>
-                        <div className="w-full pb-1x1 relative bg-gray-300">
-                          <div className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center">
-                            <h3 className="text-white font-black mx-2 truncate-2y">
-                              {projectsObj[task?.project_id]?.name}
-                            </h3>
+                          <div className="mx-2">
+                            <h1 className="truncate-2y text-sm leading-5 font-semibold">
+                              {task.name}
+                            </h1>
                           </div>
-                          <img
-                            alt=""
-                            src={projectsObj[task?.project_id]?.image}
-                            className="absolute h-full w-full object-cover"
-                          />
-                        </div>
-                        <div className="mx-2 my-2">
-                          <h2 className="truncate-2y text-sm leading-5 font-semibold">
-                            [{task.contents.length}] {task.content}
-                          </h2>
-                          <div className={`text-gray-500 text-xs truncate`}>
-                            <p className="">
-                              Created at: {moment(task.created_at).fromNow()}
-                            </p>
-                            <p className="">
-                              Updated at: {moment(task.created_at).fromNow()}
-                            </p>
-                            <p className="text-sm text-indigo-700">
-                              Type: {task.type}
-                            </p>
+                          <div className="w-full pb-1x1 relative bg-gray-300">
+                            <div className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center">
+                              <h3 className="text-white font-black mx-2 truncate-2y">
+                                {projectsObj[task?.project_id]?.name}
+                              </h3>
+                            </div>
+                            <img
+                              alt=""
+                              src={projectsObj[task?.project_id]?.image}
+                              className="absolute h-full w-full object-cover"
+                            />
                           </div>
-                        </div>
-                      </Link>
-                    </div>
-                  ))}
+                          <div className="mx-2 my-2">
+                            <h2 className="truncate-2y text-sm leading-5 font-semibold">
+                              [{task.contents.length}] {task.content}
+                            </h2>
+                            <div className={`text-gray-500 text-xs truncate`}>
+                              <p className="">
+                                Created at: {moment(task.created_at).fromNow()}
+                              </p>
+                              <p className="">
+                                Updated at: {moment(task.created_at).fromNow()}
+                              </p>
+                            </div>
+                          </div>
+                        </Link>
+                      </div>
+                    ))}
                 </div>
               )}
               {status === `success` && mode === `table` && (
@@ -200,10 +202,6 @@ const TasksPage = () => {
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
                         <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
                       </tr>
                     </thead>
                   )}
@@ -234,26 +232,9 @@ const TasksPage = () => {
                         </td>
                         <td className="px-2 py-1 text-indigo-700 ">
                           <figure className="flex items-center">
-                            <div className="w-10">
-                              <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                                <img
-                                  alt=""
-                                  src={task.image}
-                                  className="absolute h-full w-full object-cover"
-                                />
-                              </div>
-                            </div>
-                            <figcaption className="ml-2">
-                              {task.name}
-                            </figcaption>
+                            {task.contents.name}
                           </figure>
                         </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
-                        </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
                       </tr>
                     ))}
                   </tbody>

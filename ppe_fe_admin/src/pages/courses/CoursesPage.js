@@ -205,10 +205,9 @@ const CoursesPage = () => {
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
                         <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
+                        <td className="px-2 py-1 ">Time</td>
+                        <td className="px-2 py-1 ">Price</td>
+                        <td className="px-2 py-1 ">Discount </td>
                       </tr>
                     </thead>
                   )}
@@ -256,11 +255,10 @@ const CoursesPage = () => {
                           </figure>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
+                          <p className="truncate w-24">{course.more.time}</p>
                         </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                        <td className="px-2 py-1">{course.more.price}</td>
+                        <td className="px-2 py-1">{course.more.discount}</td>
                       </tr>
                     ))}
                   </tbody>

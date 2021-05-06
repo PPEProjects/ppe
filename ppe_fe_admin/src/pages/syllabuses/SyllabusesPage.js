@@ -26,20 +26,20 @@ const SyllabusesPage = () => {
   const { syllabuse, syllabuses, status } = useSelector(syllabusesSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
- 
+
   const [search, setSearch] = useState(``);
   const [syllabusesSearch, setUsersSearch] = useState(syllabuses);
   useEffect(() => {
-    const syllabusesSearch = syllabuses.filter((syllabuse) => {    
-                      if (
-                        (syllabuse.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return syllabuse;
-                      }
-                    })
-                    setUsersSearch(syllabusesSearch)
+    const syllabusesSearch = syllabuses.filter((syllabuse) => {
+      if (
+        (syllabuse.name ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
+      ) {
+        return syllabuse;
+      }
+    });
+    setUsersSearch(syllabusesSearch);
   }, [search, syllabuses]);
 
   useEffect(() => {
@@ -77,7 +77,10 @@ const SyllabusesPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All syllabuses" onChange={(e) => setSearch(e.target.value)} />
+                <InputIcon
+                  placeholder="Search All syllabuses"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -105,7 +108,7 @@ const SyllabusesPage = () => {
                     onClick={() => setMode(`grid`)}
                     className={`${
                       mode === `grid` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center hidden `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
@@ -114,7 +117,7 @@ const SyllabusesPage = () => {
                     onClick={() => setMode(`table`)}
                     className={`${
                       mode === `table` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center hidden`}
                   >
                     <i className="material-icons">menu</i>
                   </button>
