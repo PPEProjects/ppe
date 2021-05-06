@@ -149,7 +149,7 @@ const JobsPage = () => {
                             setDetailData({
                               isShow: true,
                               job: job,
-                              job: companiesObj[job.company_id],
+                              company: companiesObj[job.company_id],
                             })
                           )
                         }
