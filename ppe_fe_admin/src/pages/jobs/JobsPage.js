@@ -141,7 +141,7 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {jobsSearch.map((job, key) => (
+                  {jobs.map((job, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
