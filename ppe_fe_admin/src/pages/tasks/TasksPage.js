@@ -179,7 +179,7 @@ const TasksPage = () => {
                         </div>
                         <div className="mx-2 my-2">
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
-                            [{task.contents.length}] {task.content}
+                            {task.content}
                           </h2>
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="">
@@ -187,9 +187,6 @@ const TasksPage = () => {
                             </p>
                             <p className="">
                               Updated at: {moment(task.created_at).fromNow()}
-                            </p>
-                            <p className="text-sm text-indigo-700">
-                              Type: {task.type}
                             </p>
                           </div>
                         </div>
