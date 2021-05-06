@@ -14,6 +14,7 @@ import {syllabusesSelector, getSyllabuses} from "../../slices/syllabuses";
 import {
     Button,
     Input,
+    InputNumber,
     Select,
     Textarea,
     Checkbox,
@@ -86,7 +87,7 @@ const CoursesEditForm = () => {
 
                         <label className="block mt-4  w-full">
                             <div className="flex -mb-3"><span className="block font-medium">Ranking</span></div>
-                            <Input
+                            <InputNumber
 
                                 name={`more[ranking]`}
                                 type={`number`}
@@ -173,7 +174,8 @@ const CoursesEditForm = () => {
                         <Checkbox
                             name={`teachers`}
                             ids={users.map(({id}) => id)}
-                            values={users.map(({name}) => name)}
+                            values={users.map((user) =>user?.infos_lang?.vi?.name)}
+                            
                         />
                     </label>
                     <label className="block mt-4">

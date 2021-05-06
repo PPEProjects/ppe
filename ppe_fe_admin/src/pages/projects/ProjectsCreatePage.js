@@ -11,6 +11,7 @@ import { detailsSelector, setDetailData } from "../../slices/details";
 import {
   Button,
   Input,
+  InputNumber,
   Select,
   Textarea,
   Checkbox,
@@ -78,7 +79,7 @@ const ProjectsCreatePage = () => {
         
            <label className="block mt-4  w-full">
                       <div className="flex -mb-3"><span className="block font-medium">Ranking</span></div>
-                      <Input
+                      <InputNumber
 
             name={`more[ranking]`}
             type={`number`}

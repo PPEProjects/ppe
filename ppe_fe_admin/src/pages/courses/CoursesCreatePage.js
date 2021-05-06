@@ -171,7 +171,7 @@ const CoursesCreatePage = () => {
           <Checkbox
             name={`teachers`}
             ids={users.map(({ id }) => id)}
-            values={users.map((user ) => user.infos_lang.en.name
+            values={users.map((user ) => user?.infos_lang?.vi?.name
             )}
             />
           <label className="block mt-4">

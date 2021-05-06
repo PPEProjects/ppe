@@ -119,7 +119,7 @@ const ClassesCreatePage = () => {
             name={`teachers`}
             ids={users.map(({id}) => id)}
             // values={users.map(({name}) => name)}
-            values={users.map((user ) => user.infos_lang.en.name)}
+            values={users.map((user ) => user?.infos_lang?.vi?.name)}
 
         />
           <label className="block mt-4">
@@ -129,7 +129,7 @@ const ClassesCreatePage = () => {
           <Checkbox
               name={`learners`}
               ids={(usersLearners ?? []).map(({id}) => id)}
-              values={(usersLearners ?? []).map(({name}) => name)}
+              values={(usersLearners ?? []).map((user) => user?.infos_lang?.vi?.name)}
           />
           <label className="block mt-4">
                         <div className="flex "><span className="block font-medium">Image information management</span>
