@@ -28,9 +28,9 @@ const JobsPage = () => {
   const [search, setSearch] = useState(``);
   const [jobsSearch, setUsersSearch] = useState(jobs);
   useEffect(() => {
-    const coursesSearch = jobs.filter((job) => {
+    const jobsSearch = jobs.filter((job) => {
       if (
-        (job.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+        (job.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
       ) {
         return job;
       }
@@ -123,7 +123,7 @@ const JobsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {jobs.length === 0 && status !== `loading` && (
+                {jobsSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -141,7 +141,7 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {jobs.map((job, key) => (
+                  {jobsSearch.map((job, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -181,7 +181,7 @@ const JobsPage = () => {
                         </div>
                         <div className="mx-2 my-2">
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
-                            [{job.descriptions.length}] {job.title}
+                            {job.title}
                           </h2>
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="">
