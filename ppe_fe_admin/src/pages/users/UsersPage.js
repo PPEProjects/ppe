@@ -52,6 +52,7 @@ const UsersPage = () => {
 
   const renderMain = () => {
     console.log("learners", learners);
+
     return (
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
@@ -199,7 +200,9 @@ const UsersPage = () => {
                               );
                             }}
                           >
-                            {user.name}
+                            {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
+                            
+                            {/* {user.name} */}
                           </h1>
 
                           <div className={`text-gray-500 text-xs truncate`}>
@@ -288,7 +291,7 @@ const UsersPage = () => {
                                 );
                               }}
                             >
-                              {user.name}
+                               {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
                             </figcaption>
                           </figure>
                         </td>
@@ -296,7 +299,17 @@ const UsersPage = () => {
                           <p className="truncate w-24">{user?.infos?.phone}</p>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">{user.email}</p>
+                          <p className="truncate w-24" 
+                            onClick={() => {
+                              dispatch(
+                                setFormData({
+                                  checkboxes: { types: user.types },
+                                })
+                              );
+                              dispatch(
+                                setDetailData({ isShow: true, user: user })
+                              );
+                            }}>{user.email}</p>
                         </td>
                         {/* <td className="py-1 truncate w-24">{user.email}</td> */}
                         <td className="px-2 py-1">{learners[user.id]?.name}</td>
@@ -310,6 +323,7 @@ const UsersPage = () => {
                         </td>
                       </tr>
                     ))}
+                    
                   </tbody>
                 </table>
               )}

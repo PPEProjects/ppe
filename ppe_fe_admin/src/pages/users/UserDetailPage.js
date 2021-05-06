@@ -54,7 +54,7 @@ const UserDetailPage = () => {
                   <span className="inline-block truncate ">
                     {Object.keys(user.types).join(", ")}
                   </span>{" "}
-                  : {user.name}
+                  :  {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
                 </h1>
                 <Button
                   onClick={() => dispatch(setDetailData({ isShow: false }))}
@@ -141,7 +141,7 @@ const UserDetailPage = () => {
                           <div>
                             <h2 className="font-medium ">Name</h2>
                             <p className="text-sm text-gray-700 truncate w-36">
-                              {user.name}
+                            {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
                             </p>
                           </div>
                           <div className="mt-3">
