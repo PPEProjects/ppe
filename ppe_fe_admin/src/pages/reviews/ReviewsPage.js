@@ -23,6 +23,7 @@ const ReviewsPage = () => {
   const { companiesObj } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -59,7 +60,7 @@ const ReviewsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All reviews" />
+                <InputIcon placeholder="Search All reviews"  onChange={(e) => setSearch(e.target.value)} />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -196,7 +197,18 @@ const ReviewsPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {reviews.map((review, key) => (
+                    {reviews
+                     .filter((review) => {
+                      if (search === "") {
+                        return review;
+                      } else if (
+                        (review.name??``).toLowerCase().includes((search??``).toLowerCase())
+                      ) {
+                        return review;
+                      }
+                    })
+
+                    .map((review, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}

@@ -23,7 +23,7 @@ const TasksPage = () => {
   const { projectsObj } = useSelector(projectsSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
-
+  const [search, setSearch] = useState(``);
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjectsObj());
@@ -58,7 +58,7 @@ const TasksPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All tasks" />
+                <InputIcon placeholder="Search All tasks" onChange={(e) => setSearch(e.target.value)}  />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -123,7 +123,17 @@ const TasksPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {tasks.map((task, key) => (
+                  {tasks 
+                  .filter((task) => {
+                    if (search === "") {
+                      return task;
+                    } else if (
+                      (task.name??``).toLowerCase().includes((search??``).toLowerCase())
+                    ) {
+                      return task;
+                    }
+                  })
+                  .map((task, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>

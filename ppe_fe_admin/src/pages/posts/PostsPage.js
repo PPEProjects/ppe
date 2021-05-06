@@ -25,6 +25,20 @@ const PostsPage = () => {
   const [type, setType] = useState(``);
   const { users } = useSelector(usersSelector);
   const [search, setSearch] = useState(``);
+  const [postsSearch, setUsersSearch] = useState(posts);
+  useEffect(() => {
+    const postsSearch = posts.filter((post) => {    
+                      if (
+                        (post.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return post;
+                      }
+                    })
+                    setUsersSearch(postsSearch)
+  }, [search, posts]);
+
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -111,7 +125,7 @@ const PostsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {posts.length === 0 && status !== `loading` && (
+                {postsSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -130,16 +144,8 @@ const PostsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {posts
-                   .filter((post) => {
-                    if (search === "") {
-                      return post;
-                    } else if (
-                      (post.name??``).toLowerCase().includes((search??``).toLowerCase())
-                    ) {
-                      return post;
-                    }
-                  })
+                  {postsSearch
+                   
                   .map((post, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
