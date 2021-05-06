@@ -205,7 +205,7 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {jobs.length != 0 && (
+                  {jobsSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -219,7 +219,7 @@ const JobsPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {jobs.map((job, key) => (
+                    {jobsSearch.map((job, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}

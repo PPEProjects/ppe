@@ -124,7 +124,7 @@ const SyllabusesPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {syllabuses.length === 0 && status !== `loading` && (
+                {syllabusesSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -142,7 +142,7 @@ const SyllabusesPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {syllabuses.map((syllabuse, key) => (
+                  {syllabusesSearch.map((syllabuse, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
