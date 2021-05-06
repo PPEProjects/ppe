@@ -20,13 +20,13 @@ import Editor from "../../components/Editor";
 import { formSelector, setFormData } from "../../slices/form";
 
 const CoursesCreatePage = () => {
+
   const dispatch = useDispatch();
   const { users } = useSelector(usersSelector);
   const { syllabuses } = useSelector(syllabusesSelector);
   const { editorData } = useSelector(formSelector);
   const [show, setShow] = useState(1);
   const [type, setType] = useState(``);
-
   const [chooses, setChooses] = useState({});
   const history = useHistory();
   useEffect(() => {
@@ -171,8 +171,9 @@ const CoursesCreatePage = () => {
           <Checkbox
             name={`teachers`}
             ids={users.map(({ id }) => id)}
-            values={users.map(({ name }) => name)}
-          />
+            values={users.map((user ) => user.infos_lang.en.name
+            )}
+            />
           <label className="block mt-4">
             <div className="flex -mb-3">
               <span className="block font-medium">Google form url</span>
