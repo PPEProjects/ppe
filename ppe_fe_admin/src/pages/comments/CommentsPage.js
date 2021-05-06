@@ -26,6 +26,20 @@ const CommentsPage = () => {
   const { users } = useSelector(usersSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
+  const [commentsSearch, setUsersSearch] = useState(comments);
+  useEffect(() => {
+    const commentsSearch = comments.filter((comment) => {    
+                      if (
+                        (comment.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return comment;
+                      }
+                    })
+                    setUsersSearch(commentsSearch)
+  }, [search, comments]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -62,7 +76,7 @@ const CommentsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All comments" />
+                <InputIcon placeholder="Search All comments" onChange={(e) => setSearch(e.target.value)} />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -109,7 +123,7 @@ const CommentsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {comments.length === 0 && status !== `loading` && (
+                {commentsSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -127,7 +141,8 @@ const CommentsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {comments.map((comment, key) => (
+                  {commentsSearch
+                  .map((comment, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>

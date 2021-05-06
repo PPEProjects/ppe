@@ -22,6 +22,20 @@ const CompaniesPage = () => {
   const { company, companies, status } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
+  const [companiesSearch, setUsersSearch] = useState(companies);
+  useEffect(() => {
+    const companiesSearch = companies.filter((company) => {    
+                      if (
+                        (company.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return company;
+                      }
+                    })
+                    setUsersSearch(companiesSearch)
+  }, [search, companies]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -58,7 +72,7 @@ const CompaniesPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All companies" />
+                <InputIcon placeholder="Search All companies"  onChange={(e) => setSearch(e.target.value)}/>
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -105,7 +119,7 @@ const CompaniesPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {companies.length === 0 && status !== `loading` && (
+                {companiesSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -123,15 +137,17 @@ const CompaniesPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {companies.map((company, key) => (
+                  {companiesSearch
+                  
+                  .map((company, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { members: company.members },
-                            })
-                          );
+                          let checkboxes = {
+                            syllabus_ids: company.syllabus_ids,
+                            teachers: company.teachers,
+                          };
+                          dispatch(setFormData({ checkboxes: checkboxes }));
                           dispatch(
                             setDetailData({ isShow: true, company: company })
                           );
@@ -152,7 +168,7 @@ const CompaniesPage = () => {
                         )}
 
                         <button
-                          type="button"
+                          type="button" 
                           className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
                           <i className="text-xl material-icons">done</i>
