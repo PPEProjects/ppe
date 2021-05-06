@@ -1,13 +1,8 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  usersSelector,
-  getUsers,
-  checkUser,
-  selectedAll,
-} from "../../slices/users";
+import { usersSelector, getUsers } from "../../slices/users";
 import { filterSelector } from "../../slices/filter";
 import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
@@ -25,9 +20,6 @@ const UsersPage = () => {
   const { selects } = useSelector(formSelector);
 
   const { users, status } = useSelector(usersSelector);
-  const selectsUser = useMemo(() => users.filter((user) => selects[user.id]), [
-    users,
-  ]);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
@@ -100,26 +92,28 @@ const UsersPage = () => {
                     type={`button`}
                     title={`${Object.keys(selects).length} Selected`}
                     onClick={() => {
-                      dispatch(setFormSelects('all', users))
+                      dispatch(setFormSelects("all", users));
                       // dispatch(selectedAll({ checked: true }));
                     }}
                     className={`bg-gray-300 text-gray-800`}
                   />
                   <Button
                     type={`button`}
-                    title={`x ${selectsUser.length} Select All`}
-                    onClick={() => {
-                      console.log('1')
-                      dispatch(setFormSelects('all', users))
-                    }/*{
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={
+                      () => {
+                        console.log("1");
+                        dispatch(setFormSelects("all", users));
+                      } /*{
                       // dispatch(selectedAll({ checked: true }));
-                    }*/}
+                    }*/
+                    }
                     className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
-                    disabled={selectsUser.length === 0}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 mx-2`}
                   />

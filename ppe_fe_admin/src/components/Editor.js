@@ -19,11 +19,9 @@ const Editor = ({type}) => {
         case "edit":
           editorInstance.blocks.render({ blocks: editorData ?? [] });
           break;
-      
         default:
           break;
       }
-      // editorInstance.blocks.render({ blocks: editorData ?? [] });
       setIsFirst(true);
     };
     handle();

@@ -75,11 +75,11 @@ const ReviewsPage = () => {
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
 
-                  <Button
+                  {/* <Button
                     type={`button`}
                     title={`Banned`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
+                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -173,7 +173,6 @@ const ReviewsPage = () => {
                             <p className="">
                               Updated at: {moment(review.created_at).fromNow()}
                             </p>
-                            <p className="text-sm text-indigo-700">Type:</p>
                           </div>
                         </div>
                       </Link>

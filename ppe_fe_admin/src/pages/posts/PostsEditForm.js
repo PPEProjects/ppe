@@ -9,6 +9,7 @@ import { detailsSelector, setDetailData } from "../../slices/details";
 
 import { Button, Input, Select, Textarea } from "../../components/Form";
 import PostsFormDescription from "./PostsFormDescription";
+import Editor from "../../components/Editor";
 
 const PostsEditForm = () => {
   const dispatch = useDispatch();
@@ -58,45 +59,53 @@ const PostsEditForm = () => {
             show !== 1 ? `hidden` : ``
           } bg-white rounded-md overflow-hidden shadow px-4 py-4`}
         >
-           <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Display language</span><b className="text-red-600 ml-1"> (*)</b></div>
-                      <Select
-            
-            name={`language`}
-            values={[`English`, `Japanese`, `Vietnamese`]}
-            value={post.language}
-          />
-         </label>
-       
+          <label className="block mt-4">
+            <div className="flex -mb-3">
+              <span className="block font-medium">Display language</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Select
+              name={`language`}
+              values={[`English`, `Japanese`, `Vietnamese`]}
+              value={post.language}
+            />
+          </label>
 
-        <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Title</span><b className="text-red-600 ml-1"> (*)</b></div>
-                      <Input
-         
-            name={`title`}
-            type={`text`}
-            value={post.title}
-          />
-         </label>
-       
-
+          <label className="block mt-4">
+            <div className="flex -mb-3">
+              <span className="block font-medium">Title</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Input name={`title`} type={`text`} value={post.title} />
+          </label>
+          {/* 
           <PostsFormDescription
             label={`Description`}
             className={`bg-yellow-200 -mx-4 px-4 py-4`}
             inputs={post.descriptions}
-          />
-       
-            <label className="block mt-4">
-                      <div className="flex"><span className="block font-medium">Image</span><b className="text-red-600 ml-1"> (*)</b></div>
-                    
-         </label>
-         <FormUploadFile files={post.files.images} handle_first={true}/>
+          /> */}
+
+          <label className="block mt-4">
+            <div className="flex -mb-3">
+              <span className="block font-medium">Description</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Editor type="edit" />
+          </label>
+
+          <label className="block mt-4">
+            <div className="flex">
+              <span className="block font-medium">Image</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+          </label>
+          <FormUploadFile files={post.files.images} handle_first={true} />
         </section>
       </main>
 
       <FormFooter
-       tabNumber={1}
-       show={show}
+        tabNumber={1}
+        show={show}
         onShowMinus={() => setShow(show - 1)}
         onShowPlus={() => setShow(show + 1)}
       />

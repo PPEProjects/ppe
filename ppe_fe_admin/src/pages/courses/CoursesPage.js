@@ -19,6 +19,7 @@ const CoursesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { url, opens } = useSelector(sidebarSelector);
+  // const { filterOpen } = useSelector(filterSelector);
   const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
@@ -70,18 +71,16 @@ const CoursesPage = () => {
                     title={`Select All`}
                     className={`bg-gray-300 text-gray-800`}
                   />
-
                   <Button
                     type={`button`}
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-
-                  <Button
+                  {/* <Button
                     type={`button`}
                     title={`Banned`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
+                  /> */}
                 </div>
                 <div className="flex">
                   <button

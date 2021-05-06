@@ -92,7 +92,7 @@ const CoursesCreatePage = () => {
               <InputNumber
                 name={`more[ranking]`}
                 type={`number`}
-                // className={`w-full pl-1`}
+                className={`w-full pl-1`}
               />
             </label>
           </div>

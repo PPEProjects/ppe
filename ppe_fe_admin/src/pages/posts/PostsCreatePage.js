@@ -9,6 +9,7 @@ import { Link, useHistory } from "react-router-dom";
 
 import { Button, Input, Select, Textarea } from "../../components/Form";
 import PostsFormDescription from "./PostsFormDescription";
+import Editor from "../../components/Editor";
 
 const PostsCreatePage = () => {
   const dispatch = useDispatch();
@@ -80,11 +81,18 @@ const PostsCreatePage = () => {
             <Input name={`title`} type={`text`} />
           </label>
 
-          <PostsFormDescription
+          {/* <PostsFormDescription
             label={`Description`}
             className={`bg-yellow-200 -mx-4 px-4 py-4`}
-            
-          />
+          /> */}
+
+          <label className="block mt-4">
+            <div className="flex -mb-3">
+              <span className="block font-medium">Description</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Editor type="create" />
+          </label>
 
           <label className="block mt-4">
             <div className="flex">
