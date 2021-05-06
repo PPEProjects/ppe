@@ -41,16 +41,6 @@ const usersSlice = createSlice({
         state.access_token = payload.access_token;
       }
     },
-    checkUser: (state, { payload }) => {
-      const { id, checked } = payload;
-      const userIndex = state.users.findIndex((user) => user.id === id);
-      state.users[userIndex].checked = checked;
-    },
-    selectedAll: (state, { payload }) => {
-      const { checked } = payload;
-      const updateUser = state.users.map((user) => ({ ...user, checked }));
-      state.users = updateUser;
-    },
   },
 });
 
