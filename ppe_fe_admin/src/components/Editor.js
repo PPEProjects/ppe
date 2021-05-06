@@ -22,7 +22,6 @@ const Editor = ({type}) => {
         default:
           break;
       }
-      // editorInstance.blocks.render({ blocks: editorData ?? [] });
       setIsFirst(true);
     };
     handle();

@@ -1,74 +1,75 @@
-import React, {useEffect, useState} from 'react'
-import {useDispatch, useSelector} from "react-redux";
-import {filterSelector, setFilterData} from "../slices/filter";
-import {
-  Select,
-} from "../components/Form";
-import FilterUser from './FilterUser';
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { filterSelector, setFilterData } from "../slices/filter";
+import { Select } from "../components/Form";
+import FilterUser from "./FilterUser";
 const Filter = (props) => {
-    const dispatch = useDispatch();
-    const {filterOpen} = useSelector(filterSelector);
+  const dispatch = useDispatch();
+  const { filterOpen } = useSelector(filterSelector);
 
-    useEffect(() => {
-    }, [dispatch]);
+  useEffect(() => {}, [dispatch]);
 
-    const handleFilterClick = (e, val) => {
-        if(e){
-            e.preventDefault();
-        }
-        dispatch(setFilterData({filterOpen: val}));
+  const handleFilterClick = (e, val) => {
+    if (e) {
+      e.preventDefault();
     }
+    dispatch(setFilterData({ filterOpen: val }));
+  };
 
-    return (
-        <React.Fragment>
-           <div className="col-span-3 bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 pt-3 pb-24 ">
-            <section className="">
-              <b className="px-3 font-semibold ">Filter by</b>
-              <hr className="my-2" />
-              <ul className="px-3">
-                <li className="">
-                <button
-                   onClick={(e) => handleFilterClick(e, `Activated`)}
-                    className="bg-transparent h-10 w-full rounded hover:opacity-75 flex items-center focus:outline-none "
-                    type="button"
-                  >
-                    <i className="material-icons">
-                        {filterOpen==='Activated' ? `radio_button_checked` :`radio_button_unchecked`}
-                    </i>
-                   <span className="ml-2">Activated</span>
-                </button>
-                </li>
-                <li className="">
-                <button
-                   onClick={(e) => handleFilterClick(e, `Deleted`)}
-                    className="bg-transparent h-10 w-full rounded hover:opacity-75 flex items-center focus:outline-none "
-                    type="button"
-                  >
-                    <i className="material-icons">
-                        {filterOpen==='Deleted' ? `radio_button_checked` :`radio_button_unchecked`}
-                    </i>
-                   <span className="ml-2">Deleted</span>
-                </button>
-                </li>
-                <li className="">
-                <button
-                   onClick={(e) => handleFilterClick(e, ``)}
-                    className="bg-transparent h-10 w-full rounded hover:opacity-75 flex items-center focus:outline-none "
-                    type="button"
-                  >
-                    <i className="material-icons">
-                        {filterOpen==='' ? `radio_button_checked` :`radio_button_unchecked`}
-                    </i>
-                   <span className="ml-2">All</span>
-                </button>
-                </li>
-              </ul>
-            </section>
-            { props?.type==="user" &&
-<FilterUser/>
-            }
-           
-            {/*<section className="border-t mt-1 px-2">
+  return (
+    <React.Fragment>
+      <div className="col-span-3 bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 pt-3 pb-24 ">
+        <section className="">
+          <b className="px-3 font-semibold ">Filter by 123</b>
+          <hr className="my-2" />
+          <ul className="px-3">
+            <li className="">
+              <button
+                onClick={(e) => handleFilterClick(e, `Activated`)}
+                className="bg-transparent h-10 w-full rounded hover:opacity-75 flex items-center focus:outline-none "
+                type="button"
+              >
+                <i className="material-icons">
+                  {filterOpen === "Activated"
+                    ? `radio_button_checked`
+                    : `radio_button_unchecked`}
+                </i>
+                <span className="ml-2">Activated</span>
+              </button>
+            </li>
+            <li className="">
+              <button
+                onClick={(e) => handleFilterClick(e, `Deleted`)}
+                className="bg-transparent h-10 w-full rounded hover:opacity-75 flex items-center focus:outline-none "
+                type="button"
+              >
+                <i className="material-icons">
+                  {filterOpen === "Deleted"
+                    ? `radio_button_checked`
+                    : `radio_button_unchecked`}
+                </i>
+                <span className="ml-2">Deleted</span>
+              </button>
+            </li>
+            <li className="">
+              <button
+                onClick={(e) => handleFilterClick(e, ``)}
+                className="bg-transparent h-10 w-full rounded hover:opacity-75 flex items-center focus:outline-none "
+                type="button"
+              >
+                <i className="material-icons">
+                  {filterOpen === ""
+                    ? `radio_button_checked`
+                    : `radio_button_unchecked`}
+                </i>
+                <span className="ml-2">All</span>
+              </button>
+            </li>
+          </ul>
+        </section>
+        {props?.type === "user" && <FilterUser />}
+
+        {/*<section className="border-t mt-1 px-2">
             <div className="mx-2 mt-2">
             <span className="">Select a user set</span>
             <div className="-mt-3">
@@ -105,9 +106,8 @@ const Filter = (props) => {
               </button>
               
     </section>*/}
-          </div>
-               
-        </React.Fragment>
-    )
-}
-export default Filter
+      </div>
+    </React.Fragment>
+  );
+};
+export default Filter;

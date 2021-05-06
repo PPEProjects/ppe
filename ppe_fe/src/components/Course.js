@@ -11,8 +11,9 @@ import CourseHeaderImage from "./.Child/CourseHeaderImage";
 import Editor from "./.Tools/Editor";
 
 class Course extends Component {
-  constructor(props) {
+  constructor(props,{data, api}) {
     super(props);
+    this.api = api;
     this.state = {
       status: `loading`,
       course_id: 0,
@@ -20,6 +21,11 @@ class Course extends Component {
       courses: [],
       teachers: [],
     };
+  }
+
+  closeToolbar =() => {
+    this.api.toolbar.close();
+
   }
 
   async componentDidMount() {
@@ -87,8 +93,11 @@ class Course extends Component {
                           <h3 className="text-2xl font-semibold">
                             {course.name}
                           </h3>
-                          <div>
-                            <Editor editorData={course.content} />
+                          <div className="">
+                            <Editor 
+                            editorData={course.content}
+                             />
+                           
                           </div>
                           {Object.keys(course.syllabus_ids ?? {}).length !==
                             0 && (

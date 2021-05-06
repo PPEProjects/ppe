@@ -92,7 +92,7 @@ const CoursesCreatePage = () => {
               <InputNumber
                 name={`more[ranking]`}
                 type={`number`}
-                // className={`w-full pl-1`}
+                className={`w-full pl-1`}
               />
             </label>
           </div>
@@ -169,10 +169,9 @@ const CoursesCreatePage = () => {
             </div>
           </label>
           <Checkbox
-        title={`Syllabuses`}
-        name={`syllabus_ids`}
-        ids={syllabuses.map(({ id }) => id)}
-        values={syllabuses.map(({ name }) => name)}
+            name={`teachers`}
+            ids={users.map(({ id }) => id)}
+            values={users.map(({ name }) => name)}
           />
           <label className="block mt-4">
             <div className="flex -mb-3">

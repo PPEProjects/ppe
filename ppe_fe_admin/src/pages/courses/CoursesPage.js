@@ -19,6 +19,7 @@ const CoursesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { url, opens } = useSelector(sidebarSelector);
+  // const { filterOpen } = useSelector(filterSelector);
   const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
@@ -67,13 +68,11 @@ const CoursesPage = () => {
                     title={`Select All`}
                     className={`bg-gray-300 text-gray-800`}
                   />
-
                   <Button
                     type={`button`}
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-
                   {/* <Button
                     type={`button`}
                     title={`Banned`}
@@ -188,19 +187,19 @@ const CoursesPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {courses.length!=0 &&
-                  <thead className="border-black border-b ">
-                    <tr className="">
-                      <td className="px-2 py-1"></td>
-                      <td className="px-2 py-1">ID</td>
-                      <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Phone</td>
-                      <td className="px-2 py-1"> Email</td>
-                      <td className="px-2 py-1"> Class name</td>
-                      <td className="px-2 py-1">Status</td>
-                    </tr>
-                  </thead>
-  }
+                  {courses.length != 0 && (
+                    <thead className="border-black border-b ">
+                      <tr className="">
+                        <td className="px-2 py-1"></td>
+                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1 ">Name</td>
+                        <td className="px-2 py-1">Phone</td>
+                        <td className="px-2 py-1"> Email</td>
+                        <td className="px-2 py-1"> Class name</td>
+                        <td className="px-2 py-1">Status</td>
+                      </tr>
+                    </thead>
+                  )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {courses.map((course, key) => (
                       <tr
