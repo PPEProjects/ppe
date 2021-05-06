@@ -123,7 +123,7 @@ const JobsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {jobsSearch.length === 0 && status !== `loading` && (
+                {jobs.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -141,7 +141,7 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {jobsSearch 
+                  {jobs 
                   
                   .map((job, key) => (
                     <div className="col-span-3" key={key}>
@@ -151,12 +151,13 @@ const JobsPage = () => {
                             setDetailData({
                               isShow: true,
                               job: job,
-                              company: companiesObj[job.company_id],
+                              job: companiesObj[job.company_id],
                             })
                           )
                         }
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
+                        
                         <button
                           type="button"
                           className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
