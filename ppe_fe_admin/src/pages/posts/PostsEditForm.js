@@ -10,6 +10,7 @@ import { detailsSelector, setDetailData } from "../../slices/details";
 import { Button, Input, Select, Textarea } from "../../components/Form";
 import PostsFormDescription from "./PostsFormDescription";
 import Editor from "../../components/Editor";
+import { formSelector, setFormData } from "../../slices/form";
 
 const PostsEditForm = () => {
   const dispatch = useDispatch();
@@ -20,18 +21,22 @@ const PostsEditForm = () => {
   const [chooses, setChooses] = useState({});
   const [projects, setProjects] = useState([]);
   const { isShow, mode, post } = useSelector(detailsSelector);
+  const { editorData } = useSelector(formSelector);
 
   useEffect(() => {
     fetchData();
     async function fetchData() {
       let res = await Ajax.get(`/projects`);
       setProjects(res.data?.projects);
+      console.log("fetch data", res.data?.projects);
     }
   }, [dispatch]);
 
   const postSAVE = async (e) => {
     e.preventDefault();
     const params = new FormData(e.target);
+    params.set("content", JSON.stringify(editorData));
+    console.log('editorData', editorData)
     let res = await Ajax.put(`/posts/${post.id}`, params);
     if (res.status === `error`) {
       Alert({ t: res.status, c: res.errors });
@@ -78,12 +83,7 @@ const PostsEditForm = () => {
             </div>
             <Input name={`title`} type={`text`} value={post.title} />
           </label>
-          {/* 
-          <PostsFormDescription
-            label={`Description`}
-            className={`bg-yellow-200 -mx-4 px-4 py-4`}
-            inputs={post.descriptions}
-          /> */}
+         
 
           <label className="block mt-4">
             <div className="flex -mb-3">

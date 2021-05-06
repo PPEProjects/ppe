@@ -32,6 +32,7 @@ const UsersPage = () => {
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
+    // if(filterOpen)
     dispatch(getUsers(filterOpen));
     let url = window.location.href;
     dispatch(setSidebarData({ url }));
