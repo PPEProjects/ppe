@@ -23,7 +23,24 @@ const TasksPage = () => {
   const { projectsObj } = useSelector(projectsSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+
   const [search, setSearch] = useState(``);
+  const [tasksSearch, setUsersSearch] = useState(tasks);
+  useEffect(() => {
+    const tasksSearch = tasks.filter((task) => {    
+                      if (
+                        (task.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return tasks;
+                      }
+                    })
+                    setUsersSearch(tasksSearch)
+  }, [search, tasks]);
+
+
+  
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjectsObj());
@@ -105,7 +122,7 @@ const TasksPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {tasks.length === 0 && status !== `loading` && (
+                {tasksSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -123,16 +140,8 @@ const TasksPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {tasks 
-                  .filter((task) => {
-                    if (search === "") {
-                      return task;
-                    } else if (
-                      (task.name??``).toLowerCase().includes((search??``).toLowerCase())
-                    ) {
-                      return task;
-                    }
-                  })
+                  {tasksSearch 
+                 
                   .map((task, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
