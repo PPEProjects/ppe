@@ -23,10 +23,17 @@ const UsersPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
-
+  const [usersSearch, setUsersSearch] = useState(users);
   useEffect(() => {
-    console.log("search", search);
-  }, [search]);
+    const usersSearch = users.filter((user) => {
+      if (
+        (user.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return user;
+      }
+    });
+    setUsersSearch(usersSearch);
+  }, [search, users]);
 
   const [learners, setLearners] = useState({});
 
@@ -82,7 +89,7 @@ const UsersPage = () => {
               </div>
               <div className="px-4 border-t mt-2 ">
                 <InputIcon
-                  placeholder="Search All Users"
+                  placeholder="Search All Users "
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
@@ -143,7 +150,7 @@ const UsersPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {users.length === 0 && status !== `loading` && (
+                {usersSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -162,76 +169,64 @@ const UsersPage = () => {
 
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {users
-                    .filter((user) => {
-                      if (search === "") {
-                        return user;
-                      } else if (
-                        (user.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return user;
-                      }
-                    })
-                    .map((user, key) => (
-                      <div className="col-span-3" key={key}>
-                        <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
-                          <button
-                            type="button"
-                            className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                  {usersSearch.map((user, key) => (
+                    <div className="col-span-3" key={key}>
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
+                        <button
+                          type="button"
+                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                        >
+                          <i className="text-xl material-icons">done</i>
+                        </button>
+                        <div className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                          <img
+                            alt=""
+                            src={user.image}
+                            className="absolute h-full w-full object-cover"
+                          />
+                        </div>
+                        <div className="mx-2 my-2">
+                          <h1
+                            className="truncate-2y text-sm leading-5 font-semibold"
+                            onClick={() => {
+                              dispatch(
+                                setFormData({
+                                  checkboxes: { types: user.types },
+                                })
+                              );
+                              dispatch(
+                                setDetailData({ isShow: true, user: user })
+                              );
+                            }}
                           >
-                            <i className="text-xl material-icons">done</i>
-                          </button>
-                          <div className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                            <img
-                              alt=""
-                              src={user.image}
-                              className="absolute h-full w-full object-cover"
-                            />
-                          </div>
-                          <div className="mx-2 my-2">
-                            <h1
-                              className="truncate-2y text-sm leading-5 font-semibold"
-                              onClick={() => {
-                                dispatch(
-                                  setFormData({
-                                    checkboxes: { types: user.types },
-                                  })
-                                );
-                                dispatch(
-                                  setDetailData({ isShow: true, user: user })
-                                );
-                              }}
-                            >
-                              {user.name}
-                            </h1>
+                            {user.name}
+                          </h1>
 
-                            <div className={`text-gray-500 text-xs truncate`}>
-                              <p className="">
-                                Created at: {moment(user.created_at).fromNow()}
-                              </p>
-                              {moment(user.created_at).fromNow() ===
-                                moment(user.updated_at).fromNow() && (
-                                <h3 className="text-gray-500 text-xs truncate">
-                                  Not joined yet
-                                </h3>
-                              )}
-                              {moment(user.created_at).fromNow() !==
-                                moment(user.updated_at).fromNow() && (
-                                <h3 className="text-gray-500 text-xs truncate">
-                                  Login at: {moment(user.updated_at).fromNow()}
-                                </h3>
-                              )}
+                          <div className={`text-gray-500 text-xs truncate`}>
+                            <p className="">
+                              Created at: {moment(user.created_at).fromNow()}
+                            </p>
+                            {moment(user.created_at).fromNow() ===
+                              moment(user.updated_at).fromNow() && (
+                              <h3 className="text-gray-500 text-xs truncate">
+                                Not joined yet
+                              </h3>
+                            )}
+                            {moment(user.created_at).fromNow() !==
+                              moment(user.updated_at).fromNow() && (
+                              <h3 className="text-gray-500 text-xs truncate">
+                                Login at: {moment(user.updated_at).fromNow()}
+                              </h3>
+                            )}
 
-                              <p className="text-sm text-indigo-700 truncate">
-                                Roles: {Object.keys(user.types).join(", ")}
-                              </p>
-                            </div>
+                            <p className="text-sm text-indigo-700 truncate">
+                              Roles: {Object.keys(user.types).join(", ")}
+                            </p>
                           </div>
-                        </Link>
-                      </div>
-                    ))}
+                        </div>
+                      </Link>
+                    </div>
+                  ))}
                 </div>
               )}
 

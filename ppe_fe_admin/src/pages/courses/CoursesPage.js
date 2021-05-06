@@ -24,8 +24,17 @@ const CoursesPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
-
-
+  const [coursesSearch, setUsersSearch] = useState(courses);
+  useEffect(() => {
+    const coursesSearch = courses.filter((course) => {
+      if (
+        (course.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return course;
+      }
+    });
+    setUsersSearch(coursesSearch);
+  }, [search, courses]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -62,7 +71,10 @@ const CoursesPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All courses" onChange={(e) => setSearch(e.target.value)} />
+                <InputIcon
+                  placeholder="Search All courses"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -107,7 +119,7 @@ const CoursesPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {courses.length === 0 && status !== `loading` && (
+                {coursesSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -126,17 +138,7 @@ const CoursesPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {courses
-                   .filter((course) => {
-                    if (search === "") {
-                      return course;
-                    } else if (
-                      (course.name??``).toLowerCase().includes((search??``).toLowerCase())
-                    ) {
-                      return course;
-                    }
-                  })
-                  .map((course, key) => (
+                  {coursesSearch.map((course, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
@@ -187,9 +189,6 @@ const CoursesPage = () => {
                             </p>
                             <p className="">
                               Updated at: {moment(course.updated_at).fromNow()}
-                            </p>
-                            <p className="text-sm text-indigo-700">
-                              Account type: {course.type}
                             </p>
                           </div>
                         </div>

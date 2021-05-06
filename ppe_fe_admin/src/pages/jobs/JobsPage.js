@@ -25,6 +25,21 @@ const JobsPage = () => {
   const { companiesObj } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
+  const [jobsSearch, setUsersSearch] = useState(jobs);
+  useEffect(() => {
+    const coursesSearch = jobs.filter((job) => {    
+                      if (
+                        (job.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return job;
+                      }
+                    })
+                    setUsersSearch(jobsSearch)
+  }, [search, jobs]);
+
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -61,7 +76,7 @@ const JobsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All jobs" />
+                <InputIcon placeholder="Search All jobs" onChange={(e) => setSearch(e.target.value)}  />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -108,7 +123,7 @@ const JobsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {jobs.length === 0 && status !== `loading` && (
+                {jobsSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -126,7 +141,9 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {jobs.map((job, key) => (
+                  {jobsSearch 
+                  
+                  .map((job, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
