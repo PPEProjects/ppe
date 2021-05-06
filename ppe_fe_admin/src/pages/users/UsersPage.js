@@ -23,9 +23,19 @@ const UsersPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
+  const [usersSearch, setUsersSearch] = useState(users);
   useEffect(() => {
-    console.log("search", search);
-  }, [search]);
+    const usersSearch = users.filter((user) => {    
+                      if (
+                        (user.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return user;
+                      }
+                    })
+                    setUsersSearch(usersSearch)
+  }, [search, users]);
 
   const [learners, setLearners] = useState({});
 
@@ -79,7 +89,7 @@ const UsersPage = () => {
               </div>
               <div className="px-4 border-t mt-2 ">
                 <InputIcon
-                  placeholder="Search All Users"
+                  placeholder="Search All Users "
                   onChange={(e) => setSearch(e.target.value)}
                 />
               </div>
@@ -138,7 +148,7 @@ const UsersPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {users.length === 0 && status !== `loading` && (
+                {usersSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -157,19 +167,7 @@ const UsersPage = () => {
 
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {users
-                    .filter((user) => {
-                      if (search === "") {
-                        return user;
-                      } else if (
-                        (user.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return user;
-                      }
-                    })
-                    .map((user, key) => (
+                  {usersSearch.map((user, key) => (
                       <div className="col-span-3" key={key}>
                         <Link
                           onClick={() => {

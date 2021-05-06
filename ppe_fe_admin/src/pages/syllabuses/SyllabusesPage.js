@@ -25,8 +25,22 @@ const SyllabusesPage = () => {
   const { filterOpen } = useSelector(filterSelector);
   const { syllabuse, syllabuses, status } = useSelector(syllabusesSelector);
   const [mode, setMode] = useState(`grid`);
-
   const [type, setType] = useState(``);
+ 
+  const [search, setSearch] = useState(``);
+  const [syllabusesSearch, setUsersSearch] = useState(syllabuses);
+  useEffect(() => {
+    const syllabusesSearch = syllabuses.filter((syllabuse) => {    
+                      if (
+                        (syllabuse.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return syllabuse;
+                      }
+                    })
+                    setUsersSearch(syllabusesSearch)
+  }, [search, syllabuses]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -63,7 +77,7 @@ const SyllabusesPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All syllabuses" />
+                <InputIcon placeholder="Search All syllabuses" onChange={(e) => setSearch(e.target.value)} />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">

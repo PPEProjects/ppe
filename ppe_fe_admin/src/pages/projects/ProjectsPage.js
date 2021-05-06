@@ -23,6 +23,20 @@ const ProjectsPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
+  const [projectsSearch, setUsersSearch] = useState(projects);
+  useEffect(() => {
+    const projectsSearch = projects.filter((project) => {    
+                      if (
+                        (project.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return project;
+                      }
+                    })
+                    setUsersSearch(projectsSearch)
+  }, [search, projects]);
+
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -106,7 +120,7 @@ const ProjectsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {projects.length === 0 && status !== `loading` && (
+                {projectsSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -124,16 +138,7 @@ const ProjectsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {projects
-                    .filter((project) => {
-                      if (search === "") {
-                        return project;
-                      } else if (
-                        (project.name??``).toLowerCase().includes((search??``).toLowerCase())
-                      ) {
-                        return project;
-                      }
-                    })
+                  {projectsSearch
                   .map((project, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
