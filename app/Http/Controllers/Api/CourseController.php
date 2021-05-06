@@ -30,12 +30,15 @@ class CourseController extends BaseController
             $data['courses'] = File::getImageDescription($data['courses']);
             return response()->json($data);
         }
-        if($request->lang){
+        if($request->lang ){
             $data['courses'] = Course::selectRaw("*, REPLACE(JSON_EXTRACT(more, '$.ranking'), '\"', '') AS ranking")
                 ->where('language', $request->lang)
-                ->whereRaw("(status IS NULL OR status != 'Deleted')")
                 ->orderBy('ranking', 'asc')
-                ->orderBy('id', 'desc')
+                ->orderBy('id', 'desc');
+            if ($request->status) {
+                $data['courses'] = $data['courses']->where('status', $request->status);
+            }
+            $data['courses'] = $data['courses']
                 ->get()
                 ->toArray();
             $data['courses'] = File::getImageDescription($data['courses']);

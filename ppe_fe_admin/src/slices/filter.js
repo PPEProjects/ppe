@@ -21,12 +21,12 @@ export const filterSelector = (state) => state.filter;
 export default filterSlice.reducer;
 
 export function setFilterData(data) {
-    return async (dispatch) => {
-      dispatch(setData(data));
-    };
-  }
-export function getFilter(data) {
-    return async (dispatch) => {
+  return async (dispatch) => {
     dispatch(setData(data));
-    };
+  };
+}
+export function getFilter(data) {
+  return async (dispatch) => {
+    dispatch(setData(data));
+  };
 }

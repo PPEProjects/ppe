@@ -25,6 +25,21 @@ const JobsPage = () => {
   const { companiesObj } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
+  const [jobsSearch, setUsersSearch] = useState(jobs);
+  useEffect(() => {
+    const coursesSearch = jobs.filter((job) => {    
+                      if (
+                        (job.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return job;
+                      }
+                    })
+                    setUsersSearch(jobsSearch)
+  }, [search, jobs]);
+
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -54,14 +69,14 @@ const JobsPage = () => {
                 <div className="flex ">
                   <Link
                     to={`/JobsCreatePage`}
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-r-none hover:opacity-75 flex items-center justify-center ml-3"
+                    className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
                     <span className="mx-2">Add jobs</span>
                   </Link>
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All jobs" />
+                <InputIcon placeholder="Search All jobs" onChange={(e) => setSearch(e.target.value)}  />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -77,11 +92,11 @@ const JobsPage = () => {
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
 
-                  <Button
+                  {/* <Button
                     type={`button`}
                     title={`Banned`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
+                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -89,7 +104,7 @@ const JobsPage = () => {
                     onClick={() => setMode(`grid`)}
                     className={`${
                       mode === `grid` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
@@ -98,7 +113,7 @@ const JobsPage = () => {
                     onClick={() => setMode(`table`)}
                     className={`${
                       mode === `table` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -108,7 +123,7 @@ const JobsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {jobs.length === 0 && status !== `loading` && (
+                {jobsSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -126,7 +141,9 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {jobs.map((job, key) => (
+                  {jobsSearch 
+                  
+                  .map((job, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -187,19 +204,19 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {jobs.length!=0 &&
-                  <thead className="border-black border-b ">
-                    <tr className="">
-                      <td className="px-2 py-1"></td>
-                      <td className="px-2 py-1">ID</td>
-                      <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Phone</td>
-                      <td className="px-2 py-1"> Email</td>
-                      <td className="px-2 py-1"> Class name</td>
-                      <td className="px-2 py-1">Status</td>
-                    </tr>
-                  </thead>
-                  }
+                  {jobs.length != 0 && (
+                    <thead className="border-black border-b ">
+                      <tr className="">
+                        <td className="px-2 py-1"></td>
+                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1 ">Name</td>
+                        <td className="px-2 py-1">Phone</td>
+                        <td className="px-2 py-1"> Email</td>
+                        <td className="px-2 py-1"> Class name</td>
+                        <td className="px-2 py-1">Status</td>
+                      </tr>
+                    </thead>
+                  )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {jobs.map((job, key) => (
                       <tr

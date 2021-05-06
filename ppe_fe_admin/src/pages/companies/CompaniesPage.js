@@ -22,6 +22,20 @@ const CompaniesPage = () => {
   const { company, companies, status } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
+  const [companiesSearch, setUsersSearch] = useState(companies);
+  useEffect(() => {
+    const companiesSearch = companies.filter((course) => {    
+                      if (
+                        (company.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return company;
+                      }
+                    })
+                    setUsersSearch(companiesSearch)
+  }, [search, companies]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -51,14 +65,14 @@ const CompaniesPage = () => {
                 <div className="flex ">
                   <Link
                     to={`/CompaniesCreatePage`}
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-r-none hover:opacity-75 flex items-center justify-center ml-3"
+                    className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
                     <span className="mx-2">Add companies</span>
                   </Link>
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All companies" />
+                <InputIcon placeholder="Search All companies"  onChange={(e) => setSearch(e.target.value)}/>
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -73,12 +87,12 @@ const CompaniesPage = () => {
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-
+{/* 
                   <Button
                     type={`button`}
                     title={`Banned`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
+                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -86,7 +100,7 @@ const CompaniesPage = () => {
                     onClick={() => setMode(`grid`)}
                     className={`${
                       mode === `grid` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
@@ -95,7 +109,7 @@ const CompaniesPage = () => {
                     onClick={() => setMode(`table`)}
                     className={`${
                       mode === `table` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -105,7 +119,7 @@ const CompaniesPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {companies.length === 0 && status !== `loading` && (
+                {companiesSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -123,7 +137,9 @@ const CompaniesPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {companies.map((company, key) => (
+                  {companiesSearch
+                  
+                  .map((company, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
@@ -187,19 +203,19 @@ const CompaniesPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {companies.length!=0 &&
-                  <thead className="border-black border-b ">
-                    <tr className="">
-                      <td className="px-2 py-1"></td>
-                      <td className="px-2 py-1">ID</td>
-                      <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Phone</td>
-                      <td className="px-2 py-1"> Email</td>
-                      <td className="px-2 py-1"> Class name</td>
-                      <td className="px-2 py-1">Status</td>
-                    </tr>
-                  </thead>
-                  }
+                  {companies.length != 0 && (
+                    <thead className="border-black border-b ">
+                      <tr className="">
+                        <td className="px-2 py-1"></td>
+                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1 ">Name</td>
+                        <td className="px-2 py-1">Phone</td>
+                        <td className="px-2 py-1"> Email</td>
+                        <td className="px-2 py-1"> Class name</td>
+                        <td className="px-2 py-1">Status</td>
+                      </tr>
+                    </thead>
+                  )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {companies.map((company, key) => (
                       <tr

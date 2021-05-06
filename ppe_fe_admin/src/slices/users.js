@@ -44,8 +44,9 @@ const usersSlice = createSlice({
   },
 });
 
-export const { setData } = usersSlice.actions;
+export const { setData, checkUser, selectedAll } = usersSlice.actions;
 export const usersSelector = (state) => state.users;
+
 export default usersSlice.reducer;
 
 const cookies = new Cookies();
@@ -76,10 +77,12 @@ export function deleteUser(user) {
   };
 }
 
-export function getUsers(filterOpen, types=null) {
+export function getUsers(filterOpen, types = null) {
   return async (dispatch) => {
     dispatch(setData({ status: `loading` }));
-    types = types ?? [new URL(window.location.href).searchParams.get("type") ?? ``];
+    types = types ?? [
+      new URL(window.location.href).searchParams.get("type") ?? ``,
+    ];
     let res = await Ajax.get(`/users`, { types: types, status: filterOpen });
     dispatch(setData({ status: `success`, users: res.data?.users }));
   };
@@ -89,9 +92,7 @@ export function getUsersObj() {
   return async (dispatch) => {
     dispatch(setData({ status: `loading` }));
     let res = await Ajax.get(`/users`, { keyBy: `id` });
-    dispatch(
-        setData({ status: `success`, usersObj: res.data.users ?? {} })
-    );
+    dispatch(setData({ status: `success`, usersObj: res.data.users ?? {} }));
   };
 }
 

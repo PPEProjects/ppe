@@ -26,6 +26,20 @@ const CommentsPage = () => {
   const { users } = useSelector(usersSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
+  const [commentsSearch, setUsersSearch] = useState(comments);
+  useEffect(() => {
+    const commentsSearch = comments.filter((comment) => {    
+                      if (
+                        (comment.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return comment;
+                      }
+                    })
+                    setUsersSearch(commentsSearch)
+  }, [search, comments]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -55,14 +69,14 @@ const CommentsPage = () => {
                 <div className="flex ">
                   <Link
                     to={`/CommentsCreatePage`}
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-r-none hover:opacity-75 flex items-center justify-center ml-3"
+                    className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
                     <span className="mx-2">Add comments</span>
                   </Link>
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All comments" />
+                <InputIcon placeholder="Search All comments" onChange={(e) => setSearch(e.target.value)} />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -78,11 +92,11 @@ const CommentsPage = () => {
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
 
-                  <Button
+                  {/* <Button
                     type={`button`}
                     title={`Banned`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
+                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -90,7 +104,7 @@ const CommentsPage = () => {
                     onClick={() => setMode(`grid`)}
                     className={`${
                       mode === `grid` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
@@ -99,7 +113,7 @@ const CommentsPage = () => {
                     onClick={() => setMode(`table`)}
                     className={`${
                       mode === `table` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -109,7 +123,7 @@ const CommentsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {comments.length === 0 && status !== `loading` && (
+                {commentsSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -127,7 +141,8 @@ const CommentsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {comments.map((comment, key) => (
+                  {commentsSearch
+                  .map((comment, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -186,20 +201,20 @@ const CommentsPage = () => {
               {status === `success` && mode === `table` && (
                 <div className="overflow-auto">
                   <table className=" table-auto text-sm w-full">
-                  {comments.length!=0 &&
-                    <thead className="border-black border-b ">
-                      <tr className="">
-                        <td className="px-2 py-1"></td>
-                        <td className="px-2 py-1">ID</td>
-                        <td className="px-2 py-1 ">Post</td>
-                        <td className="px-2 py-1">Content</td>
-                        <td className="px-2 py-1"> Image</td>
-                        <td className="px-2 py-1">User</td>
-                        <td className="px-2 py-1"> created at</td>
-                        <td className="px-2 py-1">Status</td>
-                      </tr>
-                    </thead>
-                    }
+                    {comments.length != 0 && (
+                      <thead className="border-black border-b ">
+                        <tr className="">
+                          <td className="px-2 py-1"></td>
+                          <td className="px-2 py-1">ID</td>
+                          <td className="px-2 py-1 ">Post</td>
+                          <td className="px-2 py-1">Content</td>
+                          <td className="px-2 py-1"> Image</td>
+                          <td className="px-2 py-1">User</td>
+                          <td className="px-2 py-1"> created at</td>
+                          <td className="px-2 py-1">Status</td>
+                        </tr>
+                      </thead>
+                    )}
                     <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                       {comments.map((comment, key) => (
                         <tr
@@ -234,7 +249,10 @@ const CommentsPage = () => {
                             <p className="w-8 truncate">{comment.id}</p>
                           </td>
                           <td className="px-2 py-1 ">
-                            <p className="w-25 truncate">{postsObj[comment?.post_id]?.title ?? comment.post_id}</p>
+                            <p className="w-25 truncate">
+                              {postsObj[comment?.post_id]?.title ??
+                                comment.post_id}
+                            </p>
                           </td>
                           <td className="px-2 py-1 ">
                             <p className="w-24 truncate">{comment.content}</p>
@@ -256,10 +274,14 @@ const CommentsPage = () => {
                             </figure>
                           </td>
                           <td className="px-2 py-1 ">
-                            <p className="w-25 truncate">{users[comment?.user_id]?.name ?? comment.user_id}</p>
+                            <p className="w-25 truncate">
+                              {users[comment?.user_id]?.name ?? comment.user_id}
+                            </p>
                           </td>
                           <td className="px-2 py-1 ">
-                            <p className="w-25 truncate">{comment.created_at}</p>
+                            <p className="w-25 truncate">
+                              {comment.created_at}
+                            </p>
                           </td>
                           <td className="px-2 py-1 ">
                             <p className="w-20 truncate">{comment.status}</p>

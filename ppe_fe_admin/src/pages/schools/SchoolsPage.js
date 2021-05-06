@@ -27,6 +27,7 @@ const SchoolsPage = () => {
   const [mode, setMode] = useState(`grid`);
 
   const [type, setType] = useState(``);
+  const [search, setSearch] = useState(``);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -56,14 +57,14 @@ const SchoolsPage = () => {
                 <div className="flex ">
                   <Link
                     to={`/SchoolsCreatePage`}
-                    className="bg-indigo-700 text-white h-10 px-2 rounded rounded-r-none hover:opacity-75 flex items-center justify-center ml-3"
+                    className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
                     <span className="mx-2">Add schools</span>
                   </Link>
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All schoolses" />
+                <InputIcon placeholder="Search All schoolses" onChange={(e) => setSearch(e.target.value)} />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -79,11 +80,11 @@ const SchoolsPage = () => {
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
 
-                  <Button
+                  {/* <Button
                     type={`button`}
                     title={`Banned`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
+                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -91,7 +92,7 @@ const SchoolsPage = () => {
                     onClick={() => setMode(`grid`)}
                     className={`${
                       mode === `grid` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">widgets</i>
                   </button>
@@ -100,7 +101,7 @@ const SchoolsPage = () => {
                     onClick={() => setMode(`table`)}
                     className={`${
                       mode === `table` ? `bg-gray-200` : ``
-                    } text-gray-800 h-10 w-10 rounded rounded-r-none hover:opacity-75 flex items-center justify-center `}
+                    } text-gray-800 h-10 w-10 rounded hover:opacity-75 flex items-center justify-center `}
                   >
                     <i className="material-icons">menu</i>
                   </button>
@@ -128,7 +129,17 @@ const SchoolsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {schools.map((school, key) => (
+                  {schools
+                  .filter((school) => {
+                    if (search === "") {
+                      return school;
+                    } else if (
+                      (school.name??``).toLowerCase().includes((search??``).toLowerCase())
+                    ) {
+                      return school;
+                    }
+                  })
+                  .map((school, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
@@ -181,18 +192,18 @@ const SchoolsPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {schools.length!=0 &&
-                  <thead className="border-black border-b ">
-                    <tr className="">
-                      <td className="px-2 py-1"></td>
-                      <td className="px-2 py-1">ID</td>
-                      <td className="px-2 py-1 ">Name</td>
-                      <td className="px-2 py-1">Address</td>
-                      <td className="px-2 py-1"> Created at</td>
-                      <td className="px-2 py-1">Status</td>
-                    </tr>
-                  </thead>
-                  }
+                  {schools.length != 0 && (
+                    <thead className="border-black border-b ">
+                      <tr className="">
+                        <td className="px-2 py-1"></td>
+                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1 ">Name</td>
+                        <td className="px-2 py-1">Address</td>
+                        <td className="px-2 py-1"> Created at</td>
+                        <td className="px-2 py-1">Status</td>
+                      </tr>
+                    </thead>
+                  )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {schools.map((school, key) => (
                       <tr
@@ -239,7 +250,9 @@ const SchoolsPage = () => {
                           </figure>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">{school.infos.address}</p>
+                          <p className="truncate w-24">
+                            {school.infos.address}
+                          </p>
                         </td>
                         <td className="px-2 py-1 ">
                           <p className="w-25 truncate">{school.created_at}</p>
