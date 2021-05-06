@@ -24,6 +24,20 @@ const ReviewsPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
+  const [reviewsSearch, setUsersSearch] = useState(reviews);
+  useEffect(() => {
+    const reviewsSearch = reviews.filter((review) => {    
+                      if (
+                        (review.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return review;
+                      }
+                    })
+                    setUsersSearch(reviewsSearch)
+  }, [search, reviews]);
+
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -107,7 +121,7 @@ const ReviewsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {reviews?.length === 0 && status !== `loading` && (
+                {reviewsSearch?.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -125,7 +139,7 @@ const ReviewsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {reviews.map((review, key) => (
+                  {reviewsSearch.map((review, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -183,7 +197,7 @@ const ReviewsPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {reviews.length != 0 && (
+                  {reviewsSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -197,16 +211,8 @@ const ReviewsPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {reviews
-                     .filter((review) => {
-                      if (search === "") {
-                        return review;
-                      } else if (
-                        (review.name??``).toLowerCase().includes((search??``).toLowerCase())
-                      ) {
-                        return review;
-                      }
-                    })
+                    {reviewsSearch
+                     
 
                     .map((review, key) => (
                       <tr
