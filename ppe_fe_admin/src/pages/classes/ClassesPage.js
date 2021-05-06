@@ -26,18 +26,15 @@ const ClassesPage = () => {
   const [search, setSearch] = useState(``);
   const [classesSearch, setUsersSearch] = useState(classes);
   useEffect(() => {
-    const classesSearch = classes.filter((classe1) => {    
-                      if (
-                        (class1.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return class1;
-                      }
-                    })
-                    setUsersSearch(classesSearch)
+    const classesSearch = classes.filter((classe1) => {
+      if (
+        (class1.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return class1;
+      }
+    });
+    setUsersSearch(classesSearch);
   }, [search, classes]);
-
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -53,7 +50,6 @@ const ClassesPage = () => {
         <div className="grid grid-cols-12 gap-4 mx-6 ">
           <div className="col-span-12 flex items-center justify-between mt-6 ">
             <h1 className="text-xl font-bold">Classes</h1>
-           
           </div>
           <Filter />
           <div className="col-span-9 ">
@@ -73,7 +69,10 @@ const ClassesPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All classes"onChange={(e) => setSearch(e.target.value)}   />
+                <InputIcon
+                  placeholder="Search All classes"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -88,7 +87,7 @@ const ClassesPage = () => {
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-{/* 
+                  {/* 
                   <Button
                     type={`button`}
                     title={`Banned`}
@@ -138,9 +137,7 @@ const ClassesPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {classesSearch 
-                  
-                  .map((classe1, key) => (
+                  {classesSearch.map((classe1, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
@@ -198,10 +195,9 @@ const ClassesPage = () => {
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
                         <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
+                        <td className="px-2 py-1">total courses</td>
+                        <td className="px-2 py-1"> total learners</td>
+                        <td className="px-2 py-1"> total teachers</td>
                       </tr>
                     </thead>
                   )}
@@ -249,11 +245,15 @@ const ClassesPage = () => {
                           </figure>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
+                          {Object.keys(classe.courses).length}
                         </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                        <td className="px-2 py-1">
+                          {" "}
+                          {Object.keys(classe.learners).length}
+                        </td>
+                        <td className="px-2 py-1">
+                          {Object.keys(classe.teachers).length}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

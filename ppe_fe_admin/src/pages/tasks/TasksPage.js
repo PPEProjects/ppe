@@ -23,7 +23,20 @@ const TasksPage = () => {
   const { projectsObj } = useSelector(projectsSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+
   const [search, setSearch] = useState(``);
+  const [tasksSearch, setUsersSearch] = useState(tasks);
+  useEffect(() => {
+    const tasksSearch = tasks.filter((task) => {
+      if (
+        (task.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return tasks;
+      }
+    });
+    setUsersSearch(tasksSearch);
+  }, [search, tasks]);
+
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjectsObj());
@@ -58,7 +71,10 @@ const TasksPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All tasks" onChange={(e) => setSearch(e.target.value)}  />
+                <InputIcon
+                  placeholder="Search All tasks"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -105,7 +121,7 @@ const TasksPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {tasks.length === 0 && status !== `loading` && (
+                {tasksSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -123,17 +139,7 @@ const TasksPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {tasks 
-                  .filter((task) => {
-                    if (search === "") {
-                      return task;
-                    } else if (
-                      (task.name??``).toLowerCase().includes((search??``).toLowerCase())
-                    ) {
-                      return task;
-                    }
-                  })
-                  .map((task, key) => (
+                  {tasksSearch.map((task, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -173,7 +179,7 @@ const TasksPage = () => {
                         </div>
                         <div className="mx-2 my-2">
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
-                            [{task.contents.length}] {task.content}
+                            {task.content}
                           </h2>
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="">
@@ -181,9 +187,6 @@ const TasksPage = () => {
                             </p>
                             <p className="">
                               Updated at: {moment(task.created_at).fromNow()}
-                            </p>
-                            <p className="text-sm text-indigo-700">
-                              Type: {task.type}
                             </p>
                           </div>
                         </div>
@@ -194,7 +197,7 @@ const TasksPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {tasks.length != 0 && (
+                  {tasksSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -208,7 +211,7 @@ const TasksPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {tasks.map((task, key) => (
+                    {tasksSearch.map((task, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}

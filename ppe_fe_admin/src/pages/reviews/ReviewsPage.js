@@ -24,6 +24,17 @@ const ReviewsPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
+  const [reviewsSearch, setUsersSearch] = useState(reviews);
+  useEffect(() => {
+    const reviewsSearch = reviews.filter((review) => {
+      if (
+        (review.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return review;
+      }
+    });
+    setUsersSearch(reviewsSearch);
+  }, [search, reviews]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -60,7 +71,10 @@ const ReviewsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All reviews"  onChange={(e) => setSearch(e.target.value)} />
+                <InputIcon
+                  placeholder="Search All reviews"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -107,7 +121,7 @@ const ReviewsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {reviews?.length === 0 && status !== `loading` && (
+                {reviewsSearch?.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -125,7 +139,7 @@ const ReviewsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {reviews.map((review, key) => (
+                  {reviewsSearch.map((review, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -183,38 +197,26 @@ const ReviewsPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {reviews.length != 0 && (
+                  {reviewsSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
-                        <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
+                        <td className="px-2 py-1"> Title</td>
+                        <td className="px-2 py-1"> Content</td>
                       </tr>
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {reviews
-                     .filter((review) => {
-                      if (search === "") {
-                        return review;
-                      } else if (
-                        (review.name??``).toLowerCase().includes((search??``).toLowerCase())
-                      ) {
-                        return review;
-                      }
-                    })
-
-                    .map((review, key) => (
+                    {reviewsSearch.map((review, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}
                         onClick={() => {
                           dispatch(
-                            setFormData({ checkboxes: { types: review.types } })
+                            setFormData({
+                              checkboxes: { types: review.types },
+                            })
                           );
                           dispatch(
                             setDetailData({ isShow: true, review: review })
@@ -234,28 +236,8 @@ const ReviewsPage = () => {
                         <td className="px-2 py-1 ">
                           <p className="w-10 truncate">{review.id}</p>
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
-                          <figure className="flex items-center">
-                            <div className="w-10">
-                              <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                                <img
-                                  alt=""
-                                  src={review.image}
-                                  className="absolute h-full w-full object-cover"
-                                />
-                              </div>
-                            </div>
-                            <figcaption className="ml-2">
-                              {review.title}
-                            </figcaption>
-                          </figure>
-                        </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
-                        </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                        <td className="px-2 py-1">{review.title}</td>
+                        <td className="px-2 py-1">{review.content}</td>
                       </tr>
                     ))}
                   </tbody>

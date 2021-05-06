@@ -25,16 +25,16 @@ const CompaniesPage = () => {
   const [search, setSearch] = useState(``);
   const [companiesSearch, setUsersSearch] = useState(companies);
   useEffect(() => {
-    const companiesSearch = companies.filter((course) => {    
-                      if (
-                        (company.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return company;
-                      }
-                    })
-                    setUsersSearch(companiesSearch)
+    const companiesSearch = companies.filter((course) => {
+      if (
+        (company.name ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
+      ) {
+        return company;
+      }
+    });
+    setUsersSearch(companiesSearch);
   }, [search, companies]);
 
   useEffect(() => {
@@ -72,7 +72,10 @@ const CompaniesPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All companies"  onChange={(e) => setSearch(e.target.value)}/>
+                <InputIcon
+                  placeholder="Search All companies"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -87,7 +90,7 @@ const CompaniesPage = () => {
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-{/* 
+                  {/* 
                   <Button
                     type={`button`}
                     title={`Banned`}
@@ -137,17 +140,15 @@ const CompaniesPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {companiesSearch
-                  
-                  .map((company, key) => (
+                  {companiesSearch.map((company, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { members: company.members },
-                            })
-                          );
+                          let checkboxes = {
+                            syllabus_ids: company.syllabus_ids,
+                            teachers: company.teachers,
+                          };
+                          dispatch(setFormData({ checkboxes: checkboxes }));
                           dispatch(
                             setDetailData({ isShow: true, company: company })
                           );
@@ -209,10 +210,8 @@ const CompaniesPage = () => {
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
                         <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
+                        <td className="px-2 py-1">Member</td>
+                        <td className="px-2 py-1"> Address</td>
                       </tr>
                     </thead>
                   )}
@@ -262,11 +261,11 @@ const CompaniesPage = () => {
                           </figure>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
+                          <p className="truncate w-24">
+                            {Object.keys(company.more.members).length}
+                          </p>
                         </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                        <td className="px-2 py-1">{company.more.address}</td>
                       </tr>
                     ))}
                   </tbody>

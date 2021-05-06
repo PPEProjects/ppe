@@ -28,6 +28,19 @@ const SchoolsPage = () => {
 
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
+  const [schoolsSearch, setUsersSearch] = useState(schools);
+  useEffect(() => {
+    const schoolsSearch = schools.filter((school) => {    
+                      if (
+                        (school.name ?? ``)
+                          .toLowerCase()
+                          .includes((search ?? ``).toLowerCase())
+                      ) {
+                        return school;
+                      }
+                    })
+                    setUsersSearch(schoolsSearch)
+  }, [search, schools]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -111,7 +124,7 @@ const SchoolsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {schools.length === 0 && status !== `loading` && (
+                {schoolsSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -129,16 +142,8 @@ const SchoolsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {schools
-                  .filter((school) => {
-                    if (search === "") {
-                      return school;
-                    } else if (
-                      (school.name??``).toLowerCase().includes((search??``).toLowerCase())
-                    ) {
-                      return school;
-                    }
-                  })
+                  {schoolsSearch
+                  
                   .map((school, key) => (
                     <div className="col-span-3" key={key}>
                       <Link

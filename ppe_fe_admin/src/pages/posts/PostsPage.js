@@ -27,18 +27,15 @@ const PostsPage = () => {
   const [search, setSearch] = useState(``);
   const [postsSearch, setUsersSearch] = useState(posts);
   useEffect(() => {
-    const postsSearch = posts.filter((post) => {    
-                      if (
-                        (post.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return post;
-                      }
-                    })
-                    setUsersSearch(postsSearch)
+    const postsSearch = posts.filter((post) => {
+      if (
+        (post.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return post;
+      }
+    });
+    setUsersSearch(postsSearch);
   }, [search, posts]);
-
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -77,7 +74,10 @@ const PostsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All posts" onChange={(e) => setSearch(e.target.value)}  />
+                <InputIcon
+                  placeholder="Search All posts"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -93,7 +93,7 @@ const PostsPage = () => {
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-{/* 
+                  {/* 
                   <Button
                     type={`button`}
                     title={`Banned`}
@@ -144,9 +144,7 @@ const PostsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {postsSearch
-                   
-                  .map((post, key) => (
+                  {postsSearch.map((post, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -239,7 +237,7 @@ const PostsPage = () => {
                                   />
                                 </div>
                               </div>
-                              <figcaption className="ml-2">
+                              <figcaption className="ml-2 truncate w-25">
                                 {post.title}
                               </figcaption>
                             </figure>

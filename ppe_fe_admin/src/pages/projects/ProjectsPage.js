@@ -25,18 +25,17 @@ const ProjectsPage = () => {
   const [search, setSearch] = useState(``);
   const [projectsSearch, setUsersSearch] = useState(projects);
   useEffect(() => {
-    const projectsSearch = projects.filter((project) => {    
-                      if (
-                        (project.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return project;
-                      }
-                    })
-                    setUsersSearch(projectsSearch)
+    const projectsSearch = projects.filter((project) => {
+      if (
+        (project.name ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
+      ) {
+        return project;
+      }
+    });
+    setUsersSearch(projectsSearch);
   }, [search, projects]);
-
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -73,7 +72,10 @@ const ProjectsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All projects"  onChange={(e) => setSearch(e.target.value)} />
+                <InputIcon
+                  placeholder="Search All projects"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -138,8 +140,7 @@ const ProjectsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {projectsSearch
-                  .map((project, key) => (
+                  {projectsSearch.map((project, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
@@ -212,10 +213,10 @@ const ProjectsPage = () => {
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
                         <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
+                        <td className="px-2 py-1">Deadline</td>
+                        <td className="px-2 py-1"> Cost</td>
+                        <td className="px-2 py-1"> Cevenue</td>
+                        <td className="px-2 py-1">Installs_number</td>
                       </tr>
                     </thead>
                   )}
@@ -265,11 +266,15 @@ const ProjectsPage = () => {
                           </figure>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
+                          <p className="truncate w-24">
+                            {project.more.deadline}
+                          </p>
                         </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                        <td className="px-2 py-1">{project.more.cost}</td>
+                        <td className="px-2 py-1">{project.more.revenue}</td>
+                        <td className="px-2 py-1">
+                          {project.more.installs_number}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

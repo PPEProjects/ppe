@@ -28,18 +28,15 @@ const JobsPage = () => {
   const [search, setSearch] = useState(``);
   const [jobsSearch, setUsersSearch] = useState(jobs);
   useEffect(() => {
-    const coursesSearch = jobs.filter((job) => {    
-                      if (
-                        (job.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return job;
-                      }
-                    })
-                    setUsersSearch(jobsSearch)
+    const jobsSearch = jobs.filter((job) => {
+      if (
+        (job.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return job;
+      }
+    });
+    setUsersSearch(jobsSearch);
   }, [search, jobs]);
-
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -76,7 +73,10 @@ const JobsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All jobs" onChange={(e) => setSearch(e.target.value)}  />
+                <InputIcon
+                  placeholder="Search All jobs"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -141,9 +141,7 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {jobsSearch 
-                  
-                  .map((job, key) => (
+                  {jobsSearch.map((job, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -183,7 +181,7 @@ const JobsPage = () => {
                         </div>
                         <div className="mx-2 my-2">
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
-                            [{job.descriptions.length}] {job.title}
+                            {job.title}
                           </h2>
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="">
@@ -210,10 +208,10 @@ const JobsPage = () => {
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
                         <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
+                        <td className="px-2 py-1">Title</td>
+                        <td className="px-2 py-1"> Address</td>
+                        <td className="px-2 py-1"> Salary</td>
+                        <td className="px-2 py-1">Type</td>
                       </tr>
                     </thead>
                   )}
@@ -257,11 +255,13 @@ const JobsPage = () => {
                           </figure>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
+                          <p className="truncate w-24">{job.title}</p>
                         </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                        <td className="px-2 py-1">{job.more.address}</td>
+                        <td className="px-2 py-1">
+                          {Object.keys(job.more.salary).length}
+                        </td>
+                        <td className="px-2 py-1">{job.type}</td>
                       </tr>
                     ))}
                   </tbody>
