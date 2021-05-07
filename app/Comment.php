@@ -24,7 +24,7 @@ class Comment extends Model
     public static function validator($request, $excepts=[])
     {
         $makes = [
-            'files.images' => 'required',
+//            'files.images' => 'required',
             'post_id' => 'required',
             'content' => 'required',
         ];
