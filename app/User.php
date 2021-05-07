@@ -96,7 +96,7 @@ class User extends Authenticatable implements MustVerifyEmail
                 'infos.gender' => 'required',
                 'infos.birthday' => 'required',
                 'infos.phone' => 'required',
-                'infos.email' => 'required',
+//                'infos.email' => 'required',
                 'infos.major' => 'required',
                 'infos.school' => 'required',
                 'infos.hobby' => 'required',
@@ -104,8 +104,8 @@ class User extends Authenticatable implements MustVerifyEmail
 //                'infos.zalo_id' => 'required',
 //                'infos.line_id' => 'required',
                 'infos.course_id' => 'required',
-                'infos.day_to_join' => 'required',
-                'infos.time_to_join' => 'required',
+//                'infos.day_to_join' => 'required',
+//                'infos.time_to_join' => 'required',
             ]);
             if ($validator->fails()) {
                 return $validator;

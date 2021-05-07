@@ -206,7 +206,7 @@ const CoursesPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {courses.map((course, key) => (
+                    {coursesSearch.map((course, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}
