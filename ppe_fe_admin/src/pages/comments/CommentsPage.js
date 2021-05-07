@@ -29,16 +29,16 @@ const CommentsPage = () => {
   const [search, setSearch] = useState(``);
   const [commentsSearch, setUsersSearch] = useState(comments);
   useEffect(() => {
-    const commentsSearch = comments.filter((comment) => {    
-                      if (
-                        (comment.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return comment;
-                      }
-                    })
-                    setUsersSearch(commentsSearch)
+    const commentsSearch = comments.filter((comment) => {
+      if (
+        (comment.content ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
+      ) {
+        return comment;
+      }
+    });
+    setUsersSearch(commentsSearch);
   }, [search, comments]);
 
   useEffect(() => {
@@ -76,7 +76,10 @@ const CommentsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All comments" onChange={(e) => setSearch(e.target.value)} />
+                <InputIcon
+                  placeholder="Search All comments"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -141,8 +144,7 @@ const CommentsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {commentsSearch
-                  .map((comment, key) => (
+                  {commentsSearch.map((comment, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>

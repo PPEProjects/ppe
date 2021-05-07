@@ -29,7 +29,7 @@ const PostsPage = () => {
   useEffect(() => {
     const postsSearch = posts.filter((post) => {
       if (
-        (post.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+        (post.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
       ) {
         return post;
       }

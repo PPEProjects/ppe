@@ -28,9 +28,11 @@ const ClassesPage = () => {
   useEffect(() => {
     const classesSearch = classes.filter((classe1) => {
       if (
-        (class1.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+        (classe1.name ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
       ) {
-        return class1;
+        return classe1;
       }
     });
     setUsersSearch(classesSearch);

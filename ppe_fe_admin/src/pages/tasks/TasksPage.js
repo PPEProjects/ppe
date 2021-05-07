@@ -29,7 +29,9 @@ const TasksPage = () => {
   useEffect(() => {
     const tasksSearch = tasks.filter((task) => {
       if (
-        (task.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+        (task.contents[0].name ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
       ) {
         return tasks;
       }

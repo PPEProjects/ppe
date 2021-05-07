@@ -29,7 +29,7 @@ const ReleasesPage = () => {
   useEffect(() => {
     const releasesSearch = releases.filter((release) => {
       if (
-        (release.name ?? ``)
+        (release.contents[0].name ?? ``)
           .toLowerCase()
           .includes((search ?? ``).toLowerCase())
       ) {
