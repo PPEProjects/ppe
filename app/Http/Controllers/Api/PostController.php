@@ -125,7 +125,7 @@ class PostController extends BaseController
         }
         $data = $request->except(['_method', 'files_before']);
         $data['files'] = File::add_images(@$data['files']);
-        $data['descriptions'] = File::descriptions_files(@$data['descriptions']);
+//        $data['descriptions'] = File::descriptions_files(@$data['descriptions']);
 
         $update = Post::where('id', $id)->update($data);
         return response()->json($data);
