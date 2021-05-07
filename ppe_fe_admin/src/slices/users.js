@@ -77,25 +77,22 @@ export function deleteUser(user) {
   };
 }
 
-export function deleteUsers() {
+export function deleteUsers(user) {
   return async (dispatch, getState) => {
     const {selects} = getState().form
-    // let selects1 = JSON.parse(JSON.stringify(selects))
     let confirm = await Confirm({
       t: `Confirm`,
-      c: [`Do you want to delete: ${!Object.keys(selects).length} users`],
+      c: [`Do you want to delete: ${Object.keys(selects).length} users`],
     });
     if (!confirm) return;
-    // let params = { chooses: {} };
-    // params.chooses[user.id] = user.id;
-    // let res = await Ajax.delete(`/users/${user.id}`, params);
-    // if (res.status === `error`) {
-    //   Alert({ t: res.status, c: res.errors });
-    //   return;
-    // }
-    // window.location.reload();
-    //
-    // dispatch(getUsers());
+    let params = { chooses: selects };
+    let res = await Ajax.delete(`/users/1`, params);
+    if (res.status === `error`) {
+      Alert({ t: res.status, c: res.errors });
+      return;
+    }
+    window.location.reload();
+    dispatch(getUsers());
   };
 }
 
