@@ -29,7 +29,9 @@ const TasksPage = () => {
   useEffect(() => {
     const tasksSearch = tasks.filter((task) => {
       if (
-        (task.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+        (task.contents[0].name ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
       ) {
         return tasks;
       }
@@ -203,10 +205,7 @@ const TasksPage = () => {
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
                         <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
+                        <td className="px-2 py-1 ">Status</td>
                       </tr>
                     </thead>
                   )}
@@ -236,27 +235,11 @@ const TasksPage = () => {
                           <p className="w-10 truncate">{task.id}</p>
                         </td>
                         <td className="px-2 py-1 text-indigo-700 ">
-                          <figure className="flex items-center">
-                            <div className="w-10">
-                              <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                                <img
-                                  alt=""
-                                  src={task.image}
-                                  className="absolute h-full w-full object-cover"
-                                />
-                              </div>
-                            </div>
-                            <figcaption className="ml-2">
-                              {task.name}
-                            </figcaption>
-                          </figure>
+                          {task.contents[0].name}
                         </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
+                        <td className="px-2 py-1 text-indigo-700 ">
+                          {task.contents[0].status}
                         </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
                       </tr>
                     ))}
                   </tbody>

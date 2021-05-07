@@ -39,7 +39,6 @@ const UsersPage = () => {
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
-    // if(filterOpen)
     dispatch(getUsers(filterOpen));
     let url = window.location.href;
     dispatch(setSidebarData({ url }));
@@ -171,7 +170,18 @@ const UsersPage = () => {
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {usersSearch.map((user, key) => (
-                    <div className="col-span-3" key={key}>
+                    <div
+                      className="col-span-3 "
+                      key={key}
+                      onClick={() => {
+                        dispatch(
+                          setFormData({
+                            checkboxes: { types: user.types },
+                          })
+                        );
+                        dispatch(setDetailData({ isShow: true, user: user }));
+                      }}
+                    >
                       <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
@@ -200,7 +210,9 @@ const UsersPage = () => {
                               );
                             }}
                           >
-                            {user.name}
+                            {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
+                            
+                            {/* {user.name} */}
                           </h1>
 
                           <div className={`text-gray-500 text-xs truncate`}>
@@ -233,7 +245,7 @@ const UsersPage = () => {
 
               {status === `success` && mode === `table` && (
                 <table className="table-auto text-sm w-full">
-                  {users.length !== 0 && (
+                  {usersSearch.length !== 0 && (
                     <thead className="border-black border-b">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -247,7 +259,7 @@ const UsersPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {users.map((user) => (
+                    {usersSearch.map((user) => (
                       <tr key={user.id}>
                         <td className="pl-4 pr-2 py-1 ">
                           <button
@@ -262,10 +274,34 @@ const UsersPage = () => {
                             )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: user.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, user: user })
+                            );
+                          }}
+                        >
                           <p className="w-10 truncate">{user.id}</p>
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
+                        <td
+                          className="px-2 py-1 text-indigo-700 cursor-pointer"
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: user.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, user: user })
+                            );
+                          }}
+                        >
                           <figure className="flex items-center">
                             <div className="w-10">
                               <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
@@ -276,20 +312,10 @@ const UsersPage = () => {
                                 />
                               </div>
                             </div>
-                            <figcaption
-                              className="ml-2 truncate w-24 cursor-pointer"
-                              onClick={() => {
-                                dispatch(
-                                  setFormData({
-                                    checkboxes: { types: user.types },
-                                  })
-                                );
-                                dispatch(
-                                  setDetailData({ isShow: true, user: user })
-                                );
-                              }}
-                            >
-                               {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
+                            <figcaption className="ml-2 truncate w-24 cursor-pointer">
+                              {user.name !== null
+                                ? user.name
+                                : user?.infos_lang?.vi?.name}
                             </figcaption>
                           </figure>
                         </td>
@@ -297,7 +323,8 @@ const UsersPage = () => {
                           <p className="truncate w-24">{user?.infos?.phone}</p>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24" 
+                          <p
+                            className="truncate w-24 cursor-pointer"
                             onClick={() => {
                               dispatch(
                                 setFormData({
@@ -307,7 +334,10 @@ const UsersPage = () => {
                               dispatch(
                                 setDetailData({ isShow: true, user: user })
                               );
-                            }}>{user.email}</p>
+                            }}
+                          >
+                            {user.email}
+                          </p>
                         </td>
                         {/* <td className="py-1 truncate w-24">{user.email}</td> */}
                         <td className="px-2 py-1">{learners[user.id]?.name}</td>
@@ -321,7 +351,6 @@ const UsersPage = () => {
                         </td>
                       </tr>
                     ))}
-                    
                   </tbody>
                 </table>
               )}

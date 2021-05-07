@@ -29,7 +29,7 @@ const PostsPage = () => {
   useEffect(() => {
     const postsSearch = posts.filter((post) => {
       if (
-        (post.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+        (post.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
       ) {
         return post;
       }
@@ -69,7 +69,7 @@ const PostsPage = () => {
                     to={`/PostsCreatePage`}
                     className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
-                    <span className="mx-2">Add posts</span>
+                    <span className="mx-2">Add post</span>
                   </Link>
                 </div>
               </div>
@@ -189,7 +189,7 @@ const PostsPage = () => {
               {status === `success` && mode === `table` && (
                 <div className="overflow-auto">
                   <table className=" table-auto text-sm w-full">
-                    {posts.length != 0 && (
+                    {postsSearch.length != 0 && (
                       <thead className="border-black border-b ">
                         <tr className="">
                           <td className="px-2 py-1"></td>
@@ -203,7 +203,7 @@ const PostsPage = () => {
                       </thead>
                     )}
                     <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                      {posts.map((post, key) => (
+                      {postsSearch.map((post, key) => (
                         <tr
                           className="cursor-pointer"
                           key={key}

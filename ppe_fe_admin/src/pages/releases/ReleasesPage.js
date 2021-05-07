@@ -29,7 +29,7 @@ const ReleasesPage = () => {
   useEffect(() => {
     const releasesSearch = releases.filter((release) => {
       if (
-        (release.name ?? ``)
+        (release.contents[0].name ?? ``)
           .toLowerCase()
           .includes((search ?? ``).toLowerCase())
       ) {
@@ -198,7 +198,7 @@ const ReleasesPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {releases.length != 0 && (
+                  {releasesSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -209,7 +209,7 @@ const ReleasesPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {releases.map((release, key) => (
+                    {releasesSearch.map((release, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}
@@ -239,7 +239,7 @@ const ReleasesPage = () => {
                         </td>
                         <td className="px-2 py-1 ">
                           <p className=" truncate">
-                            {projectsObj[release?.project_id]?.name}
+                            {release.contents[0].name}
                           </p>
                         </td>
 

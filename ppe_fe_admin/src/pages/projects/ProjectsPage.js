@@ -207,7 +207,7 @@ const ProjectsPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {projects.length != 0 && (
+                  {projectsSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -221,7 +221,7 @@ const ProjectsPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {projects.map((project, key) => (
+                    {projectsSearch.map((project, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}

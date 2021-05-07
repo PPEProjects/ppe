@@ -115,7 +115,7 @@ const Sidebar = () => {
             </li>
             <li className="relative">
               <Link
-                 to={`/UsersPage?type=Japanese learner`}
+                to={`/UsersPage?type=Japanese learner`}
                 className={`${
                   url.match(/\/UsersPage[^\?]*\?type=Japanese/gim)
                     ? `font-bold text-indigo-600 bg-blue-100`
@@ -444,7 +444,9 @@ const Sidebar = () => {
                   />
                 </div>
               </div>
-              <figcaption className="ml-2">{user.name}</figcaption>
+              <figcaption className="ml-2 truncate w-24">
+                {user.name}
+              </figcaption>
             </figure>
             <i className="material-icons">
               {opens["UserInfo"] ? `keyboard_arrow_up` : `expand_more`}

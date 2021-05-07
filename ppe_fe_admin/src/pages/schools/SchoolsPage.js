@@ -72,7 +72,7 @@ const SchoolsPage = () => {
                     to={`/SchoolsCreatePage`}
                     className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
-                    <span className="mx-2">Add schools</span>
+                    <span className="mx-2">Add school</span>
                   </Link>
                 </div>
               </div>
@@ -142,9 +142,7 @@ const SchoolsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {schoolsSearch
-                  
-                  .map((school, key) => (
+                  {schoolsSearch.map((school, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() => {
@@ -197,7 +195,7 @@ const SchoolsPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {schools.length != 0 && (
+                  {schoolsSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -210,7 +208,7 @@ const SchoolsPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {schools.map((school, key) => (
+                    {schoolsSearch.map((school, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}
