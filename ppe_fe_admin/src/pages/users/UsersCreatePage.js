@@ -22,6 +22,10 @@ const UsersCreatePage = () => {
     const history = useHistory();
 
     useEffect(() => {
+        console.log('1', 1)
+        dispatch(setFormData({checkboxes: {}}))
+    }, []);
+    useEffect(() => {
         setTypes(checkboxes.types ?? {})
         console.log('types 2', types)
     }, [checkboxes]);
@@ -59,7 +63,6 @@ const UsersCreatePage = () => {
 
     return (
         <form onSubmit={(e) => userSAVE(e)} className="w-full my-10">
-
             <main className="w-full max-w-3xl mx-auto rounded">
                 <h1 className="font-bold text-lg text-gray-700">Add User Manually</h1>
                 <section
@@ -106,7 +109,6 @@ const UsersCreatePage = () => {
                         <div className="flex -mb-3"><span className="block font-medium">Roles</span><b
                             className="text-red-600 ml-1"> (*)</b></div>
                         <Checkbox
-
                             name={`types`}
                             values={[
                                 `Admin`,
