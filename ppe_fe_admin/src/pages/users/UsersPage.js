@@ -39,7 +39,6 @@ const UsersPage = () => {
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
-    // if(filterOpen)
     dispatch(getUsers(filterOpen));
     let url = window.location.href;
     dispatch(setSidebarData({ url }));
@@ -52,6 +51,8 @@ const UsersPage = () => {
   }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
+    // console.log("learners", learners);
+
     return (
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
@@ -210,7 +211,9 @@ const UsersPage = () => {
                               );
                             }}
                           >
-                            {user.name}
+                            {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
+                            
+                            {/* {user.name} */}
                           </h1>
 
                           <div className={`text-gray-500 text-xs truncate`}>

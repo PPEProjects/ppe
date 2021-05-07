@@ -77,7 +77,7 @@ const ClassesCreatePage = () => {
   return (
     <form onSubmit={(e) => classeSAVE(e)} className="w-full my-10">
       <main className="w-full max-w-3xl mx-auto rounded">
-        <h1 className="font-bold text-lg text-gray-700">Add Classe Manually</h1>
+        <h1 className="font-bold text-lg text-gray-700">Add Class Manually</h1>
         <section
           className={`${
             show !== 1 ? `hidden` : ``
