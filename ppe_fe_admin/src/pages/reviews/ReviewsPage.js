@@ -61,7 +61,7 @@ const ReviewsPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{reviews?.length}</b>
-                  <p className="text-gray-600">reviews</p>
+                  <p className="text-gray-600">{reviews?.length ===0 || reviews?.length === 1 ? "Review" : "Reviews"}</p>
                 </div>
                 <div className="flex ">
                   <Link

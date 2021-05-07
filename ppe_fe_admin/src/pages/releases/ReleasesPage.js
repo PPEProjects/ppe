@@ -60,7 +60,7 @@ const ReleasesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{releases?.length}</b>
-                  <p className="text-gray-600">releases</p>
+                  <p className="text-gray-600">{releases?.length ===0 || releases?.length === 1 ? "Release" : "Releases"}</p>
                 </div>
                 <div className="flex ">
                   <Link

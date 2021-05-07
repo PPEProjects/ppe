@@ -36,7 +36,7 @@ const PostsEditForm = () => {
     e.preventDefault();
     const params = new FormData(e.target);
     params.set("content", JSON.stringify(editorData));
-    let res = await Ajax.put(`/posts/${post.id}`, params);
+      let res = await Ajax.put(`/posts/${post.id}`, params);
     if (res.status === `error`) {
       Alert({ t: res.status, c: res.errors });
       return;

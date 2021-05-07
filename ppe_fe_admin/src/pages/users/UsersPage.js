@@ -52,6 +52,7 @@ const UsersPage = () => {
   }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
+
     return (
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
@@ -76,7 +77,7 @@ const UsersPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{users?.length}</b>
-                  <p className="text-gray-600">Users</p>
+                  <p className="text-gray-600">{users.length ===0 || users.length === 1 ? "User" : "Users"}</p>
                 </div>
                 <div className="flex ">
                   <Link

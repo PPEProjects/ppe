@@ -28,7 +28,6 @@ const FilterUser = () => {
   useEffect(() => {
     fetchData();
     async function fetchData() {
-      // return;
       let res = await Ajax.get(`/users`, {
         types: [userType],
         status: filterOpen,
