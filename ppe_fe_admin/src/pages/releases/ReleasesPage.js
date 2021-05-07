@@ -239,7 +239,7 @@ const ReleasesPage = () => {
                         </td>
                         <td className="px-2 py-1 ">
                           <p className=" truncate">
-                            {projectsObj[release?.project_id]?.name}
+                            {release.contents[0].name}
                           </p>
                         </td>
 
