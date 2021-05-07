@@ -51,7 +51,7 @@ const UsersPage = () => {
   }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
-    console.log("learners", learners);
+    // console.log("learners", learners);
 
     return (
       <aside className="w-full">

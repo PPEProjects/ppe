@@ -141,7 +141,7 @@ const CoursesEditForm = () => {
                     <label className="block mt-4">
                         <div className="flex -mb-3"><span className="block font-medium">Tuition</span><b
                             className="text-red-600 ml-1"> (*)</b></div>
-                        <Input
+                        <InputNumber
                             name={`more[price]`}
                             type={`number`}
                             value={course.more.price}
@@ -150,7 +150,7 @@ const CoursesEditForm = () => {
                     <label className="block mt-4">
                         <div className="flex -mb-3"><span className="block font-medium">Discount to</span><b
                             className="text-red-600 ml-1"> (*)</b></div>
-                        <Input
+                        <InputNumber
                             name={`more[discount]`}
                             type={`number`}
                             value={course.more.discount}
