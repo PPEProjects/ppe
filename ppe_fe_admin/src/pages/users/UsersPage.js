@@ -171,7 +171,18 @@ const UsersPage = () => {
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {usersSearch.map((user, key) => (
-                    <div className="col-span-3" key={key}>
+                    <div
+                      className="col-span-3 "
+                      key={key}
+                      onClick={() => {
+                        dispatch(
+                          setFormData({
+                            checkboxes: { types: user.types },
+                          })
+                        );
+                        dispatch(setDetailData({ isShow: true, user: user }));
+                      }}
+                    >
                       <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
@@ -187,21 +198,11 @@ const UsersPage = () => {
                           />
                         </div>
                         <div className="mx-2 my-2">
-                          <h1
-                            className="truncate-2y text-sm leading-5 font-semibold"
-                            onClick={() => {
-                              dispatch(
-                                setFormData({
-                                  checkboxes: { types: user.types },
-                                })
-                              );
-                              dispatch(
-                                setDetailData({ isShow: true, user: user })
-                              );
-                            }}
-                          >
-                            {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
-                            
+                          <h1 className="truncate-2y text-sm leading-5 font-semibold">
+                            {user.name !== null
+                              ? user.name
+                              : user?.infos_lang?.vi?.name}
+
                             {/* {user.name} */}
                           </h1>
 
@@ -264,10 +265,34 @@ const UsersPage = () => {
                             )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: user.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, user: user })
+                            );
+                          }}
+                        >
                           <p className="w-10 truncate">{user.id}</p>
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
+                        <td
+                          className="px-2 py-1 text-indigo-700 cursor-pointer"
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: user.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, user: user })
+                            );
+                          }}
+                        >
                           <figure className="flex items-center">
                             <div className="w-10">
                               <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
@@ -278,20 +303,10 @@ const UsersPage = () => {
                                 />
                               </div>
                             </div>
-                            <figcaption
-                              className="ml-2 truncate w-24 cursor-pointer"
-                              onClick={() => {
-                                dispatch(
-                                  setFormData({
-                                    checkboxes: { types: user.types },
-                                  })
-                                );
-                                dispatch(
-                                  setDetailData({ isShow: true, user: user })
-                                );
-                              }}
-                            >
-                               {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
+                            <figcaption className="ml-2 truncate w-24 cursor-pointer">
+                              {user.name !== null
+                                ? user.name
+                                : user?.infos_lang?.vi?.name}
                             </figcaption>
                           </figure>
                         </td>
@@ -299,7 +314,8 @@ const UsersPage = () => {
                           <p className="truncate w-24">{user?.infos?.phone}</p>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24" 
+                          <p
+                            className="truncate w-24 cursor-pointer"
                             onClick={() => {
                               dispatch(
                                 setFormData({
@@ -309,7 +325,10 @@ const UsersPage = () => {
                               dispatch(
                                 setDetailData({ isShow: true, user: user })
                               );
-                            }}>{user.email}</p>
+                            }}
+                          >
+                            {user.email}
+                          </p>
                         </td>
                         {/* <td className="py-1 truncate w-24">{user.email}</td> */}
                         <td className="px-2 py-1">{learners[user.id]?.name}</td>
@@ -323,7 +342,6 @@ const UsersPage = () => {
                         </td>
                       </tr>
                     ))}
-                    
                   </tbody>
                 </table>
               )}
