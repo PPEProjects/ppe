@@ -78,7 +78,7 @@ class PostController extends BaseController
         $data = $request->except([]);
         $data['user_id'] = $user['id'];
         $data['files'] = File::add_images(@$data['files']);
-        $data['descriptions'] = File::descriptions_files(@$data['descriptions']);
+//        $data['descriptions'] = File::descriptions_files(@$data['descriptions']);
         $data['status'] = 'Activated';
         $create = Post::create($data);
         return response()->json($create);
