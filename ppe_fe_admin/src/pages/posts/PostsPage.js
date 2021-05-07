@@ -69,7 +69,7 @@ const PostsPage = () => {
                     to={`/PostsCreatePage`}
                     className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
-                    <span className="mx-2">Add posts</span>
+                    <span className="mx-2">Add post</span>
                   </Link>
                 </div>
               </div>
