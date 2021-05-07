@@ -199,7 +199,7 @@ const CoursesPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {courses.length != 0 && (
+                  {coursesSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -212,7 +212,7 @@ const CoursesPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {courses.map((course, key) => (
+                    {coursesSearch.map((course, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}
