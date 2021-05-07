@@ -26,7 +26,7 @@ class PostController extends BaseController
                 ->get()
                 ->keyBy($request->keyBy)
                 ->toArray();
-            $data['posts'] = File::getImageDescription($data['posts']);
+//            $data['posts'] = File::getImageDescription($data['posts']);
             return response()->json($data);
         }
         if($request->lang && !$request->status){
@@ -36,7 +36,7 @@ class PostController extends BaseController
                 ->orderBy('id', 'desc')
                 ->get()
                 ->toArray();
-            $data['posts'] = File::getImageDescription($data['posts']);
+//            $data['posts'] = File::getImageDescription($data['posts']);
             return response()->json($data);
         }
         $data['posts'] = Post::select('*');
@@ -47,7 +47,7 @@ class PostController extends BaseController
             ->orderBy('id', 'desc')
             ->get()
             ->toArray();
-        $data['posts'] = File::getImageDescription($data['posts']);
+//        $data['posts'] = File::getImageDescription($data['posts']);
         return response()->json($data);
     }
 
