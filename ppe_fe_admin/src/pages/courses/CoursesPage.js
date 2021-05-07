@@ -15,7 +15,6 @@ import Language from "../../components/Language";
 
 const CoursesPage = () => {
   const { course, courses, status } = useSelector(coursesSelector);
-
   const location = useLocation();
   const dispatch = useDispatch();
   const { url, opens } = useSelector(sidebarSelector);
@@ -88,11 +87,6 @@ const CoursesPage = () => {
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-                  {/* <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -212,7 +206,7 @@ const CoursesPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {courses.map((course, key) => (
+                    {coursesSearch.map((course, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}

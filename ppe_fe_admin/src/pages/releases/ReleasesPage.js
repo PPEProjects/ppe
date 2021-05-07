@@ -180,7 +180,6 @@ const ReleasesPage = () => {
                         </div>
                         <div className="mx-2 my-2">
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
-                            [{release.contents.length}]{" "}
                             {release.contents[0].name}
                           </h2>
                           <div className={`text-gray-500 text-xs truncate`}>

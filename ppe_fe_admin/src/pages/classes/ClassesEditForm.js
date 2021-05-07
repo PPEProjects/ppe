@@ -107,7 +107,8 @@ const ClassesEditForm = () => {
           <Checkbox
             name={`courses`}
             ids={courses.map(({ id }) => id)}
-            values={courses.map(({ name }) => name)}
+            values={courses.map(( user ) => user?.infos_lang?.vi?.name)
+          }
           />
           <label className="block mt-4">
             <div className="flex -mb-3">

@@ -132,20 +132,14 @@ export function Radio({ title, name, values }) {
 export function Checkbox(props) {
   const dispatch = useDispatch();
   const { checkboxes } = useSelector(formSelector);
-  console.log("checkboxes", checkboxes);
   let { title, name, value, values, ids, checks } = props;
   ids = ids ?? values;
-  console.log("name", name);
   useEffect(() => {}, [dispatch]);
   const handleChecks = (id, val) => {
     let checkboxes1 = JSON.parse(JSON.stringify(checkboxes));
     checkboxes1 = checkboxes1 ?? {};
     checkboxes1[name] = checkboxes1[name] ?? {};
-    console.log("checkboxes1", checkboxes1);
-    console.log("name", name);
-    console.log("id", id);
     checkboxes1[name][id] = val;
-    console.log("checkboxes1 1", checkboxes1);
     dispatch(setFormData({ checkboxes: checkboxes1 }));
   };
   return (
@@ -159,7 +153,7 @@ export function Checkbox(props) {
                 onChange={(e) => handleChecks(ids[key], e.target.checked)}
                 type="checkbox"
                 name={`${name}[${ids[key]}]`}
-                checked={checkboxes[name] ? checkboxes[name][ids[key]] : false}
+                // checked={checkboxes[name] ? checkboxes[name][ids[key]] : false}
                 className="form-checkbox h-4 w-4"
               />
               <span className="ml-2 w-full">{item}</span>
