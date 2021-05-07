@@ -6,6 +6,7 @@ import Alert from "../../components/Alert";
 import FormFooter from "../../components/FormFooter";
 import FormUploadFile from "../../components/FormUploadFile";
 import { Link, useHistory } from "react-router-dom";
+import { formSelector, setFormData } from "../../slices/form";
 
 import { Button, Input, Select, Textarea } from "../../components/Form";
 import PostsFormDescription from "./PostsFormDescription";
@@ -14,6 +15,7 @@ import Editor from "../../components/Editor";
 const PostsCreatePage = () => {
   const dispatch = useDispatch();
   const { user } = useSelector(usersSelector);
+  const { editorData } = useSelector(formSelector);
   const [show, setShow] = useState(1);
   const [type, setType] = useState(``);
   const [users, setUsers] = useState([]);
@@ -31,6 +33,7 @@ const PostsCreatePage = () => {
   const postSAVE = async (e) => {
     e.preventDefault();
     const params = new FormData(e.target);
+    params.set("content", JSON.stringify(editorData));
     let res = await Ajax.post(`/posts`, params);
     if (res.status === `error`) {
       Alert({ t: res.status, c: res.errors });
@@ -80,12 +83,6 @@ const PostsCreatePage = () => {
             </div>
             <Input name={`title`} type={`text`} />
           </label>
-
-          {/* <PostsFormDescription
-            label={`Description`}
-            className={`bg-yellow-200 -mx-4 px-4 py-4`}
-          /> */}
-
           <label className="block mt-4">
             <div className="flex -mb-3">
               <span className="block font-medium">Description</span>

@@ -9,6 +9,7 @@ const filterSlice = createSlice({
   initialState,
   reducers: {
     setData: (state, { payload }) => {
+      console.log("payload", payload)
       if (typeof payload.filterOpen !== "undefined") {
         state.filterOpen = payload.filterOpen;
       }

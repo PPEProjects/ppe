@@ -70,17 +70,19 @@ const JobsCreatePage = () => {
             Add the title, images and description that best describes this job.
           </h2>
           <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Title</span><b className="text-red-600 ml-1"> (*)</b></div>
-                      <Input  name={`title`} type={`text`} />
-             </label>
-     
+            <div className="flex -mb-3">
+              <span className="block font-medium">Title</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Input name={`title`} type={`text`} />
+          </label>
 
           <JobsFormDescription
             label={`Description`}
             className={`bg-yellow-200 -mx-4 px-4 py-4`}
           />
-       
-           <FormUploadFile label={`Image for Job slider`} />
+
+          <FormUploadFile label={`Image for Job slider`} />
         </section>
         <section
           className={`${
@@ -89,37 +91,39 @@ const JobsCreatePage = () => {
         >
           <h2 className=" text-gray-800 font-semibold">Register information</h2>
           <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Company</span><b className="text-red-600 ml-1"> (*)</b></div>
-                      <Select
-         
-            name={`company_id`}
-            ids={companies.map(({ id }) => id)}
-            values={companies.map(({ name }) => name)}
-          />
-             </label>
-        
-            <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Address to work</span><b className="text-red-600 ml-1"> (*)</b></div>
-                      <Input
-        
-            name={`more[address]`}
-            type={`text`}
-          />
-             </label>
-         
+            <div className="flex -mb-3">
+              <span className="block font-medium">Company</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Select
+              name={`company_id`}
+              ids={companies.map(({ id }) => id)}
+              values={companies.map(({ name }) => name)}
+            />
+          </label>
+
           <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Skills</span><b className="text-red-600 ml-1"> (*)</b></div>
-                  
-              <Input
-             
-                name={`more[skills]`}
-                type={`text`}
-              />
-             </label>
-       
-     
+            <div className="flex -mb-3">
+              <span className="block font-medium">Address to work</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Input name={`more[address]`} type={`text`} />
+          </label>
+
           <label className="block mt-4">
-          <div className="flex -mb-3"><span className="block font-medium"> Salary (VND)</span><b className="text-red-600 ml-1"> (*)</b></div>
+            <div className="flex -mb-3">
+              <span className="block font-medium">Skills</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+
+            <Input name={`more[skills]`} type={`text`} />
+          </label>
+
+          <label className="block mt-4">
+            <div className="flex -mb-3">
+              <span className="block font-medium"> Salary (VND)</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
           </label>
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-4">
@@ -141,20 +145,21 @@ const JobsCreatePage = () => {
             </div>
           </div>
           <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Job type</span><b className="text-red-600 ml-1"> (*)</b></div>
-                      <Select
-           
-            name={`type`}
-            values={[`Full time`, `Partime`, `Remote`, `Contract`]}
-          />
-             </label>
-         
+            <div className="flex -mb-3">
+              <span className="block font-medium">Job type</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Select
+              name={`type`}
+              values={[`Full time`, `Partime`, `Remote`, `Contract`]}
+            />
+          </label>
         </section>
       </main>
 
       <FormFooter
-      tabNumber={2}
-      show={show}
+        tabNumber={2}
+        show={show}
         onShowMinus={() => setShow(show - 1)}
         onShowPlus={() => setShow(show + 1)}
       />
