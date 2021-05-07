@@ -28,9 +28,11 @@ const ClassesPage = () => {
   useEffect(() => {
     const classesSearch = classes.filter((classe1) => {
       if (
-        (class1.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+        (classe1.name ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
       ) {
-        return class1;
+        return classe1;
       }
     });
     setUsersSearch(classesSearch);
@@ -64,7 +66,7 @@ const ClassesPage = () => {
                     to={`/ClassesCreatePage`}
                     className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
-                    <span className="mx-2">Add classes</span>
+                    <span className="mx-2">Add class</span>
                   </Link>
                 </div>
               </div>
@@ -189,7 +191,7 @@ const ClassesPage = () => {
               )}
               {status === `success` && mode === `table` && (
                 <table className=" table-auto text-sm w-full">
-                  {classes.length != 0 && (
+                  {classesSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -202,7 +204,7 @@ const ClassesPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {classes.map((classe, key) => (
+                    {classesSearch.map((classe, key) => (
                       <tr
                         className="cursor-pointer"
                         key={key}

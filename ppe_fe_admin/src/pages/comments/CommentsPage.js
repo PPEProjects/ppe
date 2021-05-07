@@ -29,16 +29,16 @@ const CommentsPage = () => {
   const [search, setSearch] = useState(``);
   const [commentsSearch, setUsersSearch] = useState(comments);
   useEffect(() => {
-    const commentsSearch = comments.filter((comment) => {    
-                      if (
-                        (comment.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return comment;
-                      }
-                    })
-                    setUsersSearch(commentsSearch)
+    const commentsSearch = comments.filter((comment) => {
+      if (
+        (comment.content ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
+      ) {
+        return comment;
+      }
+    });
+    setUsersSearch(commentsSearch);
   }, [search, comments]);
 
   useEffect(() => {
@@ -71,12 +71,15 @@ const CommentsPage = () => {
                     to={`/CommentsCreatePage`}
                     className="bg-indigo-700 text-white h-10 px-2 rounded hover:opacity-75 flex items-center justify-center ml-3"
                   >
-                    <span className="mx-2">Add comments</span>
+                    <span className="mx-2">Add comment</span>
                   </Link>
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All comments" onChange={(e) => setSearch(e.target.value)} />
+                <InputIcon
+                  placeholder="Search All comments"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -141,8 +144,7 @@ const CommentsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {commentsSearch
-                  .map((comment, key) => (
+                  {commentsSearch.map((comment, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -201,7 +203,7 @@ const CommentsPage = () => {
               {status === `success` && mode === `table` && (
                 <div className="overflow-auto">
                   <table className=" table-auto text-sm w-full">
-                    {comments.length != 0 && (
+                    {commentsSearch.length != 0 && (
                       <thead className="border-black border-b ">
                         <tr className="">
                           <td className="px-2 py-1"></td>
@@ -216,7 +218,7 @@ const CommentsPage = () => {
                       </thead>
                     )}
                     <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                      {comments.map((comment, key) => (
+                      {commentsSearch.map((comment, key) => (
                         <tr
                           className="cursor-pointer"
                           key={key}

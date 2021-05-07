@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { usersSelector, getUsers } from "../../slices/users";
+import { usersSelector, getUsers,deleteUsers } from "../../slices/users";
 import { filterSelector } from "../../slices/filter";
 import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
@@ -124,6 +124,7 @@ const UsersPage = () => {
                     disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e)=>dispatch(deleteUsers())}
                   />
                 </div>
                 <div className="flex">
@@ -246,7 +247,7 @@ const UsersPage = () => {
 
               {status === `success` && mode === `table` && (
                 <table className="table-auto text-sm w-full">
-                  {users.length !== 0 && (
+                  {usersSearch.length !== 0 && (
                     <thead className="border-black border-b">
                       <tr className="">
                         <td className="px-2 py-1"></td>
@@ -260,7 +261,7 @@ const UsersPage = () => {
                     </thead>
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
-                    {users.map((user) => (
+                    {usersSearch.map((user) => (
                       <tr key={user.id}>
                         <td className="pl-4 pr-2 py-1 ">
                           <button

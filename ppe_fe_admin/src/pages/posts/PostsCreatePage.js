@@ -33,7 +33,7 @@ const PostsCreatePage = () => {
   const postSAVE = async (e) => {
     e.preventDefault();
     const params = new FormData(e.target);
-    params.set("content", JSON.stringify(editorData));
+    params.set("descriptions", JSON.stringify(editorData));
     let res = await Ajax.post(`/posts`, params);
     if (res.status === `error`) {
       Alert({ t: res.status, c: res.errors });
