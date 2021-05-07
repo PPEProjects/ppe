@@ -148,7 +148,7 @@ class FileController extends BaseController
                         $like = preg_replace('/^.*?(\d{4}-\d{2}-\d{2}-\d+).*?$/mis', '$1', $val);
                         $fileFirst = File::whereRaw("files LIKE '%$like%'")
                             ->first();
-                        if($fileFirst){
+                        if($fileFirst && isset($fileFirst->files['images'])){
                             $fileFirst = $fileFirst->toArray();
                             $images = $fileFirst['files']['images'];
                             foreach ($images as $key => $image) {
