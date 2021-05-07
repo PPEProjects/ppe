@@ -27,20 +27,16 @@ const TasksPage = () => {
   const [search, setSearch] = useState(``);
   const [tasksSearch, setUsersSearch] = useState(tasks);
   useEffect(() => {
-    const tasksSearch = tasks.filter((task) => {    
-                      if (
-                        (task.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return tasks;
-                      }
-                    })
-                    setUsersSearch(tasksSearch)
+    const tasksSearch = tasks.filter((task) => {
+      if (
+        (task.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return tasks;
+      }
+    });
+    setUsersSearch(tasksSearch);
   }, [search, tasks]);
 
-
-  
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjectsObj());
@@ -75,7 +71,10 @@ const TasksPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All tasks" onChange={(e) => setSearch(e.target.value)}  />
+                <InputIcon
+                  placeholder="Search All tasks"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -140,9 +139,7 @@ const TasksPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {tasksSearch 
-                 
-                  .map((task, key) => (
+                  {tasksSearch.map((task, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -182,7 +179,7 @@ const TasksPage = () => {
                         </div>
                         <div className="mx-2 my-2">
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
-                            [{task.contents.length}] {task.content}
+                            {task.content}
                           </h2>
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="">
@@ -190,9 +187,6 @@ const TasksPage = () => {
                             </p>
                             <p className="">
                               Updated at: {moment(task.created_at).fromNow()}
-                            </p>
-                            <p className="text-sm text-indigo-700">
-                              Type: {task.type}
                             </p>
                           </div>
                         </div>

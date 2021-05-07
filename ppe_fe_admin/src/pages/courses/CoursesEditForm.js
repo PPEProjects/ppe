@@ -12,11 +12,12 @@ import FormUploadFile from "../../components/FormUploadFile";
 import { syllabusesSelector, getSyllabuses } from "../../slices/syllabuses";
 
 import {
-  Button,
-  Input,
-  Select,
-  Textarea,
-  Checkbox,
+    Button,
+    Input,
+    InputNumber,
+    Select,
+    Textarea,
+    Checkbox,
 } from "../../components/Form";
 import CoursesFormDescription from "./CoursesFormDescription";
 import Editor from "../../components/Editor";

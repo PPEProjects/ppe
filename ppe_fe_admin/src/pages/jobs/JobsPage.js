@@ -123,7 +123,7 @@ const JobsPage = () => {
 
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3 mt-4 ">
               <div>
-                {jobs.length === 0 && status !== `loading` && (
+                {jobsSearch.length === 0 && status !== `loading` && (
                   <div>
                     <h2 className="text-2xl text-center	font-light">
                       Not data found
@@ -149,7 +149,7 @@ const JobsPage = () => {
                             setDetailData({
                               isShow: true,
                               job: job,
-                              job: companiesObj[job.company_id],
+                              company: companiesObj[job.company_id],
                             })
                           )
                         }
@@ -181,7 +181,7 @@ const JobsPage = () => {
                         </div>
                         <div className="mx-2 my-2">
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
-                            [{job.descriptions.length}] {job.title}
+                            {job.title}
                           </h2>
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="">
@@ -208,10 +208,10 @@ const JobsPage = () => {
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
                         <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
+                        <td className="px-2 py-1">Title</td>
+                        <td className="px-2 py-1"> Address</td>
+                        <td className="px-2 py-1"> Salary</td>
+                        <td className="px-2 py-1">Type</td>
                       </tr>
                     </thead>
                   )}
@@ -255,11 +255,13 @@ const JobsPage = () => {
                           </figure>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
+                          <p className="truncate w-24">{job.title}</p>
                         </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
+                        <td className="px-2 py-1">{job.more.address}</td>
+                        <td className="px-2 py-1">
+                          {Object.keys(job.more.salary).length}
+                        </td>
+                        <td className="px-2 py-1">{job.type}</td>
                       </tr>
                     ))}
                   </tbody>

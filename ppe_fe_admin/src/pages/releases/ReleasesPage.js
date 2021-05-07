@@ -27,18 +27,17 @@ const ReleasesPage = () => {
   const [search, setSearch] = useState(``);
   const [releasesSearch, setUsersSearch] = useState(releases);
   useEffect(() => {
-    const releasesSearch = releases.filter((release) => {    
-                      if (
-                        (release.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return release;
-                      }
-                    })
-                    setUsersSearch(releasesSearch)
+    const releasesSearch = releases.filter((release) => {
+      if (
+        (release.name ?? ``)
+          .toLowerCase()
+          .includes((search ?? ``).toLowerCase())
+      ) {
+        return release;
+      }
+    });
+    setUsersSearch(releasesSearch);
   }, [search, releases]);
-
 
   useEffect(() => {
     dispatch(getProjectsObj());
@@ -73,7 +72,10 @@ const ReleasesPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All releases" onChange={(e) => setSearch(e.target.value)} />
+                <InputIcon
+                  placeholder="Search All releases"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -88,7 +90,7 @@ const ReleasesPage = () => {
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 ml-2`}
                   />
-{/* 
+                  {/* 
                   <Button
                     type={`button`}
                     title={`Banned`}
@@ -138,8 +140,7 @@ const ReleasesPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {releasesSearch
-                  .map((release, key) => (
+                  {releasesSearch.map((release, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -179,7 +180,6 @@ const ReleasesPage = () => {
                         </div>
                         <div className="mx-2 my-2">
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
-                            [{release.contents.length}]{" "}
                             {release.contents[0].name}
                           </h2>
                           <div className={`text-gray-500 text-xs truncate`}>
@@ -203,11 +203,8 @@ const ReleasesPage = () => {
                       <tr className="">
                         <td className="px-2 py-1"></td>
                         <td className="px-2 py-1">ID</td>
-                        <td className="px-2 py-1 ">Name</td>
-                        <td className="px-2 py-1">Phone</td>
-                        <td className="px-2 py-1"> Email</td>
-                        <td className="px-2 py-1"> Class name</td>
-                        <td className="px-2 py-1">Status</td>
+                        <td className="px-2 py-1">Name</td>
+                        <td className="px-2 py-1"> Status</td>
                       </tr>
                     </thead>
                   )}
@@ -240,28 +237,15 @@ const ReleasesPage = () => {
                         <td className="px-2 py-1 ">
                           <p className="w-10 truncate">{release.id}</p>
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
-                          <figure className="flex items-center">
-                            <div className="w-10">
-                              <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                                <img
-                                  alt=""
-                                  src={release.image}
-                                  className="absolute h-full w-full object-cover"
-                                />
-                              </div>
-                            </div>
-                            <figcaption className="ml-2">
-                              {release.name}
-                            </figcaption>
-                          </figure>
+                        <td className="px-2 py-1 ">
+                          <p className=" truncate">
+                            {projectsObj[release?.project_id]?.name}
+                          </p>
                         </td>
+
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">5562383859866</p>
+                          <p className="truncate w-24">{release.status}</p>
                         </td>
-                        <td className="px-2 py-1">hoang-nl-1</td>
-                        <td className="px-2 py-1">₫18</td>
-                        <td className="px-2 py-1">Out of stock</td>
                       </tr>
                     ))}
                   </tbody>

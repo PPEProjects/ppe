@@ -7,7 +7,7 @@ import { filterSelector } from "../../slices/filter";
 import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
-import UserDetailPage from "./UserDetailPage"; //cai nay render 1 lan
+import UserDetailPage from "./UserDetailPage";
 import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { setFormData, formSelector, setFormSelects } from "../../slices/form";
@@ -68,8 +68,8 @@ const UsersPage = () => {
             )} */}
 
             <h1 className="text-xl font-bold">{type || "Users"}</h1>
-          </div> 
-          <Filter type="user" /> 
+          </div>
+          <Filter type="user" />
 
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
@@ -288,7 +288,7 @@ const UsersPage = () => {
                                 );
                               }}
                             >
-                              {user.name}
+                               {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
                             </figcaption>
                           </figure>
                         </td>
@@ -296,7 +296,17 @@ const UsersPage = () => {
                           <p className="truncate w-24">{user?.infos?.phone}</p>
                         </td>
                         <td className="px-2 py-1">
-                          <p className="truncate w-24">{user.email}</p>
+                          <p className="truncate w-24" 
+                            onClick={() => {
+                              dispatch(
+                                setFormData({
+                                  checkboxes: { types: user.types },
+                                })
+                              );
+                              dispatch(
+                                setDetailData({ isShow: true, user: user })
+                              );
+                            }}>{user.email}</p>
                         </td>
                         {/* <td className="py-1 truncate w-24">{user.email}</td> */}
                         <td className="px-2 py-1">{learners[user.id]?.name}</td>
@@ -310,6 +320,7 @@ const UsersPage = () => {
                         </td>
                       </tr>
                     ))}
+                    
                   </tbody>
                 </table>
               )}
