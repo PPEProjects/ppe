@@ -28,9 +28,9 @@ const JobsPage = () => {
   const [search, setSearch] = useState(``);
   const [jobsSearch, setUsersSearch] = useState(jobs);
   useEffect(() => {
-    const jobsSearch = jobs.filter((job) => {
+    const coursesSearch = jobs.filter((job) => {
       if (
-        (job.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+        (job.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
       ) {
         return job;
       }
@@ -141,7 +141,7 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {jobsSearch.map((job, key) => (
+                  {jobs.map((job, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
