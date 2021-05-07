@@ -24,6 +24,7 @@ import ClassesFormDescription from "./ClassesFormDescription";
 const ClassesCreatePage = () => {
   const dispatch = useDispatch();
   const { users } = useSelector(usersSelector);
+  console.log(users)
   const { courses } = useSelector(coursesSelector);
   const { schools } = useSelector(schoolsSelector);
   const { classe } = useSelector(classesSelector);
@@ -31,6 +32,7 @@ const ClassesCreatePage = () => {
   const [type, setType] = useState(``);
   const [classes, setClasses] = useState([]);
   const [usersLearners, setUsersLearners] = useState([]);
+  console.log(usersLearners)
  
   const [chooses, setChooses] = useState({});
   const history = useHistory();
@@ -129,7 +131,8 @@ const ClassesCreatePage = () => {
           <Checkbox
               name={`learners`}
               ids={(usersLearners ?? []).map(({id}) => id)}
-              values={(usersLearners ?? []).map((user) => user?.infos_lang?.vi?.name)}
+              values={usersLearners.map((user ) => user.name !== null ? user.name : user?.infos_lang?.vi?.name )}
+
           />
           <label className="block mt-4">
                         <div className="flex "><span className="block font-medium">Image information management</span>
