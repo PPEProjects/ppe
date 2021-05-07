@@ -28,18 +28,15 @@ const JobsPage = () => {
   const [search, setSearch] = useState(``);
   const [jobsSearch, setUsersSearch] = useState(jobs);
   useEffect(() => {
-    const coursesSearch = jobs.filter((job) => {    
-                      if (
-                        (job.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return job;
-                      }
-                    })
-                    setUsersSearch(jobsSearch)
+    const coursesSearch = jobs.filter((job) => {
+      if (
+        (job.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return job;
+      }
+    });
+    setUsersSearch(jobsSearch);
   }, [search, jobs]);
-
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
@@ -76,7 +73,10 @@ const JobsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All jobs" onChange={(e) => setSearch(e.target.value)}  />
+                <InputIcon
+                  placeholder="Search All jobs"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -141,9 +141,7 @@ const JobsPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {jobs 
-                  
-                  .map((job, key) => (
+                  {jobs.map((job, key) => (
                     <div className="col-span-3" key={key}>
                       <Link
                         onClick={() =>
@@ -157,7 +155,6 @@ const JobsPage = () => {
                         }
                         className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
                       >
-                        
                         <button
                           type="button"
                           className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"

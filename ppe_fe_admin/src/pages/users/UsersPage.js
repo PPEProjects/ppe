@@ -7,7 +7,7 @@ import { filterSelector } from "../../slices/filter";
 import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
-import UserDetailPage from "./UserDetailPage";
+import UserDetailPage from "./UserDetailPage"; //cai nay render 1 lan
 import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { setFormData, formSelector, setFormSelects } from "../../slices/form";
@@ -52,7 +52,6 @@ const UsersPage = () => {
   }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
-    console.log("learners", learners);
     return (
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
@@ -69,8 +68,8 @@ const UsersPage = () => {
             )} */}
 
             <h1 className="text-xl font-bold">{type || "Users"}</h1>
-          </div>
-          <Filter type="user" />
+          </div> 
+          <Filter type="user" /> 
 
           <div className="col-span-9 ">
             <section className="bg-white rounded-lg overflow-hidden shadow-sm border border-gray-300 py-3">
