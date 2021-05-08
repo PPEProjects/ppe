@@ -49,7 +49,6 @@ const UsersCreatePage = () => {
       Alert({ t: res.status, c: res.errors });
       return;
     }
-
     history.goBack();
   };
 

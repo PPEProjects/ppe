@@ -64,7 +64,7 @@ const CommentsPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{comments?.length}</b>
-                  <p className="text-gray-600">comments</p>
+                  <p className="text-gray-600">{comments?.length ===0 || comments?.length === 1 ? "Comment" : "Comments"}</p>
                 </div>
                 <div className="flex ">
                   <Link

@@ -66,7 +66,7 @@ const SyllabusesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{syllabuses?.length}</b>
-                  <p className="text-gray-600">syllabuses</p>
+                  <p className="text-gray-600">{syllabuses?.length ===0 || syllabuses?.length === 1 ? "Syllabuse" : "Syllabuses"}</p>
                 </div>
                 <div className="flex ">
                   <Link

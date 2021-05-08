@@ -59,7 +59,7 @@ const ClassesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{classes?.length}</b>
-                  <p className="text-gray-600">classes</p>
+                  <p className="text-gray-600">{classes?.length ===0 || classes?.length === 1 ? "Class" : "Classes"}</p>
                 </div>
                 <div className="flex ">
                   <Link

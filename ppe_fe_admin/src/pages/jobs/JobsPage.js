@@ -61,7 +61,7 @@ const JobsPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{jobs?.length}</b>
-                  <p className="text-gray-600">jobs</p>
+                  <p className="text-gray-600">{jobs?.length ===0 || jobs?.length === 1 ? "Job" : "Jobs"}</p>
                 </div>
                 <div className="flex ">
                   <Link
