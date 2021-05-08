@@ -193,7 +193,10 @@ const CoursesEditForm = () => {
       </main>
 
       <FormFooter
-      // type1 ="edit"
+        tabNumber={4}
+        show={show}
+         onShowMinus={() => setShow(show - 1)}
+         onShowPlus={() => setShow(show + 1)}
       />
     </form>
   );

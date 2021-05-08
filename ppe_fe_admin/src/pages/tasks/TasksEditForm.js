@@ -84,7 +84,7 @@ const TasksEditForm = () => {
       </main>
 
       <FormFooter
-      //  tabNumber={1}
+       tabNumber={1}
        show={show}
         onShowMinus={() => setShow(show - 1)}
         onShowPlus={() => setShow(show + 1)}
