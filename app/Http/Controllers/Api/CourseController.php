@@ -27,7 +27,8 @@ class CourseController extends BaseController
                 ->get()
                 ->keyBy($request->keyBy)
                 ->toArray();
-            $data['courses'] = File::getImageDescription($data['courses']);
+//            $data['courses'] = File::getImageDescription($data['courses']);
+            $data['courses'] = File::getImageEditorJS($data['courses']);
             return response()->json($data);
         }
         if($request->lang ){
@@ -41,7 +42,8 @@ class CourseController extends BaseController
             $data['courses'] = $data['courses']
                 ->get()
                 ->toArray();
-            $data['courses'] = File::getImageDescription($data['courses']);
+//            $data['courses'] = File::getImageDescription($data['courses']);
+            $data['courses'] = File::getImageEditorJS($data['courses']);
             return response()->json($data);
         }
         if($request->teacher_id){
@@ -50,7 +52,8 @@ class CourseController extends BaseController
                 ->orderBy('id', 'desc')
                 ->get()
                 ->toArray();
-            $data['courses'] = File::getImageDescription($data['courses']);
+//            $data['courses'] = File::getImageDescription($data['courses']);
+            $data['courses'] = File::getImageEditorJS($data['courses']);
             return response()->json($data);
         }
         $data['courses'] = Course::selectRaw("*, REPLACE(JSON_EXTRACT(more, '$.ranking'), '\"', '') AS ranking");
@@ -62,7 +65,8 @@ class CourseController extends BaseController
             ->orderBy('id', 'desc')
             ->get()
             ->toArray();
-        $data['courses'] = File::getImageDescription($data['courses']);
+//        $data['courses'] = File::getImageDescription($data['courses']);
+        $data['courses'] = File::getImageEditorJS($data['courses']);
         return response()->json($data);
     }
 

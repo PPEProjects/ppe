@@ -1,24 +1,24 @@
 import React, { useState, useEffect } from "react";
-
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { jobsSelector, getJobs } from "../../slices/jobs";
 import { setDetailData } from "../../slices/details";
-// import Ajax from "../../components/Ajax";
+import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import { companiesSelector, getCompaniesObj } from "../../slices/companies";
 import JobsDetailPage from "./JobsDetailPage";
-// import { sidebarSelector } from "../../slices/sidebar";
+import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-// import { setSidebarData } from "../../slices/sidebar";
+import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
-// import Language from "../../components/Language";
+import Language from "../../components/Language";
 import { setFormData } from "../../slices/form";
+import Search from "../../components/Search";
 const JobsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  // const { url, opens } = useSelector(sidebarSelector);
+  const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
 
   const { job, jobs, status } = useSelector(jobsSelector);
@@ -27,25 +27,19 @@ const JobsPage = () => {
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [jobsSearch, setUsersSearch] = useState(jobs);
+  
   useEffect(() => {
-    const jobsSearch = jobs.filter((job) => {
-      if (
-        (job.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return job;
-      }
-    });
-    setUsersSearch(jobsSearch);
+    setUsersSearch(Search(`title `, search, jobs));
   }, [search, jobs]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCompaniesObj());
     dispatch(getJobs(filterOpen));
-    // let url = window.location.href;
+    let url = window.location.href;
 
-    // dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location.pathname, location.search, filterOpen]);
+    dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -61,7 +55,7 @@ const JobsPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{jobs?.length}</b>
-                  <p className="text-gray-600">{jobs?.length ===0 || jobs?.length === 1 ? "Job" : "Jobs"}</p>
+                  <p className="text-gray-600">jobs</p>
                 </div>
                 <div className="flex ">
                   <Link

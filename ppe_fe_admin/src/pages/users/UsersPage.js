@@ -11,6 +11,7 @@ import UserDetailPage from "./UserDetailPage";
 // import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { setFormData, formSelector, setFormSelects } from "../../slices/form";
+import Search from "../../components/Search";
 
 const UsersPage = () => {
   const location = useLocation();
@@ -25,15 +26,7 @@ const UsersPage = () => {
   const [search, setSearch] = useState(``);
   const [usersSearch, setUsersSearch] = useState(users);
   useEffect(() => {
-    const usersSearch = users.filter((user) => {
-      if (
-        (user.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return user;
-      }
-    });
-
-    setUsersSearch(usersSearch);
+    setUsersSearch(Search(`name`, search, users));
   }, [search, users]);
 
   const [learners, setLearners] = useState({});
@@ -185,16 +178,19 @@ const UsersPage = () => {
                           )}
                         </button>
                         <div
-                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
-                          onClick={(e)=>handleOnclick(user)}
+                          className="w-full pb-1x1 relative rounded-sm overflow-hidden cursor-pointer bg-gray-300"
+                          onClick={(e) => handleOnclick(user)}
                         >
                           <img
                             alt=""
                             src={user.image}
-                            className="absolute h-full w-full object-cover"
+                            className="absolute h-full w-full cursor-pointer object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2" onClick={(e)=>handleOnclick(user)}>
+                        <div
+                          className="mx-2 my-2 cursor-pointer"
+                          onClick={(e) => handleOnclick(user)}
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {user.name !== null
                               ? user.name
@@ -262,13 +258,13 @@ const UsersPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={(e)=>handleOnclick(user)}
+                          onClick={(e) => handleOnclick(user)}
                         >
                           <p className="w-10 truncate">{user.id}</p>
                         </td>
                         <td
                           className="px-2 py-1 text-indigo-700 cursor-pointer"
-                          onClick={(e)=>handleOnclick(user)}
+                          onClick={(e) => handleOnclick(user)}
                         >
                           <figure className="flex items-center">
                             <div className="w-10">
@@ -289,14 +285,14 @@ const UsersPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={(e)=>handleOnclick(user)}
+                          onClick={(e) => handleOnclick(user)}
                         >
                           <p className="truncate w-24">{user?.infos?.phone}</p>
                         </td>
                         <td className="px-2 py-1">
                           <p
                             className="truncate w-24 cursor-pointer"
-                            onClick={(e)=>handleOnclick(user)}
+                            onClick={(e) => handleOnclick(user)}
                           >
                             {user.email}
                           </p>
@@ -304,13 +300,13 @@ const UsersPage = () => {
                         {/* <td className="py-1 truncate w-24">{user.email}</td> */}
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={(e)=>handleOnclick(user)}
+                          onClick={(e) => handleOnclick(user)}
                         >
                           {learners[user.id]?.name}
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={(e)=>handleOnclick(user)}
+                          onClick={(e) => handleOnclick(user)}
                         >
                           {learners[user.id] && (
                             <span className={`text-indigo-700`}>Confirmed</span>

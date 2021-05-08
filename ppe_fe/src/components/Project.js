@@ -37,6 +37,7 @@ class Project extends Component {
       project_id: project_id,
       project: project?.data ?? {},
     });
+
   }
 
   async componentDidUpdate() {
@@ -56,6 +57,8 @@ class Project extends Component {
     let { status, project_id, project, users, tasks, releases } = this.state;
     let { descriptions, members } = project;
     members = members ?? {};
+    console.log(users)
+
     descriptions = descriptions ?? [];
     let { t } = this.props;
     return (
@@ -255,24 +258,12 @@ class Project extends Component {
                     </ul>
                   </section>
                   <section className="">
-                  {Object.entries(members).map(([user_id, value], key) => (
-                    <div key={key}>
-                  { [users[user_id]?.name].length !== 0 && [users[user_id]?.name].length !== "" && 
+
+                  {Object.entries(members).length !== 0 &&
                     <h3 className="text-2xl font-semibold mt-3">
                       {t("Members")}
                     </h3>
                     }
-                    </div>
-                  ))}
-                    {Object.entries(members).map(([user_id, value], key) => (
-                    <div key={key}>
-                   { [users[user_id]?.name].length === 0 && [users[user_id]?.name].length === "" && 
-                    <h3 className="text-2xl font-semibold mt-3">
-                     
-                    </h3>
-                    }
-                    </div>
-                  ))}
                     {/* <h3 className="text-2xl font-semibold mt-3">
                       {t("Members")}
                     </h3> */}
@@ -294,6 +285,7 @@ class Project extends Component {
                             </div>
                             <figcaption className="mt-2 truncate-2y leading-5 h-10">
                               {users[user_id]?.name}
+                             
                             </figcaption>
                           </a>
                         </div>

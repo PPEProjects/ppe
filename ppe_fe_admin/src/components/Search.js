@@ -1,5 +1,14 @@
 const Search = (column, keyword, list) => {
-    return list.filter((item) => (item[column] ?? ``).toLowerCase().includes((keyword ?? ``).toLowerCase()))
-}
+    if (column === "contents[0].name")  
+      return list.filter((item) =>
+        (item.contents[0].name ?? ``).toLowerCase().includes((keyword ?? ``).toLowerCase())
+      );
 
-export default Search
+  
+    return list.filter((item) =>
+      (item[column] ?? ``).toLowerCase().includes((keyword ?? ``).toLowerCase())
+    );
+    
+  };
+  
+  export default Search;

@@ -17,6 +17,7 @@ import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 import Language from "../../components/Language";
+import Search from "../../components/Search";
 
 const ProjectsPage = () => {
   const { project1, projects, project, status } = useSelector(projectsSelector);
@@ -25,23 +26,14 @@ const ProjectsPage = () => {
   // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
+
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const { selects } = useSelector(formSelector);
   const [projectsSearch, setUsersSearch] = useState(projects);
   useEffect(() => {
-    const projectsSearch = projects.filter((project) => {
-      if (
-        (project.name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return project;
-      }
-    });
-    setUsersSearch(projectsSearch);
+    setUsersSearch(Search(`name`, search, projects));
   }, [search, projects]);
-
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjects(filterOpen));
@@ -50,23 +42,23 @@ const ProjectsPage = () => {
     // dispatch(setSidebarData({ url: url }));
   }, [dispatch, location.pathname, location.search, filterOpen]);
 
-  const handleOnclickWidgets = () => {
-    dispatch(
-      setFormData({
-        checkboxes: { members: project.members },
-      })
-    );
-    dispatch(setDetailData({ isShow: true, project: project }));
-  };
+  // const handleOnclickWidgets = () => {
+  //   dispatch(
+  //     setFormData({
+  //       checkboxes: { members: project.members },
+  //     })
+  //   );
+  //   dispatch(setDetailData({ isShow: true, project: project }));
+  // };
 
-  const handleOnclick = () => {
-    dispatch(
-      setFormData({
-        checkboxes: { types: project.types },
-      })
-    );
-    dispatch(setDetailData({ isShow: true, project: project }));
-  };
+  // const handleOnclick = () => {
+  //   dispatch(
+  //     setFormData({
+  //       checkboxes: { types: project.types },
+  //     })
+  //   );
+  //   dispatch(setDetailData({ isShow: true, project: project }));
+  // };
 
   const renderMain = () => {
     return (
@@ -197,7 +189,16 @@ const ProjectsPage = () => {
                           )}
                         </button>
                         <div
-                          onClick={handleOnclickWidgets}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: project.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, project: project })
+                            );
+                          }}
                           className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
                         >
                           <img
@@ -208,7 +209,16 @@ const ProjectsPage = () => {
                         </div>
                         <div
                           className="mx-2 my-2"
-                          onClick={handleOnclickWidgets}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: project.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, project: project })
+                            );
+                          }}
                         >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {project.name}
@@ -266,13 +276,31 @@ const ProjectsPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: project.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, project: project })
+                            );
+                          }}
                         >
                           <p className="w-10 truncate">{project.id}</p>
                         </td>
                         <td
                           className="px-2 py-1 text-indigo-700 cursor-pointer "
-                          onClick={handleOnclick}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: project.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, project: project })
+                            );
+                          }}
                         >
                           <figure className="flex items-center">
                             <div className="w-10">
@@ -291,25 +319,61 @@ const ProjectsPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: project.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, project: project })
+                            );
+                          }}
                         >
                           {project.more.deadline}
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: project.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, project: project })
+                            );
+                          }}
                         >
                           {project.more.cost}
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: project.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, project: project })
+                            );
+                          }}
                         >
                           {project.more.revenue}
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: project.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, project: project })
+                            );
+                          }}
                         >
                           {project.more.installs_number}
                         </td>

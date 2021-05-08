@@ -90,14 +90,14 @@ const PostsCreatePage = () => {
             </div>
             <Editor type="create" />
           </label>
-
+{/*
           <label className="block mt-4">
             <div className="flex">
               <span className="block font-medium">Image</span>
               <b className="text-red-600 ml-1"> (*)</b>
             </div>
           </label>
-          <FormUploadFile />
+          <FormUploadFile />*/}
         </section>
       </main>
 

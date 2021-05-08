@@ -27,6 +27,7 @@ class PostController extends BaseController
                 ->keyBy($request->keyBy)
                 ->toArray();
 //            $data['posts'] = File::getImageDescription($data['posts']);
+            $data['posts'] = File::getImageEditorJS($data['posts'], 'descriptions');
             return response()->json($data);
         }
         if ($request->lang) {
@@ -41,6 +42,7 @@ class PostController extends BaseController
                 ->get()
                 ->toArray();
 //            $data['posts'] = File::getImageDescription($data['posts']);
+            $data['posts'] = File::getImageEditorJS($data['posts'], 'descriptions');
             return response()->json($data);
         }
         $data['posts'] = Post::select('*');
@@ -52,6 +54,7 @@ class PostController extends BaseController
             ->get()
             ->toArray();
 //        $data['posts'] = File::getImageDescription($data['posts']);
+        $data['posts'] = File::getImageEditorJS($data['posts'], 'descriptions');
         return response()->json($data);
     }
 

@@ -432,7 +432,7 @@ const Sidebar = () => {
           <button
             type="button"
             onClick={(e) => handleOpenClose(e, `UserInfo`)}
-            className="bg-white mt-2 text-gray-800 h-10 w-full rounded-sm hover:opacity-75 hover:bg-gray-200 flex items-center justify-between px-2"
+            className="bg-white mt-2 relative text-gray-800 h-10 w-full rounded-sm hover:opacity-75 hover:bg-gray-200 flex items-center justify-between px-2"
           >
             <figure className="flex items-center">
               <div className="w-6">
