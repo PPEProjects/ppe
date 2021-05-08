@@ -48,8 +48,9 @@ const PostsPage = () => {
   const handleOnclick = (post) => {
     dispatch(setDetailData({ isShow: true, post: post }));
     try {
-      dispatch(setFormData({ editorData: post.descriptions }));
-    } catch (e) {}
+      dispatch(setFormData({ editorData: JSON.parse(post.descriptions) }));
+    } catch (e) {
+      dispatch(setFormData({ editorData: (post.descriptions) }));}
   };
 
   const renderMain = () => {

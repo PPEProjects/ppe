@@ -36,9 +36,9 @@ const CoursesEditForm = () => {
     dispatch(getSyllabuses(`Activated`));
     dispatch(getUsers(`Activated`, [`Japanese instructor`]));
   }, [dispatch]);
-  useEffect(() => {
-    dispatch(setFormData({ editorData: JSON.parse(course.content) }));
-  }, [course]);
+  // useEffect(() => {
+  //   dispatch(setFormData({ editorData: JSON.parse(course.content) }));
+  // }, [course]);
   const courseSAVE1 = async (e) => {
     e.preventDefault();
     const params = new FormData(e.target);
