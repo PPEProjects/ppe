@@ -4,22 +4,22 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { commentsSelector, getComments } from "../../slices/comments";
 import { setDetailData } from "../../slices/details";
-import Ajax from "../../components/Ajax";
+// import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import { postsSelector, getPostsObj } from "../../slices/posts";
 import CommentsDetailPage from "./CommentsDetailPage";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
-import Language from "../../components/Language";
+// import Language from "../../components/Language";
 import { setFormData } from "../../slices/form";
 import { usersSelector } from "../../slices/users";
 const CommentsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { comment, comments, status } = useSelector(commentsSelector);
   const { postsObj } = useSelector(postsSelector);
@@ -45,10 +45,10 @@ const CommentsPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getPostsObj());
     dispatch(getComments(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
     return (

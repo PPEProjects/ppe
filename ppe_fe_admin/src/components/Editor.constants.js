@@ -15,7 +15,7 @@ import InlineCode from "@editorjs/inline-code";
 import SimpleImage from "@editorjs/simple-image";
 import VideoTool from '@vietlongn/editorjs-video';
 
-const api = `http://ppe.test/api`
+const api = process.env.REACT_APP_API_URL
 export const EDITOR_JS_TOOLS = {
     embed: Embed,
     table: Table,

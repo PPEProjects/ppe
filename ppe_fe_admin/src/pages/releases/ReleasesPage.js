@@ -10,18 +10,18 @@ import { InputIcon, Button } from "../../components/Form";
 import { projectsSelector, getProjectsObj } from "../../slices/projects";
 import { deleteReleases } from "../../slices/releases";
 import ReleasesDetailPage from "./ReleasesDetailPage";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
-import Language from "../../components/Language";
+// import Language from "../../components/Language";
 import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 const ReleasesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { selects } = useSelector(formSelector);
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { release, releases, status } = useSelector(releasesSelector);
   const { projectsObj } = useSelector(projectsSelector);
@@ -45,10 +45,10 @@ const ReleasesPage = () => {
   useEffect(() => {
     dispatch(getProjectsObj());
     dispatch(getReleases(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
     return (

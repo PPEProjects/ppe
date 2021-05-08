@@ -4,21 +4,21 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { jobsSelector, getJobs } from "../../slices/jobs";
 import { setDetailData } from "../../slices/details";
-import Ajax from "../../components/Ajax";
+// import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import { companiesSelector, getCompaniesObj } from "../../slices/companies";
 import JobsDetailPage from "./JobsDetailPage";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
-import Language from "../../components/Language";
+// import Language from "../../components/Language";
 import { setFormData } from "../../slices/form";
 const JobsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
 
   const { job, jobs, status } = useSelector(jobsSelector);
@@ -42,10 +42,10 @@ const JobsPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCompaniesObj());
     dispatch(getJobs(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
     return (

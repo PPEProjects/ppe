@@ -17,6 +17,7 @@ import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import { setFormData, formSelector, setFormSelects } from "../../slices/form";
 import Language from "../../components/Language";
+import Search from "../../components/Search";
 
 const CoursesPage = () => {
   const { course, courses, status } = useSelector(coursesSelector);
@@ -29,43 +30,28 @@ const CoursesPage = () => {
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [coursesSearch, setUsersSearch] = useState(courses);
+
   useEffect(() => {
-    const coursesSearch = courses.filter((course) => {
-      if (
-        (course.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return course;
-      }
-    });
-    setUsersSearch(coursesSearch);
+    setUsersSearch(Search(`name`, search, courses));
   }, [search, courses]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCourses(filterOpen));
-
-    // let url = window.location.href;
-
-    // dispatch(setSidebarData({ url: url }));
   }, [dispatch, location.pathname, location.search, filterOpen]);
 
-  const handleOnclick = () => {
-    dispatch(
-      setFormData({
-        checkboxes: { types: course.types },
-      })
-    );
-    dispatch(setDetailData({ isShow: true, course: course }));
-  };
-
-  const handleOnclickWidgets = () => {
+  const handleOnclick = (course) => {
     let checkboxes = {
       syllabus_ids: course.syllabus_ids,
       teachers: course.teachers,
     };
     dispatch(setFormData({ checkboxes: checkboxes }));
     dispatch(setDetailData({ isShow: true, course: course }));
+    try {
+      dispatch(setFormData({ editorData: JSON.parse(course.content) }));
+    } catch (e) {}
   };
+
   const renderMain = () => {
     return (
       <aside className="w-full">
@@ -196,7 +182,7 @@ const CoursesPage = () => {
                         </button>
                         <div
                           className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
-                          onClick={handleOnclickWidgets}
+                          onClick={(e) => handleOnclick(course)}
                         >
                           <img
                             alt=""
@@ -206,7 +192,7 @@ const CoursesPage = () => {
                         </div>
                         <div
                           className="mx-2 my-2"
-                          onClick={handleOnclickWidgets}
+                          onClick={(e) => handleOnclick(course)}
                         >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {course.name}
@@ -257,13 +243,13 @@ const CoursesPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e) => handleOnclick(course)}
                         >
                           <p className="w-10 truncate">{course.id}</p>
                         </td>
                         <td
                           className="px-2 py-1 text-indigo-700 cursor-pointer "
-                          onClick={handleOnclick}
+                          onClick={(e) => handleOnclick(course)}
                         >
                           <figure className="flex items-center">
                             <div className="w-10">
@@ -277,7 +263,7 @@ const CoursesPage = () => {
                             </div>
                             <figcaption
                               className="ml-2 cursor-pointer"
-                              onClick={handleOnclick}
+                              onClick={(e) => handleOnclick(course)}
                             >
                               {course.name}
                             </figcaption>
@@ -285,24 +271,24 @@ const CoursesPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e) => handleOnclick(course)}
                         >
                           <p
                             className="truncate w-24 cursor-pointer"
-                            onClick={handleOnclick}
+                            onClick={(e) => handleOnclick(course)}
                           >
                             {course.more.time}
                           </p>
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e) => handleOnclick(course)}
                         >
                           {course.more.price}
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e) => handleOnclick(course)}
                         >
                           {course.more.discount}
                         </td>

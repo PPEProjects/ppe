@@ -153,7 +153,7 @@ export function Checkbox(props) {
                 onChange={(e) => handleChecks(ids[key], e.target.checked)}
                 type="checkbox"
                 name={`${name}[${ids[key]}]`}
-                // checked={checkboxes[name] ? checkboxes[name][ids[key]] : false}
+                checked={checkboxes[name] ? checkboxes[name][ids[key]] : false}
                 className="form-checkbox h-4 w-4"
               />
               <span className="ml-2 w-full">{item}</span>
