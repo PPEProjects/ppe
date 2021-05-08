@@ -2,7 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { schoolsSelector, getSchools } from "../../slices/schools";
+import {
+  schoolsSelector,
+  getSchools,
+  deleteSchools,
+} from "../../slices/schools";
 import { setDetailData } from "../../slices/details";
 import { classesSelector, getClassesObj } from "../../slices/classes";
 import { usersSelector, getUsersObj, getUsers } from "../../slices/users";
@@ -10,18 +14,20 @@ import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import SchoolsDetailPage from "./SchoolsDetailPage";
 import { useLocation } from "react-router-dom";
-import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
+// import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
-import { setFormData } from "../../slices/form";
+import { setFormData, formSelector, setFormSelects } from "../../slices/form";
 import Language from "../../components/Language";
+import Search from "../../components/Search";
 
 const SchoolsPage = () => {
   const { classesObj } = useSelector(classesSelector);
   const { usersObj } = useSelector(usersSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  const { selects } = useSelector(formSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { school, schools, status } = useSelector(schoolsSelector);
   const [mode, setMode] = useState(`grid`);
@@ -30,26 +36,26 @@ const SchoolsPage = () => {
   const [search, setSearch] = useState(``);
   const [schoolsSearch, setUsersSearch] = useState(schools);
   useEffect(() => {
-    const schoolsSearch = schools.filter((school) => {    
-                      if (
-                        (school.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return school;
-                      }
-                    })
-                    setUsersSearch(schoolsSearch)
+    setUsersSearch(Search(`name`, search, schools));
   }, [search, schools]);
+
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getClassesObj());
     dispatch(getSchools(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
+
+  const handleOnclick = (school) => {
+    let checkboxes = {
+      leaders: school.leaders,
+    };
+    dispatch(setFormData({ checkboxes: checkboxes }));
+    dispatch(setDetailData({ isShow: true, school: school }));
+  };
 
   const renderMain = () => {
     return (
@@ -65,7 +71,11 @@ const SchoolsPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{schools?.length}</b>
-                  <p className="text-gray-600">schools</p>
+                  <p className="text-gray-600">
+                    {schools?.length === 0 || schools?.length === 1
+                      ? "School"
+                      : "Schools"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -77,27 +87,38 @@ const SchoolsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All schoolses" onChange={(e) => setSearch(e.target.value)} />
+                <InputIcon
+                  placeholder="Search All schoolses"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`Select All`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", schools));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
+                  />
+                  <Button
+                    type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", schools));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deleteSchools())}
                   />
-
-                  {/* <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -143,33 +164,31 @@ const SchoolsPage = () => {
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {schoolsSearch.map((school, key) => (
-                    <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() => {
-                          let checkboxes = {
-                            leaders: school.leaders,
-                          };
-                          dispatch(setFormData({ checkboxes: checkboxes }));
-                          dispatch(
-                            setDetailData({ isShow: true, school: school })
-                          );
-                        }}
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                    <div className="col-span-3 cursor-pointer" key={key}>
+                      <div className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={() => dispatch(setFormSelects(school.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[school.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
-                        <div className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                        <div
+                          onClick={(e) => handleOnclick(school)}
+                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
+                        >
                           <img
                             alt=""
                             src={school.image}
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={(e) => handleOnclick(school)}
+                        >
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {school.name}
                           </h2>
@@ -188,7 +207,7 @@ const SchoolsPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -209,34 +228,30 @@ const SchoolsPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {schoolsSearch.map((school, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { types: school.types },
-                            })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, school: school })
-                          );
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(school.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[school.id] && (
+                              <i className="group-hover:block  text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 "
+                          onClick={(e) => handleOnclick(school)}
+                        >
                           <p className="w-10 truncate">{school.id}</p>
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
+                        <td
+                          className="px-2 py-1 text-indigo-700 "
+                          onClick={(e) => handleOnclick(school)}
+                        >
                           <figure className="flex items-center">
                             <div className="w-10">
                               <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
@@ -252,15 +267,24 @@ const SchoolsPage = () => {
                             </figcaption>
                           </figure>
                         </td>
-                        <td className="px-2 py-1">
+                        <td
+                          className="px-2 py-1"
+                          onClick={(e) => handleOnclick(school)}
+                        >
                           <p className="truncate w-24">
                             {school.infos.address}
                           </p>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 "
+                          onClick={(e) => handleOnclick(school)}
+                        >
                           <p className="w-25 truncate">{school.created_at}</p>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 "
+                          onClick={(e) => handleOnclick(school)}
+                        >
                           <p className="w-20 truncate">{school.status}</p>
                         </td>
                       </tr>

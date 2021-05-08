@@ -59,7 +59,26 @@ export function deleteJob(job) {
       return;
     }
     window.location.reload();
-  
+
+    dispatch(getJobs());
+  };
+}
+
+export function deleteJobs(job) {
+  return async (dispatch, getState) => {
+    const { selects } = getState().form;
+    let confirm = await Confirm({
+      t: `Confirm`,
+      c: [`Do you want to delete: ${Object.keys(selects).length} jobs`],
+    });
+    if (!confirm) return;
+    let params = { chooses: selects };
+    let res = await Ajax.delete(`/jobs/1`, params);
+    if (res.status === `error`) {
+      Alert({ t: res.status, c: res.errors });
+      return;
+    }
+    window.location.reload();
     dispatch(getJobs());
   };
 }
@@ -67,8 +86,8 @@ export function deleteJob(job) {
 export function getJobs(filterOpen) {
   return async (dispatch) => {
     dispatch(setData({ status: `loading` }));
-  
-    let res = await Ajax.get(`/jobs`, {  status: filterOpen });
+
+    let res = await Ajax.get(`/jobs`, { status: filterOpen });
     dispatch(setData({ status: `success`, jobs: res.data?.jobs }));
   };
 }

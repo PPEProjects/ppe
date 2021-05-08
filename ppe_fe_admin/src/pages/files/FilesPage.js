@@ -38,9 +38,9 @@ const FilesPage = () => {
     e.preventDefault();
     const params = new FormData(e.target);
     let res = await Ajax.post(`/files`, params);
-    if (res.status === `error` && res.errors[0] !== `Too Many Attempts.`) {
+    console.log("res", res);
+    if (res.status === `success` && res.errors[0] !== `Too Many Attempts.`) {
       Alert({ t: res.status, c: res.errors });
-      return;
     }
   };
 
@@ -66,7 +66,7 @@ const FilesPage = () => {
                 {item === "Pictures for Advertisement" && (
                   <form
                     key={key}
-                    /*id={`filesType_${key}`}*/ onSubmit={(e) => fileSAVE(e)}
+                    onSubmit={(e) => fileSAVE(e)}
                     className="bg-yellow-200 rounded-lg overflow-hidden shadow-sm border border-gray-300 pb-3 mt-4 px-4 "
                   >
                     <PictureFormURL
@@ -78,7 +78,7 @@ const FilesPage = () => {
                     <div className="flex items-center justify-end">
                       <button
                         type="submit"
-                        className="bg-indigo-700 text-white font-semibold   px-3 hover:opacity-95 rounded-md h-10 flex items-center justify-center"
+                        className="bg-indigo-700 text-white font-semibold  px-3 hover:opacity-95 rounded-md h-10 flex items-center justify-center"
                       >
                         <i className="material-icons text-2xl"></i>
                         <span className="">Save</span>

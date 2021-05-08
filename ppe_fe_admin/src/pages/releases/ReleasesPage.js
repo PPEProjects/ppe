@@ -10,18 +10,19 @@ import { InputIcon, Button } from "../../components/Form";
 import { projectsSelector, getProjectsObj } from "../../slices/projects";
 import { deleteReleases } from "../../slices/releases";
 import ReleasesDetailPage from "./ReleasesDetailPage";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
-import Language from "../../components/Language";
+// import Language from "../../components/Language";
 import { setFormData, setFormSelects, formSelector } from "../../slices/form";
+import Search from "../../components/Search";
 const ReleasesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { selects } = useSelector(formSelector);
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { release, releases, status } = useSelector(releasesSelector);
   const { projectsObj } = useSelector(projectsSelector);
@@ -30,25 +31,16 @@ const ReleasesPage = () => {
   const [search, setSearch] = useState(``);
   const [releasesSearch, setUsersSearch] = useState(releases);
   useEffect(() => {
-    const releasesSearch = releases.filter((release) => {
-      if (
-        (release.contents[0].name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return release;
-      }
-    });
-    setUsersSearch(releasesSearch);
+    setUsersSearch(Search(`name`, search, releases))
   }, [search, releases]);
 
   useEffect(() => {
     dispatch(getProjectsObj());
     dispatch(getReleases(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -63,7 +55,11 @@ const ReleasesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{releases?.length}</b>
-                  <p className="text-gray-600">releases</p>
+                  <p className="text-gray-600">
+                    {releases?.length === 0 || releases?.length === 1
+                      ? "Release"
+                      : "Releases"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -153,18 +149,7 @@ const ReleasesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {releasesSearch.map((release, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() =>
-                          dispatch(
-                            setDetailData({
-                              isShow: true,
-                              release: release,
-                              project: projectsObj[release.project_id],
-                            })
-                          )
-                        }
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
                           onClick={() => dispatch(setFormSelects(release.id))}
@@ -175,28 +160,40 @@ const ReleasesPage = () => {
                           )}
                         </button>
 
-                        <div className="mx-2">
+                        <div
+                          className="mx-2"
+                          onClick={() =>
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                release: release,
+                                project: projectsObj[release.project_id],
+                              })
+                            )
+                          }
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {release.name}
                           </h1>
                         </div>
-                        <div className="w-full pb-1x1 relative bg-gray-300">
-                          <div className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center">
-                            <h3 className="text-white font-black mx-2 truncate-2y">
-                              {projectsObj[release?.project_id]?.name}
-                            </h3>
-                          </div>
-                          <img
-                            alt=""
-                            src={projectsObj[release?.project_id]?.image}
-                            className="absolute h-full w-full object-cover"
-                          />
-                        </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={() =>
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                release: release,
+                                project: projectsObj[release.project_id],
+                              })
+                            )
+                          }
+                        >
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {release.contents[0].name}
                           </h2>
-                          <div className={`text-gray-500 text-xs truncate`}>
+                          <div
+                            className={`text-gray-500 text-xs truncate pb-4`}
+                          >
                             <p className="">
                               Created at: {moment(release.created_at).fromNow()}
                             </p>
@@ -224,20 +221,7 @@ const ReleasesPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {releasesSearch.map((release, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { types: release.types },
-                            })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, release: release })
-                          );
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
@@ -251,16 +235,52 @@ const ReleasesPage = () => {
                             )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 "
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: release.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, release: release })
+                            );
+                          }}
+                        >
                           <p className="w-10 truncate">{release.id}</p>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 "
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: release.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, release: release })
+                            );
+                          }}
+                        >
                           <p className=" truncate">
                             {release.contents[0].name}
                           </p>
                         </td>
 
-                        <td className="px-2 py-1">
+                        <td
+                          className="px-2 py-1"
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: release.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, release: release })
+                            );
+                          }}
+                        >
                           <p className="truncate w-24">{release.status}</p>
                         </td>
                       </tr>

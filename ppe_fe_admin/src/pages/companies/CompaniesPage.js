@@ -11,18 +11,19 @@ import {
   getCompanies,
   deleteCompanys,
 } from "../../slices/companies";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 
 import Language from "../../components/Language";
 import { setFormData, setFormSelects, formSelector } from "../../slices/form";
+import Search from "../../components/Search";
 const CompaniesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { company, companies, status } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
@@ -31,25 +32,16 @@ const CompaniesPage = () => {
   const [search, setSearch] = useState(``);
   const [companiesSearch, setUsersSearch] = useState(companies);
   useEffect(() => {
-    const companiesSearch = companies.filter((company) => {
-      if (
-        (company.name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return company;
-      }
-    });
-    setUsersSearch(companiesSearch);
+    setUsersSearch(Search(`name`, search, companies));
   }, [search, companies]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCompanies(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const handleOnclickWidgets = () => {
     let checkboxes = {
@@ -84,7 +76,7 @@ const CompaniesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{companies?.length}</b>
-                  <p className="text-gray-600">companies</p>
+                  <p className="text-gray-600">{companies?.length ===0 || companies?.length === 1 ? "Company" : "Companies"}</p>
                 </div>
                 <div className="flex ">
                   <Link

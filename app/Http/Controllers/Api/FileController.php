@@ -91,6 +91,12 @@ class FileController extends BaseController
             $data = $request->except([]);
             $data['user_id'] = $user['id'];
             if ($data['type'] == 'Pictures for Advertisement') {
+                $validator = Validator::make($request->all(), [
+                        'descriptions.*.value' => 'url',
+                ]);
+                if ($validator->fails()) {
+                    return $this->checkSendError($validator);
+                }
                 $data['files']['descriptions'] = File::descriptions_files(@$data['descriptions']);
             } else {
                 $data['files'] = File::add_images(@$data['files']);

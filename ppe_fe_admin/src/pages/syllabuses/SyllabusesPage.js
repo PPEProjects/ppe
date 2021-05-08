@@ -15,6 +15,7 @@ import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import Language from "../../components/Language";
 import { setFormData } from "../../slices/form";
+import Search from "../../components/Search";
 
 const SyllabusesPage = () => {
   const { coursesObj } = useSelector(coursesSelector);
@@ -27,29 +28,36 @@ const SyllabusesPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
 
+  // const [search, setSearch] = useState(``);
+  // const [syllabusesSearch, setUsersSearch] = useState(syllabuses);
+  // useEffect(() => {
+  //   const syllabusesSearch = syllabuses.filter((syllabuse) => {
+  //     if (
+  //       (syllabuse.name ?? ``)
+  //         .toLowerCase()
+  //         .includes((search ?? ``).toLowerCase())
+  //     ) {
+  //       return syllabuse;
+  //     }
+  //   });
+  //   setUsersSearch(syllabusesSearch);
+  // }, [search, syllabuses]);
+
   const [search, setSearch] = useState(``);
   const [syllabusesSearch, setUsersSearch] = useState(syllabuses);
+
   useEffect(() => {
-    const syllabusesSearch = syllabuses.filter((syllabuse) => {
-      if (
-        (syllabuse.name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return syllabuse;
-      }
-    });
-    setUsersSearch(syllabusesSearch);
+    setUsersSearch(Search(`name`, search, syllabuses));
   }, [search, syllabuses]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
-    dispatch(getCoursesObj());
+    // dispatch(getCoursesObj());
     dispatch(getSyllabuses(filterOpen));
+    console.log(location);
     // let url = window.location.href;
 
     // dispatch(setSidebarData({ url: url }));
-    console.log(location);
   }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
@@ -66,7 +74,11 @@ const SyllabusesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{syllabuses?.length}</b>
-                  <p className="text-gray-600">syllabuses</p>
+                  <p className="text-gray-600">
+                    {syllabuses?.length === 0 || syllabuses?.length === 1
+                      ? "Syllabuse"
+                      : "Syllabuses"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -84,25 +96,6 @@ const SyllabusesPage = () => {
                 />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
-                <div className="flex items-center">
-                  <Button
-                    type={`button`}
-                    title={`Select All`}
-                    className={`bg-gray-300 text-gray-800`}
-                  />
-
-                  <Button
-                    type={`button`}
-                    title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
-
-                  {/* <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
-                </div>
                 <div className="flex">
                   <button
                     type="button"
@@ -148,7 +141,7 @@ const SyllabusesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {syllabusesSearch.map((syllabuse, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
+                      <div
                         onClick={() =>
                           dispatch(
                             setDetailData({
@@ -184,7 +177,7 @@ const SyllabusesPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

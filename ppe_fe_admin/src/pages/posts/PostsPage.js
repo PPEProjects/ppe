@@ -1,23 +1,23 @@
-import React, { useState, useEffect } from "react";
-
 import moment from "moment";
-import Ajax from "../../components/Ajax";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setDetailData } from "../../slices/details";
-import { InputIcon, Button } from "../../components/Form";
-import PostsDetailPage from "./PostsDetailPage";
-import { postsSelector, getPosts } from "../../slices/posts";
-import { sidebarSelector } from "../../slices/sidebar";
-import { filterSelector } from "../../slices/filter";
-import { setFormData } from "../../slices/form";
-import { setSidebarData } from "../../slices/sidebar";
-import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
+import Filter from "../../components/Filter";
+import { Button, InputIcon } from "../../components/Form";
 import Language from "../../components/Language";
+import { setDetailData } from "../../slices/details";
+import { filterSelector } from "../../slices/filter";
+import { setFormData, setFormSelects, formSelector } from "../../slices/form";
+import { getPosts, postsSelector, deletePosts } from "../../slices/posts";
+import { setSidebarData, sidebarSelector } from "../../slices/sidebar";
 import { usersSelector } from "../../slices/users";
+import PostsDetailPage from "./PostsDetailPage";
+import Search from "../../components/Search";
+
 const PostsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
+  const { selects } = useSelector(formSelector);
   const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { post, posts, status } = useSelector(postsSelector);
@@ -26,15 +26,9 @@ const PostsPage = () => {
   const { users } = useSelector(usersSelector);
   const [search, setSearch] = useState(``);
   const [postsSearch, setUsersSearch] = useState(posts);
+
   useEffect(() => {
-    const postsSearch = posts.filter((post) => {
-      if (
-        (post.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return post;
-      }
-    });
-    setUsersSearch(postsSearch);
+    setUsersSearch(Search(`name`, search, posts));
   }, [search, posts]);
 
   useEffect(() => {
@@ -46,6 +40,13 @@ const PostsPage = () => {
   }, [dispatch, location, filterOpen]);
 
   const [text, setText] = useState("Select All ");
+
+  const handleOnclick = (post) => {
+    dispatch(setDetailData({ isShow: true, post: post }));
+    try {
+      dispatch(setFormData({ editorData: post.descriptions }));
+    } catch (e) {}
+  };
 
   const renderMain = () => {
     return (
@@ -83,22 +84,29 @@ const PostsPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={text}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", posts));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
-                    onClick={() => setText("Selected")}
+                  />
+                  <Button
+                    type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", posts));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deletePosts())}
                   />
-                  {/* 
-                  <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -145,30 +153,34 @@ const PostsPage = () => {
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {postsSearch.map((post, key) => (
-                    <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() =>
-                          dispatch(setDetailData({ isShow: true, post: post }))
-                        }
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                    <div className="col-span-3 cursor-pointer" key={key}>
+                      <div className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
                           {post.language}
                         </span>
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={() => dispatch(setFormSelects(post.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[post.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
-                        <div className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                        <div
+                          onClick={(e) => handleOnclick(post)}
+                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
+                        >
                           <img
                             alt=""
                             src={post.image}
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={(e) => handleOnclick(post)}
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {post.title}
                           </h1>
@@ -181,7 +193,7 @@ const PostsPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -204,29 +216,30 @@ const PostsPage = () => {
                     )}
                     <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                       {postsSearch.map((post, key) => (
-                        <tr
-                          className="cursor-pointer"
-                          key={key}
-                          onClick={() => {
-                            dispatch(
-                              setDetailData({ isShow: true, post: post })
-                            );
-                          }}
-                        >
+                        <tr className="cursor-pointer" key={key}>
                           <td className="px-2 py-1 ">
                             <button
                               type="button"
+                              onClick={() => dispatch(setFormSelects(post.id))}
                               className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                             >
-                              <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                                done
-                              </i>
+                              {selects[post.id] && (
+                                <i className="group-hover:block  text-xl material-icons absolute absolute-x absolute-y">
+                                  done
+                                </i>
+                              )}
                             </button>
                           </td>
-                          <td className="px-2 py-1 ">
+                          <td
+                            className="px-2 py-1 "
+                            onClick={(e) => handleOnclick(post)}
+                          >
                             <p className="w-10 truncate">{post.id}</p>
                           </td>
-                          <td className="px-2 py-1 text-indigo-700 ">
+                          <td
+                            className="px-2 py-1 text-indigo-700 "
+                            onClick={(e) => handleOnclick(post)}
+                          >
                             <figure className="flex items-center">
                               <div className="w-10">
                                 <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
@@ -242,18 +255,30 @@ const PostsPage = () => {
                               </figcaption>
                             </figure>
                           </td>
-                          <td className="px-2 py-1 ">
+                          <td
+                            className="px-2 py-1 "
+                            onClick={(e) => handleOnclick(post)}
+                          >
                             <p className="w-20 truncate">{post.description}</p>
                           </td>
-                          <td className="px-2 py-1 ">
+                          <td
+                            className="px-2 py-1 "
+                            onClick={(e) => handleOnclick(post)}
+                          >
                             <p className="w-25 truncate">
                               {users[post?.user_id]?.name ?? post.user_id}
                             </p>
                           </td>
-                          <td className="px-2 py-1 ">
+                          <td
+                            className="px-2 py-1 "
+                            onClick={(e) => handleOnclick(post)}
+                          >
                             <p className="w-25 truncate">{post.created_at}</p>
                           </td>
-                          <td className="px-2 py-1 ">
+                          <td
+                            className="px-2 py-1 "
+                            onClick={(e) => handleOnclick(post)}
+                          >
                             <p className="w-20 truncate">{post.status}</p>
                           </td>
                         </tr>

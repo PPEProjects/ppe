@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import ReactDOM from "react-dom";
+// import ReactDOM from "react-dom";
 import moment from "moment";
 import { Button, Select } from "../../components/Form";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +10,7 @@ import UsersEditForm from "./UsersEditForm";
 import Ajax from "../../components/Ajax";
 import { usersSelector, setUserData } from "../../slices/users";
 import { classesSelector, getClasses } from "../../slices/classes";
-import { filterSelector, setFilterData } from "../../slices/filter";
+// import { filterSelector, setFilterData } from "../../slices/filter";
 
 const UserDetailPage = () => {
   const dispatch = useDispatch();
@@ -18,29 +18,30 @@ const UserDetailPage = () => {
   const [userType, setUserType] = useState("");
   const { classes } = useSelector(classesSelector);
   const [classeId, setClasseId] = useState("");
-  useEffect(() => {
-    fetchData();
-    async function fetchData() {
-      let res = await Ajax.put(`/classes/${classeId}`, {
-        user_change_class: "user_change_class",
-        learners: { [user.id]: "on" },
-      });
-      // dispatch(setUserData({users:res.data.users, classe_id: classeId}));
-    }
-  }, [classeId]);
-  useEffect(() => {
-    fetchData();
-    async function fetchData() {
-      let res = await Ajax.get(`/users`, {
-        types: [userType],
-        status: `Activated`,
-      });
-      dispatch(setUserData({ users: res.data.users }));
-    }
-  }, [userType]);
-  useEffect(() => {
-    dispatch(getClasses(`Activated`));
-  }, [dispatch]);
+  // useEffect(() => {
+  //   fetchData();
+  //   async function fetchData() {
+  //     let res = await Ajax.put(`/classes/${classeId}`, {
+  //       user_change_class: "user_change_class",
+  //       learners: { [user.id]: "on" },
+  //     });
+  //     // dispatch(setUserData({users:res.data.users, classe_id: classeId}));
+  //   }
+  // }, [classeId]);
+  // useEffect(() => {
+  //   fetchData();
+  //   async function fetchData() {
+  //     let res = await Ajax.get(`/users`, {
+  //       types: [userType],
+  //       status: `Activated`,
+  //     });
+  //     dispatch(setUserData({ users: res.data.users }));
+  //   }
+  // }, [userType]);
+
+  // useEffect(() => {
+  //   dispatch(getClasses(`Activated`));
+  // }, [dispatch]);
 
   const renderMain = () => {
     return (
@@ -54,7 +55,8 @@ const UserDetailPage = () => {
                   <span className="inline-block truncate ">
                     {Object.keys(user.types).join(", ")}
                   </span>{" "}
-                  :  {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
+                  :{" "}
+                  {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
                 </h1>
                 <Button
                   onClick={() => dispatch(setDetailData({ isShow: false }))}
@@ -141,7 +143,9 @@ const UserDetailPage = () => {
                           <div>
                             <h2 className="font-medium ">Name</h2>
                             <p className="text-sm text-gray-700 truncate w-36">
-                            {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
+                              {user.name !== null
+                                ? user.name
+                                : user?.infos_lang?.vi?.name}
                             </p>
                           </div>
                           <div className="mt-3">

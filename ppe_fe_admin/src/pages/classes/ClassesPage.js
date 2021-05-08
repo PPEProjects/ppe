@@ -6,45 +6,52 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import ClassesDetailPage from "./ClassesDetailPage";
-import { classesSelector, getClasses } from "../../slices/classes";
-import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
+import {
+  classesSelector,
+  getClasses,
+  deleteClasses,
+} from "../../slices/classes";
+// import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
-import { setFormData } from "../../slices/form";
-import Language from "../../components/Language";
+import { setFormData, formSelector, setFormSelects } from "../../slices/form";
+// import Language from "../../components/Language";
+import Search from "../../components/Search";
 
 const ClassesPage = () => {
   const { class1, classes, status } = useSelector(classesSelector);
   // const { classesObj } = useSelector(classesSelector);
 
   const location = useLocation();
+  const { selects } = useSelector(formSelector);
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [classesSearch, setUsersSearch] = useState(classes);
   useEffect(() => {
-    const classesSearch = classes.filter((classe1) => {
-      if (
-        (classe1.name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return classe1;
-      }
-    });
-    setUsersSearch(classesSearch);
+    setUsersSearch(Search(`name`, search, classes));
   }, [search, classes]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getClasses(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
+
+  const handleOnclick = (classe) => {
+    let checkboxes = {
+      courses: classe.courses,
+      teachers: classe.teachers,
+      learners: classe.learners,
+    };
+    dispatch(setFormData({ checkboxes: checkboxes }));
+    dispatch(setDetailData({ isShow: true, classe: classe }));
+  };
 
   const renderMain = () => {
     return (
@@ -59,7 +66,11 @@ const ClassesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{classes?.length}</b>
-                  <p className="text-gray-600">classes</p>
+                  <p className="text-gray-600">
+                    {classes?.length === 0 || classes?.length === 1
+                      ? "Class"
+                      : "Classes"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -80,21 +91,29 @@ const ClassesPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`Select All`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", classes));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
+                  />
+                  <Button
+                    type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", classes));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deleteClasses())}
                   />
-                  {/* 
-                  <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -139,48 +158,44 @@ const ClassesPage = () => {
               )}
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
-                  {classesSearch.map((classe1, key) => (
+                  {classesSearch.map((classe, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() => {
-                          let checkboxes = {
-                            courses: classe1.courses,
-                            teachers: classe1.teachers,
-                            learners: classe1.learners,
-                          };
-                          dispatch(setFormData({ checkboxes: checkboxes }));
-                          dispatch(
-                            setDetailData({ isShow: true, classe: classe1 })
-                          );
-                        }}
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={() => dispatch(setFormSelects(classe.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[classe.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
-                        <div className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                        <div
+                          onClick={(e) => handleOnclick(classe)}
+                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
+                        >
                           <img
                             alt=""
-                            src={classe1.image}
+                            src={classe.image}
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={(e) => handleOnclick(classe)}
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
-                            {classe1.name}
+                            {classe.name}
                           </h1>
                           <div className={`text-gray-500 text-xs truncate`}>
                             <p className="">
-                              Created at: {moment(classe1.created_at).fromNow()}
+                              Created at: {moment(classe.created_at).fromNow()}
                             </p>
                             <p className="">
-                              Updated at: {moment(classe1.updated_at).fromNow()}
+                              Updated at: {moment(classe.updated_at).fromNow()}
                             </p>
                             {/* <p className="text-sm text-indigo-700">
-                              Account type: {classe1.type}
+                              Account type: {classe.type}
                             </p> */}
                           </div>
                         </div>
@@ -205,32 +220,30 @@ const ClassesPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {classesSearch.map((classe, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({ checkboxes: { types: classe.types } })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, classe: classe })
-                          );
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(classe.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[classe.id] && (
+                              <i className="group-hover:block  text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 "
+                          onClick={(e) => handleOnclick(classe)}
+                        >
                           <p className="w-10 truncate">{classe.id}</p>
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
+                        <td
+                          className="px-2 py-1 text-indigo-700 "
+                          onClick={(e) => handleOnclick(classe)}
+                        >
                           <figure className="flex items-center">
                             <div className="w-10">
                               <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
@@ -246,14 +259,23 @@ const ClassesPage = () => {
                             </figcaption>
                           </figure>
                         </td>
-                        <td className="px-2 py-1">
+                        <td
+                          className="px-2 py-1"
+                          onClick={(e) => handleOnclick(classe)}
+                        >
                           {Object.keys(classe.courses).length}
                         </td>
-                        <td className="px-2 py-1">
+                        <td
+                          className="px-2 py-1"
+                          onClick={(e) => handleOnclick(classe)}
+                        >
                           {" "}
                           {Object.keys(classe.learners).length}
                         </td>
-                        <td className="px-2 py-1">
+                        <td
+                          className="px-2 py-1"
+                          onClick={(e) => handleOnclick(classe)}
+                        >
                           {Object.keys(classe.teachers).length}
                         </td>
                       </tr>

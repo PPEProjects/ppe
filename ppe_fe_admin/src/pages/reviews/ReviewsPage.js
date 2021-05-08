@@ -1,24 +1,30 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { reviewsSelector, getReviews } from "../../slices/reviews";
+import {
+  reviewsSelector,
+  getReviews,
+  deleteReviews,
+} from "../../slices/reviews";
 import { setDetailData } from "../../slices/details";
-import Ajax from "../../components/Ajax";
-import { setFormData } from "../../slices/form";
+// import Ajax from "../../components/Ajax";
+import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 import { InputIcon, Button } from "../../components/Form";
 import { companiesSelector, getCompaniesObj } from "../../slices/companies";
 import ReviewsDetailPage from "./ReviewsDetailPage";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
+import Search from "../../components/Search";
 const ReviewsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
+  const { selects } = useSelector(formSelector);
   const { review, reviews, status } = useSelector(reviewsSelector);
   const { companiesObj } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
@@ -26,26 +32,27 @@ const ReviewsPage = () => {
   const [search, setSearch] = useState(``);
   const [reviewsSearch, setUsersSearch] = useState(reviews);
   useEffect(() => {
-    const reviewsSearch = reviews.filter((review) => {
-      if (
-        (review.title ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return review;
-      }
-    });
-    setUsersSearch(reviewsSearch);
+    setUsersSearch(Search(`title`, search, reviews));
   }, [search, reviews]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCompaniesObj());
     dispatch(getReviews(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
+
+  const handleOnclick = (review) => {
+    dispatch(
+      setDetailData({
+        isShow: true,
+        review: review,
+        company: companiesObj[review.company_id],
+      })
+    );
+  };
 
   const renderMain = () => {
     return (
@@ -61,7 +68,11 @@ const ReviewsPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{reviews?.length}</b>
-                  <p className="text-gray-600">reviews</p>
+                  <p className="text-gray-600">
+                    {reviews?.length === 0 || reviews?.length === 1
+                      ? "Review"
+                      : "Reviews"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -82,21 +93,29 @@ const ReviewsPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`Select All`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", reviews));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
+                  />
+                  <Button
+                    type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", reviews));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deleteReviews())}
                   />
-
-                  {/* <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -143,31 +162,29 @@ const ReviewsPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {reviewsSearch.map((review, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() =>
-                          dispatch(
-                            setDetailData({
-                              isShow: true,
-                              review: review,
-                              company: companiesObj[review.company_id],
-                            })
-                          )
-                        }
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={() => dispatch(setFormSelects(review.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[review.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
 
-                        <div className="mx-2">
+                        <div
+                          className="mx-2"
+                          onClick={(e) => handleOnclick(review)}
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {review.name}
                           </h1>
                         </div>
-                        <div className="w-full pb-1x1 relative bg-gray-300">
+                        <div
+                          className="w-full pb-1x1 relative bg-gray-300"
+                          onClick={(e) => handleOnclick(review)}
+                        >
                           <div className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center">
                             <h3 className="text-white font-black mx-2 truncate-2y">
                               {companiesObj[review?.company_id]?.name}
@@ -179,7 +196,10 @@ const ReviewsPage = () => {
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={(e) => handleOnclick(review)}
+                        >
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {review.title}
                           </h2>
@@ -211,35 +231,38 @@ const ReviewsPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {reviewsSearch.map((review, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { types: review.types },
-                            })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, review: review })
-                          );
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(review.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[review.id] && (
+                              <i className="group-hover:block  text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1  cursor-pointer"
+                          onClick={(e) => handleOnclick(review)}
+                        >
                           <p className="w-10 truncate">{review.id}</p>
                         </td>
-                        <td className="px-2 py-1">{review.title}</td>
-                        <td className="px-2 py-1">{review.content}</td>
+                        <td
+                          className="px-2 py-1  cursor-pointer"
+                          onClick={(e) => handleOnclick(review)}
+                        >
+                          {review.title}
+                        </td>
+                        <td
+                          className="px-2 py-1  cursor-pointer"
+                          onClick={(e) => handleOnclick(review)}
+                        >
+                          {review.content}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

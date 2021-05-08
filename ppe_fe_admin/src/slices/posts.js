@@ -63,7 +63,26 @@ export function deletePost(post) {
       return;
     }
     window.location.reload();
-  
+
+    dispatch(getPosts());
+  };
+}
+
+export function deletePosts(post) {
+  return async (dispatch, getState) => {
+    const { selects } = getState().form;
+    let confirm = await Confirm({
+      t: `Confirm`,
+      c: [`Do you want to delete: ${Object.keys(selects).length} posts`],
+    });
+    if (!confirm) return;
+    let params = { chooses: selects };
+    let res = await Ajax.delete(`/posts/1`, params);
+    if (res.status === `error`) {
+      Alert({ t: res.status, c: res.errors });
+      return;
+    }
+    window.location.reload();
     dispatch(getPosts());
   };
 }
@@ -72,7 +91,7 @@ export function getPosts(filterOpen) {
   return async (dispatch) => {
     dispatch(setData({ status: `loading` }));
     let type = new URL(window.location.href).searchParams.get("type") ?? ``;
-    let res = await Ajax.get(`/posts`, { status: filterOpen});
+    let res = await Ajax.get(`/posts`, { status: filterOpen });
     dispatch(setData({ status: `success`, posts: res.data?.posts }));
   };
 }
