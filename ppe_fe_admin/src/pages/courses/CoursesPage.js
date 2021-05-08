@@ -38,20 +38,7 @@ const CoursesPage = () => {
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCourses(filterOpen));
-
-    // let url = window.location.href;
-
-    // dispatch(setSidebarData({ url: url }));
   }, [dispatch, location.pathname, location.search, filterOpen]);
-
-  // const handleOnclick = (course) => {
-  //   dispatch(
-  //     setFormData({
-  //       checkboxes: { types: course.types },
-  //     })
-  //   );
-  //   dispatch(setDetailData({ isShow: true, course: course }));
-  // };
 
   const handleOnclick = (course) => {
     let checkboxes = {
@@ -60,7 +47,11 @@ const CoursesPage = () => {
     };
     dispatch(setFormData({ checkboxes: checkboxes }));
     dispatch(setDetailData({ isShow: true, course: course }));
+    try {
+      dispatch(setFormData({editorData: JSON.parse(course.content)}))
+    } catch (e) {}
   };
+
   const renderMain = () => {
     return (
       <aside className="w-full">
