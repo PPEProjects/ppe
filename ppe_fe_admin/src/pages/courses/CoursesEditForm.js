@@ -193,7 +193,7 @@ const CoursesEditForm = () => {
       </main>
 
       <FormFooter
-        tabNumber={4}
+        tabNumber={3}
         show={show}
          onShowMinus={() => setShow(show - 1)}
          onShowPlus={() => setShow(show + 1)}

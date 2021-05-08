@@ -6,14 +6,20 @@ import { Link } from "react-router-dom";
 import Alert from "../../components/Alert";
 import FormFooter from "../../components/FormFooter";
 import FormUploadFile from "../../components/FormUploadFile";
-import { Button, Input, Select, Textarea,Checkbox } from "../../components/Form";
+import {
+  Button,
+  Input,
+  Select,
+  Textarea,
+  Checkbox,
+} from "../../components/Form";
 import SchoolsFormContent from "./SchoolsFormContent";
 import { detailsSelector, setDetailData } from "../../slices/details";
-import { getUsers, usersSelector,setUserData } from "../../slices/users";
+import { getUsers, usersSelector, setUserData } from "../../slices/users";
 
 const SchoolsEditForm = () => {
   const dispatch = useDispatch();
-  const {user, users} = useSelector(usersSelector);
+  const { user, users } = useSelector(usersSelector);
   const [show, setShow] = useState(1);
   const [type, setType] = useState(``);
   const [chooses, setChooses] = useState({});
@@ -22,18 +28,17 @@ const SchoolsEditForm = () => {
 
   useEffect(() => {
     dispatch(getUsers(`Activated`, [`Office leader`]));
-    dispatch(setUserData({types:school.leaders}));
+    dispatch(setUserData({ types: school.leaders }));
   }, [dispatch]);
 
-  
-    const schoolsSAVE = async (e) => {
-      e.preventDefault();
-      const params = new FormData(e.target);
-      let res = await Ajax.put(`/schools/${school.id}`, params);
-      if (res.status === `error`) {
-        Alert({ t: res.status, c: res.errors });
-        return;
-      }
+  const schoolsSAVE = async (e) => {
+    e.preventDefault();
+    const params = new FormData(e.target);
+    let res = await Ajax.put(`/schools/${school.id}`, params);
+    if (res.status === `error`) {
+      Alert({ t: res.status, c: res.errors });
+      return;
+    }
     Alert({ t: `Save success`, c: [] });
     window.location.reload();
   };
@@ -50,36 +55,49 @@ const SchoolsEditForm = () => {
   return (
     <form onSubmit={(e) => schoolsSAVE(e)}>
       <main className="w-full max-w-3xl mx-auto rounded max-h-64 overflow-y-auto my-3">
-      
         <section
           className={`${
             show !== 1 ? `hidden` : ``
           } bg-white rounded-md overflow-hidden shadow px-4 py-4`}
         >
-          
-        <label className="block mt-4">
-                  <div className="flex -mb-3"><span className="block font-medium">Name</span><b className="text-red-600 ml-1"> (*)</b></div>
-                  <Input name={`name`} type={`text`} value={school.name} /> 
+          <label className="block mt-4">
+            <div className="flex -mb-3">
+              <span className="block font-medium">Name</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Input name={`name`} type={`text`} value={school.name} />
           </label>
           <label className="block mt-4">
-                  <div className="flex -mb-3"><span className="block font-medium">Address</span><b className="text-red-600 ml-1"> (*)</b></div>
-                  <Input name={`infos[address]`} type={`text`} value={school.infos.address} /> 
+            <div className="flex -mb-3">
+              <span className="block font-medium">Address</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Input
+              name={`infos[address]`}
+              type={`text`}
+              value={school.infos.address}
+            />
           </label>
           <label className="block mt-4">
-                        <div className="flex -mb-3"><span className="block font-medium">Leaders</span><b
-                            className="text-red-600 ml-1"> (*)</b></div>
-                        <Checkbox
-                            name={`leaders`}
-                            ids={users.map(({id}) => id)}
-                            values={users.map(({name}) => name)}
-                        />
-           </label>
-          <label className="block mt-4">
-                      <div className="flex -mb-3"><span className="block font-medium">Image information management</span><b className="text-red-600 ml-1"> (*)</b></div>
-                   
+            <div className="flex -mb-3">
+              <span className="block font-medium">Leaders</span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+            <Checkbox
+              name={`leaders`}
+              ids={users.map(({ id }) => id)}
+              values={users.map(({ name }) => name)}
+            />
           </label>
-          <FormUploadFile files={school.files.images} handle_first={true}/>
-         
+          <label className="block mt-4">
+            <div className="flex -mb-3">
+              <span className="block font-medium">
+                Image information management
+              </span>
+              <b className="text-red-600 ml-1"> (*)</b>
+            </div>
+          </label>
+          <FormUploadFile files={school.files.images} handle_first={true} />
         </section>
       </main>
 

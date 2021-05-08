@@ -38,11 +38,19 @@ const FilesPage = () => {
     e.preventDefault();
     const params = new FormData(e.target);
     let res = await Ajax.post(`/files`, params);
-    console.log("res", res);
-    if (res.status === `success` && res.errors[0] !== `Too Many Attempts.`) {
-      Alert({ t: res.status, c: res.errors });
-    }else {
-      Alert({ t: res.status, c: res.errors });
+    console.log("res", res.data.type);
+    // if (res.status === `success` && res.errors[0] !== `Too Many Attempts.`) {
+    //   Alert({ t: res.status, c: res.errors });
+    // }else {
+    //   Alert({ t: res.status, c: res.errors });
+    // }
+    // res.data.type === "Pictures for Advertisement"
+    if (res.data.type === "Pictures for Advertisement") {
+      if (res.status === `success` && res.errors[0] !== `Too Many Attempts.`) {
+        Alert({ t: res.status, c: res.errors });
+      } else {
+        Alert({ t: res.status, c: res.errors });
+      }
     }
   };
 

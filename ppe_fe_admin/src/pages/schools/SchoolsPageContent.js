@@ -20,7 +20,7 @@ class SchoolsPageContent extends Component {
 
   componentWillReceiveProps(nextProps) {
     Object.values(nextProps.inputs ?? {}).map((item, key) =>
-      this.handleAdd(null, item.topic, item.lists,item.date)
+      this.handleAdd(null, item.topic, item.lists, item.date)
     );
     this.setState({
       label: nextProps.label,
@@ -60,7 +60,7 @@ class SchoolsPageContent extends Component {
     return min;
   }
 
-  handleAdd(e = null, topic = ``, lists = ``,date=``) {
+  handleAdd(e = null, topic = ``, lists = ``, date = ``) {
     if (e) {
       e.preventDefault();
     }
@@ -72,7 +72,7 @@ class SchoolsPageContent extends Component {
       pos: pos,
       topic: topic,
       lists: lists,
-      date:date
+      date: date,
     };
     inputs[id] = input;
     this.setState({
@@ -114,11 +114,8 @@ class SchoolsPageContent extends Component {
     return (
       <React.Fragment>
         <div className={`${className} block mt-4`}>
-        
           {inputs.map((input, key) => (
             <section className="mt-3 bg-white" key={key}>
-             
-              
               <textarea
                 name={`contents[${input.id}][lists]`}
                 onChange={(e) => this.handleChange(e, input.id, "lists")}
