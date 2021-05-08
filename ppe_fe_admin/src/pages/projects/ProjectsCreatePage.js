@@ -209,7 +209,8 @@ const ProjectsCreatePage = () => {
             title={`Members`}
             name={`members`}
             ids={users.map(({ id }) => id)}
-            values={users.map(({ name }) => name)}
+            values={users.map((user ) => user.name !== null ? user.name : user?.infos_lang?.vi?.name )}
+
           />
          
         </section>

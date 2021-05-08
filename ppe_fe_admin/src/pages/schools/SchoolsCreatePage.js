@@ -80,7 +80,8 @@ const SchoolsCreatePage = () => {
           <Checkbox
               name={`leaders`}
               ids={users.map(({id}) => id)}
-              values={users.map(({name}) => name)}
+              values={users.map((user ) => user.name !== null ? user.name : user?.infos_lang?.vi?.name )}
+
           />
           <label className="block mt-4">
                         <div className="flex "><span className="block font-medium">Image information management</span><b
