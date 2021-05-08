@@ -26,7 +26,7 @@ class PostController extends BaseController
                 ->get()
                 ->keyBy($request->keyBy)
                 ->toArray();
-            $data['posts'] = File::getImageDescription($data['posts']);
+//            $data['posts'] = File::getImageDescription($data['posts']);
             return response()->json($data);
         }
         if($request->lang && !$request->status){
@@ -36,7 +36,7 @@ class PostController extends BaseController
                 ->orderBy('id', 'desc')
                 ->get()
                 ->toArray();
-            $data['posts'] = File::getImageDescription($data['posts']);
+//            $data['posts'] = File::getImageDescription($data['posts']);
             return response()->json($data);
         }
         $data['posts'] = Post::select('*');
@@ -47,7 +47,7 @@ class PostController extends BaseController
             ->orderBy('id', 'desc')
             ->get()
             ->toArray();
-        $data['posts'] = File::getImageDescription($data['posts']);
+//        $data['posts'] = File::getImageDescription($data['posts']);
         return response()->json($data);
     }
 
@@ -78,7 +78,7 @@ class PostController extends BaseController
         $data = $request->except([]);
         $data['user_id'] = $user['id'];
         $data['files'] = File::add_images(@$data['files']);
-        $data['descriptions'] = File::descriptions_files(@$data['descriptions']);
+//        $data['descriptions'] = File::descriptions_files(@$data['descriptions']);
         $data['status'] = 'Activated';
         $create = Post::create($data);
         return response()->json($create);
@@ -125,7 +125,7 @@ class PostController extends BaseController
         }
         $data = $request->except(['_method', 'files_before']);
         $data['files'] = File::add_images(@$data['files']);
-        $data['descriptions'] = File::descriptions_files(@$data['descriptions']);
+//        $data['descriptions'] = File::descriptions_files(@$data['descriptions']);
 
         $update = Post::where('id', $id)->update($data);
         return response()->json($data);

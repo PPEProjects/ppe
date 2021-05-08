@@ -6,14 +6,19 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import CompaniesDetailPage from "./CompaniesDetailPage";
-import { companiesSelector, getCompanies } from "../../slices/companies";
+import {
+  companiesSelector,
+  getCompanies,
+  deleteCompanys,
+} from "../../slices/companies";
 import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
+
 import Language from "../../components/Language";
-import { setFormData } from "../../slices/form";
+import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 const CompaniesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -22,6 +27,7 @@ const CompaniesPage = () => {
   const { company, companies, status } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
+  const { selects } = useSelector(formSelector);
   const [search, setSearch] = useState(``);
   const [companiesSearch, setUsersSearch] = useState(companies);
   useEffect(() => {
@@ -44,6 +50,24 @@ const CompaniesPage = () => {
 
     dispatch(setSidebarData({ url: url }));
   }, [dispatch, location, filterOpen]);
+
+  const handleOnclickWidgets = () => {
+    let checkboxes = {
+      syllabus_ids: company.syllabus_ids,
+      teachers: company.teachers,
+    };
+    dispatch(setFormData({ checkboxes: checkboxes }));
+    dispatch(setDetailData({ isShow: true, company: company }));
+  };
+
+  const handleOnclick = () => {
+    dispatch(
+      setFormData({
+        checkboxes: { types: company.types },
+      })
+    );
+    dispatch(setDetailData({ isShow: true, company: company }));
+  };
 
   const renderMain = () => {
     return (
@@ -81,21 +105,29 @@ const CompaniesPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`Select All`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", companies));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
+                  />
+                  <Button
+                    type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", companies));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deleteCompanys())}
                   />
-                  {/* 
-                  <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -142,19 +174,7 @@ const CompaniesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {companiesSearch.map((company, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() => {
-                          let checkboxes = {
-                            syllabus_ids: company.syllabus_ids,
-                            teachers: company.teachers,
-                          };
-                          dispatch(setFormData({ checkboxes: checkboxes }));
-                          dispatch(
-                            setDetailData({ isShow: true, company: company })
-                          );
-                        }}
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         {Object.keys(company.more.ranking ?? {}).length !==
                           0 && (
                           <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
@@ -170,18 +190,27 @@ const CompaniesPage = () => {
 
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={() => dispatch(setFormSelects(company.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[company.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
-                        <div className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                        <div
+                          onClick={handleOnclickWidgets}
+                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
+                        >
                           <img
                             alt=""
                             src={company.image}
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={handleOnclickWidgets}
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {company.name}
                           </h1>
@@ -217,34 +246,30 @@ const CompaniesPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {companiesSearch.map((company, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { types: company.types },
-                            })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, company: company })
-                          );
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(company.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[company.id] && (
+                              <i className="group-hover:block text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
-                          <p className="w-10 truncate">{company.id}</p>
+                        <td
+                          className="px-2 py-1 w-10 truncate cursor-pointer"
+                          onClick={handleOnclick}
+                        >
+                          {company.id}
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
+                        <td
+                          className="px-2 py-1 text-indigo-700 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
                           <figure className="flex items-center">
                             <div className="w-10">
                               <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
@@ -255,17 +280,26 @@ const CompaniesPage = () => {
                                 />
                               </div>
                             </div>
-                            <figcaption className="ml-2">
+                            <figcaption
+                              className="ml-2 cursor-pointer"
+                              onClick={handleOnclick}
+                            >
                               {company.name}
                             </figcaption>
                           </figure>
                         </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">
-                            {Object.keys(company.more.members).length}
-                          </p>
+                        <td
+                          className="px-2 py-1 truncate w-24 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
+                          {Object.keys(company.more.members).length}
                         </td>
-                        <td className="px-2 py-1">{company.more.address}</td>
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
+                          {company.more.address}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

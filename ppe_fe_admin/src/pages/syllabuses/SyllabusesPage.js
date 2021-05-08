@@ -10,7 +10,7 @@ import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import SyllabusesDetailPage from "./SyllabusesDetailPage";
 import { useLocation } from "react-router-dom";
-import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
+// import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import Language from "../../components/Language";
@@ -21,7 +21,7 @@ const SyllabusesPage = () => {
   const { usersObj } = useSelector(usersSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { syllabuse, syllabuses, status } = useSelector(syllabusesSelector);
   const [mode, setMode] = useState(`grid`);
@@ -46,10 +46,11 @@ const SyllabusesPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCoursesObj());
     dispatch(getSyllabuses(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+    console.log(location);
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
     return (

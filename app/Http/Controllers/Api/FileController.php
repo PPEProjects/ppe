@@ -145,8 +145,21 @@ class FileController extends BaseController
                         if (preg_match('#avatars#mis', $val)) {
                             continue;
                         }
-                        \Illuminate\Support\Facades\Log::channel('single')->info('$val', [$val]);
-
+                        $like = preg_replace('/^.*?(\d{4}-\d{2}-\d{2}-\d+).*?$/mis', '$1', $val);
+                        $fileFirst = File::whereRaw("files LIKE '%$like%'")
+                            ->first();
+                        if($fileFirst && isset($fileFirst->files['images'])){
+                            $fileFirst = $fileFirst->toArray();
+                            $images = $fileFirst['files']['images'];
+                            foreach ($images as $key => $image) {
+                                if(preg_match("#$like#mis", $image))
+                                    unset($images[$key]);
+                            }
+                            $images = array_values($images);
+                            $fileFirst['files']['images'] = $images;
+                            File::whereRaw("files LIKE '%$like%'")
+                                ->update(['files'=> $fileFirst['files']]);
+                        }
                         @unlink(public_path($val));
                     }
                     break;

@@ -77,6 +77,25 @@ export function deleteUser(user) {
   };
 }
 
+export function deleteUsers(user) {
+  return async (dispatch, getState) => {
+    const {selects} = getState().form
+    let confirm = await Confirm({
+      t: `Confirm`,
+      c: [`Do you want to delete: ${Object.keys(selects).length} users`],
+    });
+    if (!confirm) return;
+    let params = { chooses: selects };
+    let res = await Ajax.delete(`/users/1`, params);
+    if (res.status === `error`) {
+      Alert({ t: res.status, c: res.errors });
+      return;
+    }
+    window.location.reload();
+    dispatch(getUsers());
+  };
+}
+
 export function getUsers(filterOpen, types = null) {
   return async (dispatch) => {
     dispatch(setData({ status: `loading` }));

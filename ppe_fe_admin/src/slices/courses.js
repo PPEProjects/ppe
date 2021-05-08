@@ -62,7 +62,26 @@ export function deleteCourse(course) {
       return;
     }
     window.location.reload();
-   
+
+    dispatch(getCourses());
+  };
+}
+
+export function deleteCourses(course) {
+  return async (dispatch, getState) => {
+    const { selects } = getState().form;
+    let confirm = await Confirm({
+      t: `Confirm`,
+      c: [`Do you want to delete: ${Object.keys(selects).length} courses`],
+    });
+    if (!confirm) return;
+    let params = { chooses: selects };
+    let res = await Ajax.delete(`/courses/1`, params);
+    if (res.status === `error`) {
+      Alert({ t: res.status, c: res.errors });
+      return;
+    }
+    window.location.reload();
     dispatch(getCourses());
   };
 }

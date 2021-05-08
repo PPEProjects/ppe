@@ -35,8 +35,8 @@ const PostsEditForm = () => {
   const postSAVE = async (e) => {
     e.preventDefault();
     const params = new FormData(e.target);
-    params.set("content", JSON.stringify(editorData));
-      let res = await Ajax.put(`/posts/${post.id}`, params);
+    params.set("descriptions", JSON.stringify(editorData));
+    let res = await Ajax.put(`/posts/${post.id}`, params);
     if (res.status === `error`) {
       Alert({ t: res.status, c: res.errors });
       return;
@@ -82,7 +82,6 @@ const PostsEditForm = () => {
             </div>
             <Input name={`title`} type={`text`} value={post.title} />
           </label>
-         
 
           <label className="block mt-4">
             <div className="flex -mb-3">
