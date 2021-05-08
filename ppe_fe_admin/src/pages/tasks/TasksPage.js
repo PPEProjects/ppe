@@ -68,7 +68,11 @@ const TasksPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{tasks?.length}</b>
-                  <p className="text-gray-600">{tasks?.length ===0 || tasks?.length === 1 ? "Task" : "Tasks"}</p>
+                  <p className="text-gray-600">
+                    {tasks?.length === 0 || tasks?.length === 1
+                      ? "Task"
+                      : "Tasks"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -186,29 +190,6 @@ const TasksPage = () => {
                           </h1>
                         </div>
                         <div
-                          className="w-full pb-1x1 relative bg-gray-300"
-                          onClick={() =>
-                            dispatch(
-                              setDetailData({
-                                isShow: true,
-                                task: task,
-                                project: projectsObj[task.project_id],
-                              })
-                            )
-                          }
-                        >
-                          <div className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center">
-                            <h3 className="text-white font-black mx-2 truncate-2y">
-                              {projectsObj[task?.project_id]?.name}
-                            </h3>
-                          </div>
-                          <img
-                            alt=""
-                            src={projectsObj[task?.project_id]?.image}
-                            className="absolute h-full w-full object-cover"
-                          />
-                        </div>
-                        <div
                           className="mx-2 my-2"
                           onClick={() =>
                             dispatch(
@@ -223,7 +204,9 @@ const TasksPage = () => {
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {task.content}
                           </h2>
-                          <div className={`text-gray-500 text-xs truncate`}>
+                          <div
+                            className={`text-gray-500 text-xs truncate pb-4`}
+                          >
                             <p className="">
                               Created at: {moment(task.created_at).fromNow()}
                             </p>

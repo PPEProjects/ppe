@@ -74,7 +74,11 @@ const SyllabusesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{syllabuses?.length}</b>
-                  <p className="text-gray-600">{syllabuses?.length ===0 || syllabuses?.length === 1 ? "Syllabuse" : "Syllabuses"}</p>
+                  <p className="text-gray-600">
+                    {syllabuses?.length === 0 || syllabuses?.length === 1
+                      ? "Syllabuse"
+                      : "Syllabuses"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -92,25 +96,6 @@ const SyllabusesPage = () => {
                 />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
-                <div className="flex items-center">
-                  <Button
-                    type={`button`}
-                    title={`Select All`}
-                    className={`bg-gray-300 text-gray-800`}
-                  />
-
-                  <Button
-                    type={`button`}
-                    title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  />
-
-                  {/* <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
-                </div>
                 <div className="flex">
                   <button
                     type="button"
