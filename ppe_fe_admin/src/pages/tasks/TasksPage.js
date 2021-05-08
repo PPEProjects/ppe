@@ -29,7 +29,7 @@ const TasksPage = () => {
   const [search, setSearch] = useState(``);
   const [tasksSearch, setUsersSearch] = useState(tasks);
   useEffect(() => {
-    console.log('tasks', tasks)
+    console.log("tasks", tasks);
     setUsersSearch(Search(`contents[0].name`, search, tasks));
   }, [search, tasks]);
 
@@ -226,8 +226,8 @@ const TasksPage = () => {
                   {tasksSearch.length != 0 && (
                     <thead className="border-black border-b ">
                       <tr className="">
-                        <td className="px-2 py-1"></td>
-                        <td className="px-2 py-1">ID</td>
+                        <td className="px-2 py-1 w-12"></td>
+                        <td className="px-2 py-1  w-16">ID</td>
                         <td className="px-2 py-1 ">Name</td>
                         <td className="px-2 py-1 ">Status</td>
                       </tr>
