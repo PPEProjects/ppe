@@ -37,7 +37,10 @@ const CoursesEditForm = () => {
         dispatch(getUsers(`Activated`, [`Japanese instructor`]));
     }, [dispatch]);
     useEffect(() => {
-        dispatch(setFormData({editorData: JSON.parse(course.content)}))
+        try {
+            dispatch(setFormData({editorData: JSON.parse(course.content)}))
+        } catch (e) {
+        }
     }, [course]);
     const courseSAVE1 = async (e) => {
         e.preventDefault();
@@ -91,7 +94,7 @@ const CoursesEditForm = () => {
 
                                 name={`more[ranking]`}
                                 type={`number`}
-                                value={course.more.ranking}
+                                value={course?.more?.ranking}
                                 className={`w-full pl-1`}
                             />
 
@@ -135,7 +138,7 @@ const CoursesEditForm = () => {
                         <Input
                             name={`more[time]`}
                             type={`text`}
-                            value={course.more.time}
+                            value={course?.more?.time}
                         />
                     </label>
                     <label className="block mt-4">
@@ -174,15 +177,15 @@ const CoursesEditForm = () => {
                         <Checkbox
                             name={`teachers`}
                             ids={users.map(({id}) => id)}
-                            values={users.map((user) =>user?.infos_lang?.vi?.name)}
-                            
+                            values={users.map((user) => user?.infos_lang?.vi?.name)}
+
                         />
                     </label>
                     <label className="block mt-4">
                         <div className="flex -mb-3"><span className="block font-medium">Google form url</span>
-                        {/* <b className="text-red-600 ml-1"> (*)</b> */}
-                            </div>
-                        <Input name={`more[google_form_url]`} type={`text`}   value={course.more.google_form_url}/>
+                            {/* <b className="text-red-600 ml-1"> (*)</b> */}
+                        </div>
+                        <Input name={`more[google_form_url]`} type={`text`} value={course.more.google_form_url}/>
                     </label>
                 </section>
             </main>

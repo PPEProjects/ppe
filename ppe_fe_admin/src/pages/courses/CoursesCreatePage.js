@@ -110,7 +110,7 @@ const CoursesCreatePage = () => {
               <span className="block font-medium">Content of the course</span>
               <b className="text-red-600 ml-1"> (*)</b>
             </div>
-            <Editor type="create" />
+            <Editor type="image" />
           </label>
         </section>
         <section
@@ -177,7 +177,6 @@ const CoursesCreatePage = () => {
           <label className="block mt-4">
             <div className="flex -mb-3">
               <span className="block font-medium">Google form url</span>
-              <b className="text-red-600 ml-1"> (*)</b>
             </div>
             <Input name={`more[google_form_url]`} type={`text`} />
           </label>

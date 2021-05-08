@@ -398,7 +398,7 @@ const Sidebar = () => {
         <section className="px-3 w-full">
           <hr className="my-2" />
           {opens["UserInfo"] && (
-            <div className="bg-white shadow-md -mt-56 text-gray-800 w-full border rounded-lg px-1">
+            <div className="bg-white shadow-md -mt-56 text-gray-800 w-full border rounded-lg px-1 relative ">
               <Link
                 to={`/ChangeInformationPage`}
                 type="button"
