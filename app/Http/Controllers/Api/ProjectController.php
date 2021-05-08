@@ -27,7 +27,8 @@ class ProjectController extends BaseController
                 ->get()
                 ->keyBy($request->keyBy)
                 ->toArray();
-            $data['projects'] = File::getImageDescription($data['projects']);
+//            $data['projects'] = File::getImageDescription($data['projects']);
+            $data['projects'] = File::get_images($data['projects']);
             return response()->json($data);
         }
         if($request->lang){
@@ -40,7 +41,8 @@ class ProjectController extends BaseController
             $data['projects'] = $data['projects']
                 ->get()
                 ->toArray();
-            $data['projects'] = File::getImageDescription($data['projects']);
+//            $data['projects'] = File::getImageDescription($data['projects']);
+            $data['projects'] = File::get_images($data['projects']);
             return response()->json($data);
         }
         $data['projects'] = Project::selectRaw("*, REPLACE(JSON_EXTRACT(more, '$.ranking'), '\"', '') AS ranking");
@@ -52,7 +54,8 @@ class ProjectController extends BaseController
             ->orderBy('id', 'desc')
             ->get()
             ->toArray();
-        $data['projects'] = File::getImageDescription($data['projects']);
+//        $data['projects'] = File::getImageDescription($data['projects']);
+        $data['projects'] = File::get_images($data['projects']);
         return response()->json($data);
     }
 

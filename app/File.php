@@ -155,7 +155,7 @@ class File extends Model
     public static function getImageEditorJS($data, $key = 'content')
     {
         foreach ($data as &$datum) {
-            $contents = json_decode($datum[$key], true);
+            $contents = is_array($datum[$key]) ? $datum[$key] : json_decode($datum[$key], true);
             foreach ($contents ?? [] as $content) {
                 if (isset($content['type']) &&
                     $content['type'] == 'image' &&
