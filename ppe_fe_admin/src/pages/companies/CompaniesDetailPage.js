@@ -98,7 +98,7 @@ const CompaniesDetailPage = () => {
                       <section className="grid grid-cols-12 gap-4 ">
                         <div className="col-span-6">
                           <div>
-                            <h2 className="font-medium truncate w-36">Name</h2>
+                            <h2 className="font-medium ">Name</h2>
                             <p className="text-sm text-gray-700">
                               {company.name}
                             </p>
