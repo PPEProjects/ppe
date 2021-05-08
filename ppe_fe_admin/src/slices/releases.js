@@ -58,7 +58,26 @@ export function deleteRelease(release) {
       return;
     }
     window.location.reload();
-   
+
+    dispatch(getReleases());
+  };
+}
+
+export function deleteReleases(release) {
+  return async (dispatch, getState) => {
+    const { selects } = getState().form;
+    let confirm = await Confirm({
+      t: `Confirm`,
+      c: [`Do you want to delete: ${Object.keys(selects).length} releases`],
+    });
+    if (!confirm) return;
+    let params = { chooses: selects };
+    let res = await Ajax.delete(`/releases/1`, params);
+    if (res.status === `error`) {
+      Alert({ t: res.status, c: res.errors });
+      return;
+    }
+    window.location.reload();
     dispatch(getReleases());
   };
 }

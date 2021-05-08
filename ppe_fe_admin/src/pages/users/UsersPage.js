@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { usersSelector, getUsers,deleteUsers } from "../../slices/users";
+import { usersSelector, getUsers, deleteUsers } from "../../slices/users";
 import { filterSelector } from "../../slices/filter";
 import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import UserDetailPage from "./UserDetailPage";
-import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
+// import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { setFormData, formSelector, setFormSelects } from "../../slices/form";
 
 const UsersPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  const { type } = useParams();
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { selects } = useSelector(formSelector);
 
-  const { users, status } = useSelector(usersSelector);
+  const { user, users, status } = useSelector(usersSelector);
   const [mode, setMode] = useState(`grid`);
-  const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [usersSearch, setUsersSearch] = useState(users);
   useEffect(() => {
@@ -32,27 +32,35 @@ const UsersPage = () => {
         return user;
       }
     });
+
+    console.log(usersSearch);
     setUsersSearch(usersSearch);
   }, [search, users]);
 
   const [learners, setLearners] = useState({});
 
   useEffect(() => {
-    setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getUsers(filterOpen));
-    let url = window.location.href;
-    dispatch(setSidebarData({ url }));
 
     fetchData();
+    console.log("fetch data");
+    console.log(location.pathname, location.search);
     async function fetchData() {
       let res = await Ajax.get(`/classes`, { learners: `learners` });
       setLearners(res.data?.learners);
     }
-  }, [dispatch, location, filterOpen]);
+  }, [dispatch, location.pathname, location.search, filterOpen]);
+
+  const handleOnclick = () => {
+    dispatch(
+      setFormData({
+        checkboxes: { types: user.types },
+      })
+    );
+    dispatch(setDetailData({ isShow: true, user: user }));
+  };
 
   const renderMain = () => {
-    // console.log("learners", learners);
-
     return (
       <aside className="w-full">
         <div className="grid grid-cols-12 gap-4 mx-6 ">
@@ -101,21 +109,15 @@ const UsersPage = () => {
                     title={`${Object.keys(selects).length} Selected`}
                     onClick={() => {
                       dispatch(setFormSelects("all", users));
-                      // dispatch(selectedAll({ checked: true }));
                     }}
                     className={`bg-gray-300 text-gray-800`}
                   />
                   <Button
                     type={`button`}
                     title={`x ${Object.keys(selects).length} Select All`}
-                    onClick={
-                      () => {
-                        console.log("1");
-                        dispatch(setFormSelects("all", users));
-                      } /*{
-                      // dispatch(selectedAll({ checked: true }));
-                    }*/
-                    }
+                    onClick={() => {
+                      dispatch(setFormSelects("all", users));
+                    }}
                     className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
@@ -124,7 +126,7 @@ const UsersPage = () => {
                     disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
                     className={`bg-gray-300 text-gray-800 mx-2`}
-                    onClick={(e)=>dispatch(deleteUsers())}
+                    onClick={(e) => dispatch(deleteUsers())}
                   />
                 </div>
                 <div className="flex">
@@ -172,49 +174,32 @@ const UsersPage = () => {
               {status === `success` && mode === `grid` && (
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {usersSearch.map((user, key) => (
-                    <div
-                      className="col-span-3 "
-                      key={key}
-                      onClick={() => {
-                        dispatch(
-                          setFormData({
-                            checkboxes: { types: user.types },
-                          })
-                        );
-                        dispatch(setDetailData({ isShow: true, user: user }));
-                      }}
-                    >
-                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
+                    <div className="col-span-3 " key={key}>
+                      <section className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={(e) => dispatch(setFormSelects(user.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[user.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
-                        <div className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                        <div
+                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
+                          onClick={handleOnclick}
+                        >
                           <img
                             alt=""
                             src={user.image}
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
-                          <h1
-                            className="truncate-2y text-sm leading-5 font-semibold"
-                            onClick={() => {
-                              dispatch(
-                                setFormData({
-                                  checkboxes: { types: user.types },
-                                })
-                              );
-                              dispatch(
-                                setDetailData({ isShow: true, user: user })
-                              );
-                            }}
-                          >
-                            {user.name !== null ? user.name : user?.infos_lang?.vi?.name}
-                            
-                            {/* {user.name} */}
+                        <div className="mx-2 my-2" onClick={handleOnclick}>
+                          <h1 className="truncate-2y text-sm leading-5 font-semibold">
+                            {user.name !== null
+                              ? user.name
+                              : user?.infos_lang?.vi?.name}
                           </h1>
 
                           <div className={`text-gray-500 text-xs truncate`}>
@@ -239,7 +224,7 @@ const UsersPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </section>
                     </div>
                   ))}
                 </div>
@@ -278,31 +263,13 @@ const UsersPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={() => {
-                            dispatch(
-                              setFormData({
-                                checkboxes: { types: user.types },
-                              })
-                            );
-                            dispatch(
-                              setDetailData({ isShow: true, user: user })
-                            );
-                          }}
+                          onClick={handleOnclick}
                         >
                           <p className="w-10 truncate">{user.id}</p>
                         </td>
                         <td
                           className="px-2 py-1 text-indigo-700 cursor-pointer"
-                          onClick={() => {
-                            dispatch(
-                              setFormData({
-                                checkboxes: { types: user.types },
-                              })
-                            );
-                            dispatch(
-                              setDetailData({ isShow: true, user: user })
-                            );
-                          }}
+                          onClick={handleOnclick}
                         >
                           <figure className="flex items-center">
                             <div className="w-10">
@@ -321,29 +288,31 @@ const UsersPage = () => {
                             </figcaption>
                           </figure>
                         </td>
-                        <td className="px-2 py-1">
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
                           <p className="truncate w-24">{user?.infos?.phone}</p>
                         </td>
                         <td className="px-2 py-1">
                           <p
                             className="truncate w-24 cursor-pointer"
-                            onClick={() => {
-                              dispatch(
-                                setFormData({
-                                  checkboxes: { types: user.types },
-                                })
-                              );
-                              dispatch(
-                                setDetailData({ isShow: true, user: user })
-                              );
-                            }}
+                            onClick={handleOnclick}
                           >
                             {user.email}
                           </p>
                         </td>
                         {/* <td className="py-1 truncate w-24">{user.email}</td> */}
-                        <td className="px-2 py-1">{learners[user.id]?.name}</td>
-                        <td className="px-2 py-1">
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
+                          {learners[user.id]?.name}
+                        </td>
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
                           {learners[user.id] && (
                             <span className={`text-indigo-700`}>Confirmed</span>
                           )}
