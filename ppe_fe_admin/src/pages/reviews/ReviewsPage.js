@@ -3,21 +3,21 @@ import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { reviewsSelector, getReviews } from "../../slices/reviews";
 import { setDetailData } from "../../slices/details";
-import Ajax from "../../components/Ajax";
+// import Ajax from "../../components/Ajax";
 import { setFormData } from "../../slices/form";
 import { InputIcon, Button } from "../../components/Form";
 import { companiesSelector, getCompaniesObj } from "../../slices/companies";
 import ReviewsDetailPage from "./ReviewsDetailPage";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
-import Language from "../../components/Language";
+// import Language from "../../components/Language";
 const ReviewsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { review, reviews, status } = useSelector(reviewsSelector);
   const { companiesObj } = useSelector(companiesSelector);
@@ -42,10 +42,10 @@ const ReviewsPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCompaniesObj());
     dispatch(getReviews(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
     return (

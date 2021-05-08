@@ -10,7 +10,7 @@ import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import SchoolsDetailPage from "./SchoolsDetailPage";
 import { useLocation } from "react-router-dom";
-import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
+// import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import { setFormData } from "../../slices/form";
@@ -21,7 +21,7 @@ const SchoolsPage = () => {
   const { usersObj } = useSelector(usersSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { school, schools, status } = useSelector(schoolsSelector);
   const [mode, setMode] = useState(`grid`);
@@ -30,26 +30,24 @@ const SchoolsPage = () => {
   const [search, setSearch] = useState(``);
   const [schoolsSearch, setUsersSearch] = useState(schools);
   useEffect(() => {
-    const schoolsSearch = schools.filter((school) => {    
-                      if (
-                        (school.name ?? ``)
-                          .toLowerCase()
-                          .includes((search ?? ``).toLowerCase())
-                      ) {
-                        return school;
-                      }
-                    })
-                    setUsersSearch(schoolsSearch)
+    const schoolsSearch = schools.filter((school) => {
+      if (
+        (school.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
+      ) {
+        return school;
+      }
+    });
+    setUsersSearch(schoolsSearch);
   }, [search, schools]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getClassesObj());
     dispatch(getSchools(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -77,7 +75,10 @@ const SchoolsPage = () => {
                 </div>
               </div>
               <div className="px-4 border-t mt-2 ">
-                <InputIcon placeholder="Search All schoolses" onChange={(e) => setSearch(e.target.value)} />
+                <InputIcon
+                  placeholder="Search All schoolses"
+                  onChange={(e) => setSearch(e.target.value)}
+                />
               </div>
               <div className="px-4 mt-3 flex items-center justify-between">
                 <div className="flex items-center">
@@ -144,7 +145,7 @@ const SchoolsPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {schoolsSearch.map((school, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
+                      <div
                         onClick={() => {
                           let checkboxes = {
                             leaders: school.leaders,
@@ -188,7 +189,7 @@ const SchoolsPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

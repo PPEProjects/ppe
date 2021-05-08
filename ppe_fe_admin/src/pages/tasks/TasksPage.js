@@ -9,7 +9,7 @@ import { InputIcon, Button } from "../../components/Form";
 import { projectsSelector, getProjectsObj } from "../../slices/projects";
 import { deleteTasks } from "../../slices/tasks";
 import TasksDetailPage from "./TasksDetailPage";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
@@ -17,7 +17,7 @@ import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 const TasksPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { task, tasks, status } = useSelector(tasksSelector);
   const { projectsObj } = useSelector(projectsSelector);
@@ -44,9 +44,9 @@ const TasksPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjectsObj());
     dispatch(getTasks(filterOpen));
-    let url = window.location.href;
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // let url = window.location.href;
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const handleOnclickWidgets = () =>
     dispatch(

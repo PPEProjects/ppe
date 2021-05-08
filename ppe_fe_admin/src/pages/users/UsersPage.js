@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { usersSelector, getUsers, deleteUsers } from "../../slices/users";
 import { filterSelector } from "../../slices/filter";
 import { setDetailData } from "../../slices/details";
-import Ajax from "../../components/Ajax";
+// import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import UserDetailPage from "./UserDetailPage";
 // import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
@@ -33,7 +33,6 @@ const UsersPage = () => {
       }
     });
 
-    console.log(usersSearch);
     setUsersSearch(usersSearch);
   }, [search, users]);
 
@@ -42,13 +41,13 @@ const UsersPage = () => {
   useEffect(() => {
     dispatch(getUsers(filterOpen));
 
-    fetchData();
-    console.log("fetch data");
-    console.log(location.pathname, location.search);
-    async function fetchData() {
-      let res = await Ajax.get(`/classes`, { learners: `learners` });
-      setLearners(res.data?.learners);
-    }
+    // fetchData();
+    // console.log("fetch data");
+    // console.log(location.pathname, location.search);
+    // async function fetchData() {
+    //   let res = await Ajax.get(`/classes`, { learners: `learners` });
+    //   setLearners(res.data?.learners);
+    // }
   }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const handleOnclick = (user) => {

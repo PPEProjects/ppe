@@ -44,12 +44,12 @@ const SyllabusesPage = () => {
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
-    dispatch(getCoursesObj());
+    // dispatch(getCoursesObj());
     dispatch(getSyllabuses(filterOpen));
+    console.log(location);
     // let url = window.location.href;
 
     // dispatch(setSidebarData({ url: url }));
-    console.log(location);
   }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
@@ -148,7 +148,7 @@ const SyllabusesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {syllabusesSearch.map((syllabuse, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
+                      <div
                         onClick={() =>
                           dispatch(
                             setDetailData({
@@ -184,7 +184,7 @@ const SyllabusesPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

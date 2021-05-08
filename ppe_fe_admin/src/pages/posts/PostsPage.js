@@ -7,10 +7,10 @@ import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import PostsDetailPage from "./PostsDetailPage";
 import { postsSelector, getPosts } from "../../slices/posts";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import { setFormData } from "../../slices/form";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
@@ -18,7 +18,7 @@ import { usersSelector } from "../../slices/users";
 const PostsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { post, posts, status } = useSelector(postsSelector);
   const [mode, setMode] = useState(`grid`);
@@ -40,10 +40,10 @@ const PostsPage = () => {
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getPosts(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const [text, setText] = useState("Select All ");
 
