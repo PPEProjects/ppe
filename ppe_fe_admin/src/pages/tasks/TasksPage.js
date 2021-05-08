@@ -48,19 +48,19 @@ const TasksPage = () => {
     // dispatch(setSidebarData({ url: url }));
   }, [dispatch, location.pathname, location.search, filterOpen]);
 
-  const handleOnclickWidgets = () =>
-    dispatch(
-      setDetailData({
-        isShow: true,
-        task: task,
-        project: projectsObj[task.project_id],
-      })
-    );
+  // const handleOnclickWidgets = () =>
+  //   dispatch(
+  //     setDetailData({
+  //       isShow: true,
+  //       task: task,
+  //       project: projectsObj[task.project_id],
+  //     })
+  //   );
 
-  const handleOnclick = () => {
-    dispatch(setFormData({ checkboxes: { types: task.types } }));
-    dispatch(setDetailData({ isShow: true, task: task }));
-  };
+  // const handleOnclick = () => {
+  //   dispatch(setFormData({ checkboxes: { types: task.types } }));
+  //   dispatch(setDetailData({ isShow: true, task: task }));
+  // };
 
   const renderMain = () => {
     return (
@@ -177,14 +177,33 @@ const TasksPage = () => {
                           )}
                         </button>
 
-                        <div className="mx-2" onClick={handleOnclickWidgets}>
+                        <div
+                          className="mx-2"
+                          onClick={() =>
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                task: task,
+                                project: projectsObj[task.project_id],
+                              })
+                            )
+                          }
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {task.name}
                           </h1>
                         </div>
                         <div
                           className="w-full pb-1x1 relative bg-gray-300"
-                          onClick={handleOnclickWidgets}
+                          onClick={() =>
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                task: task,
+                                project: projectsObj[task.project_id],
+                              })
+                            )
+                          }
                         >
                           <div className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center">
                             <h3 className="text-white font-black mx-2 truncate-2y">
@@ -199,7 +218,15 @@ const TasksPage = () => {
                         </div>
                         <div
                           className="mx-2 my-2"
-                          onClick={handleOnclickWidgets}
+                          onClick={() =>
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                task: task,
+                                project: projectsObj[task.project_id],
+                              })
+                            )
+                          }
                         >
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {task.content}
@@ -248,19 +275,40 @@ const TasksPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer w-10 truncate"
-                          onClick={handleOnclick}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({ checkboxes: { types: task.types } })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, task: task })
+                            );
+                          }}
                         >
                           {task.id}
                         </td>
                         <td
                           className="px-2 py-1 text-indigo-700 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({ checkboxes: { types: task.types } })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, task: task })
+                            );
+                          }}
                         >
                           {task.contents[0].name}
                         </td>
                         <td
                           className="px-2 py-1 text-indigo-700 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={() => {
+                            dispatch(
+                              setFormData({ checkboxes: { types: task.types } })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, task: task })
+                            );
+                          }}
                         >
                           {task.contents[0].status}
                         </td>

@@ -153,18 +153,7 @@ const ReleasesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {releasesSearch.map((release, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() =>
-                          dispatch(
-                            setDetailData({
-                              isShow: true,
-                              release: release,
-                              project: projectsObj[release.project_id],
-                            })
-                          )
-                        }
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
                           onClick={() => dispatch(setFormSelects(release.id))}
@@ -175,13 +164,46 @@ const ReleasesPage = () => {
                           )}
                         </button>
 
-                        <div className="mx-2">
+                        <div
+                          className="mx-2"
+                          onClick={() =>
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                release: release,
+                                project: projectsObj[release.project_id],
+                              })
+                            )
+                          }
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {release.name}
                           </h1>
                         </div>
-                        <div className="w-full pb-1x1 relative bg-gray-300">
-                          <div className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center">
+                        <div
+                          className="w-full pb-1x1 relative bg-gray-300"
+                          onClick={() =>
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                release: release,
+                                project: projectsObj[release.project_id],
+                              })
+                            )
+                          }
+                        >
+                          <div
+                            onClick={() =>
+                              dispatch(
+                                setDetailData({
+                                  isShow: true,
+                                  release: release,
+                                  project: projectsObj[release.project_id],
+                                })
+                              )
+                            }
+                            className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center"
+                          >
                             <h3 className="text-white font-black mx-2 truncate-2y">
                               {projectsObj[release?.project_id]?.name}
                             </h3>
@@ -192,7 +214,18 @@ const ReleasesPage = () => {
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={() =>
+                            dispatch(
+                              setDetailData({
+                                isShow: true,
+                                release: release,
+                                project: projectsObj[release.project_id],
+                              })
+                            )
+                          }
+                        >
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {release.contents[0].name}
                           </h2>
@@ -224,20 +257,7 @@ const ReleasesPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {releasesSearch.map((release, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { types: release.types },
-                            })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, release: release })
-                          );
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
@@ -251,16 +271,52 @@ const ReleasesPage = () => {
                             )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 "
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: release.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, release: release })
+                            );
+                          }}
+                        >
                           <p className="w-10 truncate">{release.id}</p>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 "
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: release.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, release: release })
+                            );
+                          }}
+                        >
                           <p className=" truncate">
                             {release.contents[0].name}
                           </p>
                         </td>
 
-                        <td className="px-2 py-1">
+                        <td
+                          className="px-2 py-1"
+                          onClick={() => {
+                            dispatch(
+                              setFormData({
+                                checkboxes: { types: release.types },
+                              })
+                            );
+                            dispatch(
+                              setDetailData({ isShow: true, release: release })
+                            );
+                          }}
+                        >
                           <p className="truncate w-24">{release.status}</p>
                         </td>
                       </tr>
