@@ -12,7 +12,7 @@ import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import { setFormData } from "../../slices/form";
 import Language from "../../components/Language";
-
+import Search from "../../components/Search";
 const ClassesPage = () => {
   const { class1, classes, status } = useSelector(classesSelector);
   // const { classesObj } = useSelector(classesSelector);
@@ -26,17 +26,9 @@ const ClassesPage = () => {
   const [search, setSearch] = useState(``);
   const [classesSearch, setUsersSearch] = useState(classes);
   useEffect(() => {
-    const classesSearch = classes.filter((classe1) => {
-      if (
-        (classe1.name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return classe1;
-      }
-    });
-    setUsersSearch(classesSearch);
+    setUsersSearch(Search(`name`, search, classes));
   }, [search, classes]);
+
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);

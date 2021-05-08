@@ -16,6 +16,7 @@ import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
 import { setFormData } from "../../slices/form";
 import { usersSelector } from "../../slices/users";
+import Search from "../../components/Search";
 const CommentsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -28,17 +29,9 @@ const CommentsPage = () => {
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [commentsSearch, setUsersSearch] = useState(comments);
+ 
   useEffect(() => {
-    const commentsSearch = comments.filter((comment) => {
-      if (
-        (comment.content ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return comment;
-      }
-    });
-    setUsersSearch(commentsSearch);
+    setUsersSearch(Search(`name`, search, comments));
   }, [search, comments]);
 
   useEffect(() => {

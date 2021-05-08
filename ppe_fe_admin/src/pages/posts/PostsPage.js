@@ -15,6 +15,7 @@ import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
 import { usersSelector } from "../../slices/users";
+import Search from "../../components/Search";
 const PostsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -26,15 +27,9 @@ const PostsPage = () => {
   const { users } = useSelector(usersSelector);
   const [search, setSearch] = useState(``);
   const [postsSearch, setUsersSearch] = useState(posts);
+ 
   useEffect(() => {
-    const postsSearch = posts.filter((post) => {
-      if (
-        (post.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return post;
-      }
-    });
-    setUsersSearch(postsSearch);
+    setUsersSearch(Search(`name`, search, posts));
   }, [search, posts]);
 
   useEffect(() => {

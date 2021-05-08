@@ -15,27 +15,21 @@ import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
 import { setFormData } from "../../slices/form";
+import Search from "../../components/Search";
 const JobsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
   const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
-
   const { job, jobs, status } = useSelector(jobsSelector);
   const { companiesObj } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [jobsSearch, setUsersSearch] = useState(jobs);
+  
   useEffect(() => {
-    const jobsSearch = jobs.filter((job) => {
-      if (
-        (job.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return job;
-      }
-    });
-    setUsersSearch(jobsSearch);
+    setUsersSearch(Search(`title `, search, jobs));
   }, [search, jobs]);
 
   useEffect(() => {

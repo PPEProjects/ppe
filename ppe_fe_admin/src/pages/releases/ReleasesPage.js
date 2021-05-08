@@ -17,6 +17,7 @@ import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import Language from "../../components/Language";
 import { setFormData, setFormSelects, formSelector } from "../../slices/form";
+import Search from "../../components/Search";
 const ReleasesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -30,16 +31,7 @@ const ReleasesPage = () => {
   const [search, setSearch] = useState(``);
   const [releasesSearch, setUsersSearch] = useState(releases);
   useEffect(() => {
-    const releasesSearch = releases.filter((release) => {
-      if (
-        (release.contents[0].name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return release;
-      }
-    });
-    setUsersSearch(releasesSearch);
+    setUsersSearch(Search(`name`, search, releases))
   }, [search, releases]);
 
   useEffect(() => {

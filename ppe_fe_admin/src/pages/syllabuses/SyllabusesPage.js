@@ -15,6 +15,7 @@ import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import Language from "../../components/Language";
 import { setFormData } from "../../slices/form";
+import Search from "../../components/Search";
 
 const SyllabusesPage = () => {
   const { coursesObj } = useSelector(coursesSelector);
@@ -27,19 +28,26 @@ const SyllabusesPage = () => {
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
 
+  // const [search, setSearch] = useState(``);
+  // const [syllabusesSearch, setUsersSearch] = useState(syllabuses);
+  // useEffect(() => {
+  //   const syllabusesSearch = syllabuses.filter((syllabuse) => {
+  //     if (
+  //       (syllabuse.name ?? ``)
+  //         .toLowerCase()
+  //         .includes((search ?? ``).toLowerCase())
+  //     ) {
+  //       return syllabuse;
+  //     }
+  //   });
+  //   setUsersSearch(syllabusesSearch);
+  // }, [search, syllabuses]);
+
   const [search, setSearch] = useState(``);
   const [syllabusesSearch, setUsersSearch] = useState(syllabuses);
+
   useEffect(() => {
-    const syllabusesSearch = syllabuses.filter((syllabuse) => {
-      if (
-        (syllabuse.name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return syllabuse;
-      }
-    });
-    setUsersSearch(syllabusesSearch);
+    setUsersSearch(Search(`name`, search, syllabuses));
   }, [search, syllabuses]);
 
   useEffect(() => {

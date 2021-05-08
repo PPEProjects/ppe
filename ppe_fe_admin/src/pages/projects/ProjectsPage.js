@@ -17,6 +17,7 @@ import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 import Language from "../../components/Language";
+import Search from "../../components/Search";
 
 const ProjectsPage = () => {
   const { project1, projects, project, status } = useSelector(projectsSelector);
@@ -30,18 +31,8 @@ const ProjectsPage = () => {
   const { selects } = useSelector(formSelector);
   const [projectsSearch, setUsersSearch] = useState(projects);
   useEffect(() => {
-    const projectsSearch = projects.filter((project) => {
-      if (
-        (project.name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return project;
-      }
-    });
-    setUsersSearch(projectsSearch);
+    setUsersSearch(Search(`name`, search, projects));
   }, [search, projects]);
-
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjects(filterOpen));
