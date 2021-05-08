@@ -30,7 +30,7 @@ class Post extends Model
     {
         $makes = [
             'language' => 'required',
-            'files.images' => 'required',
+//            'files.images' => 'required',
             'title' => 'required',
             'descriptions.*.value' => 'required',
             'descriptions.*.files' => 'required',

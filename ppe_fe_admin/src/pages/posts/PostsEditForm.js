@@ -91,13 +91,13 @@ const PostsEditForm = () => {
             <Editor type="edit" />
           </label>
 
-          <label className="block mt-4">
+          {/*<label className="block mt-4">
             <div className="flex">
               <span className="block font-medium">Image</span>
               <b className="text-red-600 ml-1"> (*)</b>
             </div>
           </label>
-          <FormUploadFile files={post.files.images} handle_first={true} />
+          <FormUploadFile files={post.files.images} handle_first={true} />*/}
         </section>
       </main>
 
