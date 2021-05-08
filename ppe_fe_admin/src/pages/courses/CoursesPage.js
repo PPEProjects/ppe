@@ -49,7 +49,9 @@ const CoursesPage = () => {
     dispatch(setDetailData({ isShow: true, course: course }));
     try {
       dispatch(setFormData({ editorData: JSON.parse(course.content) }));
-    } catch (e) {}
+    } catch (e) {
+      dispatch(setFormData({ editorData: course.content}));
+    }
   };
 
   const renderMain = () => {

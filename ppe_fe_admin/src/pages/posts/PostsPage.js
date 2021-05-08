@@ -12,6 +12,7 @@ import { getPosts, postsSelector } from "../../slices/posts";
 import { setSidebarData, sidebarSelector } from "../../slices/sidebar";
 import { usersSelector } from "../../slices/users";
 import PostsDetailPage from "./PostsDetailPage";
+import Search from "../../components/Search";
 
 const PostsPage = () => {
   const location = useLocation();
@@ -25,14 +26,8 @@ const PostsPage = () => {
   const [search, setSearch] = useState(``);
   const [postsSearch, setUsersSearch] = useState(posts);
   useEffect(() => {
-    const postsSearch = posts.filter((post) => {
-      if (
-        (post.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return post;
-      }
-    });
-    setUsersSearch(postsSearch);
+    console.log("tasks", posts);
+    setUsersSearch(Search(`title`, search, posts));
   }, [search, posts]);
 
   useEffect(() => {
@@ -48,8 +43,9 @@ const PostsPage = () => {
   const handleOnclick = (post) => {
     dispatch(setDetailData({ isShow: true, post: post }));
     try {
-      dispatch(setFormData({ editorData: post.descriptions }));
-    } catch (e) {}
+      dispatch(setFormData({ editorData: JSON.parse(post.descriptions) }));
+    } catch (e) {
+      dispatch(setFormData({ editorData: (post.descriptions) }));}
   };
 
   const renderMain = () => {

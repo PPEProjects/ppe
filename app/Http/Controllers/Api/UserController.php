@@ -335,6 +335,8 @@ class UserController extends BaseController
     {
         //
         if ($request->change_password) {
+            \Illuminate\Support\Facades\Log::channel('single')->info('1', []);
+            
             $makes = [
                 'password' => 'required|min:8|confirmed',
             ];
@@ -348,6 +350,8 @@ class UserController extends BaseController
             return response()->json($data);
         }
         if ($request->change_information) {
+            \Illuminate\Support\Facades\Log::channel('single')->info('2', []);
+            
             $makes = [
                 'name' => 'required',
             ];
@@ -361,6 +365,8 @@ class UserController extends BaseController
             return response()->json($data);
         }
         if ($request->admin_register) {
+            \Illuminate\Support\Facades\Log::channel('single')->info('3', []);
+            
             $validator = User::validator($request, ['email', 'password', 'name']);
             if ($validator && $validator->fails()) {
                 return $this->checkSendError($validator);

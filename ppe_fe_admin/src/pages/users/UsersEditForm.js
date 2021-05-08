@@ -186,10 +186,11 @@ const UsersEditForm = () => {
         )}
       </main>
       <FormFooter
-        tabNumber={4}
-        show={show}
-         onShowMinus={() => setShow(show - 1)}
-         onShowPlus={() => setShow(show + 1)}
+          tabNumber={types[`Japanese learner`] || types[`IT project member`] || types[`Japanese instructor`] ? 3 : 1}
+          show={show}
+          hidden={`admin_register`}
+          onShowMinus={() => setShow(show - 1)}
+          onShowPlus={() => setShow(show + 1)}
       />
     </form>
   );

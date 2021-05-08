@@ -14,6 +14,7 @@ const Editor = ({ type }) => {
     const handle = async () => {
       if (!editorInstance || isFirst) return;
       await editorInstance.isReady;
+      console.log('editorData', editorData)
       if (type === `edit`)
         editorInstance.blocks.render({ blocks: editorData ?? [] });
       setIsFirst(true);
