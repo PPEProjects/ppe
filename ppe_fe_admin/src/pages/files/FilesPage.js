@@ -41,6 +41,8 @@ const FilesPage = () => {
     console.log("res", res);
     if (res.status === `success` && res.errors[0] !== `Too Many Attempts.`) {
       Alert({ t: res.status, c: res.errors });
+    }else {
+      Alert({ t: res.status, c: res.errors });
     }
   };
 
