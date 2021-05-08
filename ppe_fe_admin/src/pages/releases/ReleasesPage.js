@@ -63,7 +63,11 @@ const ReleasesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{releases?.length}</b>
-                  <p className="text-gray-600">{releases?.length ===0 || releases?.length === 1 ? "Release" : "Releases"}</p>
+                  <p className="text-gray-600">
+                    {releases?.length === 0 || releases?.length === 1
+                      ? "Release"
+                      : "Releases"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -181,40 +185,6 @@ const ReleasesPage = () => {
                           </h1>
                         </div>
                         <div
-                          className="w-full pb-1x1 relative bg-gray-300"
-                          onClick={() =>
-                            dispatch(
-                              setDetailData({
-                                isShow: true,
-                                release: release,
-                                project: projectsObj[release.project_id],
-                              })
-                            )
-                          }
-                        >
-                          <div
-                            onClick={() =>
-                              dispatch(
-                                setDetailData({
-                                  isShow: true,
-                                  release: release,
-                                  project: projectsObj[release.project_id],
-                                })
-                              )
-                            }
-                            className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center"
-                          >
-                            <h3 className="text-white font-black mx-2 truncate-2y">
-                              {projectsObj[release?.project_id]?.name}
-                            </h3>
-                          </div>
-                          <img
-                            alt=""
-                            src={projectsObj[release?.project_id]?.image}
-                            className="absolute h-full w-full object-cover"
-                          />
-                        </div>
-                        <div
                           className="mx-2 my-2"
                           onClick={() =>
                             dispatch(
@@ -229,7 +199,9 @@ const ReleasesPage = () => {
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {release.contents[0].name}
                           </h2>
-                          <div className={`text-gray-500 text-xs truncate`}>
+                          <div
+                            className={`text-gray-500 text-xs truncate pb-4`}
+                          >
                             <p className="">
                               Created at: {moment(release.created_at).fromNow()}
                             </p>

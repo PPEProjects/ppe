@@ -76,7 +76,11 @@ const ReviewsPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{reviews?.length}</b>
-                  <p className="text-gray-600">{reviews?.length ===0 || reviews?.length === 1 ? "Review" : "Reviews"}</p>
+                  <p className="text-gray-600">
+                    {reviews?.length === 0 || reviews?.length === 1
+                      ? "Review"
+                      : "Reviews"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -177,12 +181,18 @@ const ReviewsPage = () => {
                           )}
                         </button>
 
-                        <div className="mx-2">
+                        <div
+                          className="mx-2"
+                          onClick={(e) => handleOnclick(review)}
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {review.name}
                           </h1>
                         </div>
-                        <div className="w-full pb-1x1 relative bg-gray-300">
+                        <div
+                          className="w-full pb-1x1 relative bg-gray-300"
+                          onClick={(e) => handleOnclick(review)}
+                        >
                           <div className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center">
                             <h3 className="text-white font-black mx-2 truncate-2y">
                               {companiesObj[review?.company_id]?.name}
@@ -194,7 +204,10 @@ const ReviewsPage = () => {
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={(e) => handleOnclick(review)}
+                        >
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {review.title}
                           </h2>
@@ -226,20 +239,7 @@ const ReviewsPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {reviewsSearch.map((review, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { types: review.types },
-                            })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, review: review })
-                          );
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
@@ -253,11 +253,24 @@ const ReviewsPage = () => {
                             )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1  cursor-pointer"
+                          onClick={(e) => handleOnclick(review)}
+                        >
                           <p className="w-10 truncate">{review.id}</p>
                         </td>
-                        <td className="px-2 py-1">{review.title}</td>
-                        <td className="px-2 py-1">{review.content}</td>
+                        <td
+                          className="px-2 py-1  cursor-pointer"
+                          onClick={(e) => handleOnclick(review)}
+                        >
+                          {review.title}
+                        </td>
+                        <td
+                          className="px-2 py-1  cursor-pointer"
+                          onClick={(e) => handleOnclick(review)}
+                        >
+                          {review.content}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

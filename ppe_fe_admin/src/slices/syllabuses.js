@@ -9,7 +9,7 @@ export const initialState = {
   syllabuse: {},
   syllabuses: [],
   syllabusesObj: {},
-  syllabuse_contents:{},
+  syllabuse_contents: {},
 };
 
 const syllabusesSlice = createSlice({
@@ -60,7 +60,26 @@ export function deleteSyllabuse(syllabuse) {
       return;
     }
     window.location.reload();
-  
+
+    dispatch(getSyllabuses());
+  };
+}
+
+export function deleteSyllabuses(syllabuse) {
+  return async (dispatch, getState) => {
+    const { selects } = getState().form;
+    let confirm = await Confirm({
+      t: `Confirm`,
+      c: [`Do you want to delete: ${Object.keys(selects).length} syllabuses`],
+    });
+    if (!confirm) return;
+    let params = { chooses: selects };
+    let res = await Ajax.delete(`/syllabuses/1`, params);
+    if (res.status === `error`) {
+      Alert({ t: res.status, c: res.errors });
+      return;
+    }
+    window.location.reload();
     dispatch(getSyllabuses());
   };
 }
@@ -78,7 +97,7 @@ export function getSyllabusesObj() {
     dispatch(setData({ status: `loading` }));
     let res = await Ajax.get(`/syllabuses`, { keyBy: `id` });
     dispatch(
-        setData({ status: `success`, syllabusesObj: res.data.syllabuses ?? {} })
+      setData({ status: `success`, syllabusesObj: res.data.syllabuses ?? {} })
     );
   };
 }
