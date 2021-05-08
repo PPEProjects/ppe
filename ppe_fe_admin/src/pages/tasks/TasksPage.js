@@ -29,7 +29,8 @@ const TasksPage = () => {
   const [search, setSearch] = useState(``);
   const [tasksSearch, setUsersSearch] = useState(tasks);
   useEffect(() => {
-    setUsersSearch(Search(`name`, search, tasks));
+    console.log('tasks', tasks)
+    setUsersSearch(Search(`contents[0].name`, search, tasks));
   }, [search, tasks]);
 
   useEffect(() => {

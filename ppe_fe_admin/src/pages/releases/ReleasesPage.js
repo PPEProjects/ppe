@@ -1,11 +1,9 @@
 import React, { useState, useEffect } from "react";
-
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
 import { releasesSelector, getReleases } from "../../slices/releases";
 import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
-
 import { InputIcon, Button } from "../../components/Form";
 import { projectsSelector, getProjectsObj } from "../../slices/projects";
 import { deleteReleases } from "../../slices/releases";
@@ -31,7 +29,7 @@ const ReleasesPage = () => {
   const [search, setSearch] = useState(``);
   const [releasesSearch, setUsersSearch] = useState(releases);
   useEffect(() => {
-    setUsersSearch(Search(`name`, search, releases))
+    setUsersSearch(Search(`contents[0].name`, search, releases))
   }, [search, releases]);
 
   useEffect(() => {
