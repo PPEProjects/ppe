@@ -14,14 +14,9 @@ import { filterSelector } from "../../slices/filter";
 // import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
-<<<<<<< HEAD
 // import Language from "../../components/Language";
 import { setFormData, setFormSelects, formSelector } from "../../slices/form";
-=======
-import Language from "../../components/Language";
-import { setFormData } from "../../slices/form";
 import Search from "../../components/Search";
->>>>>>> nhofix
 const JobsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();

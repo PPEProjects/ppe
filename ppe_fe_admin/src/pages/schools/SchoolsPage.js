@@ -31,18 +31,7 @@ const SchoolsPage = () => {
   const [search, setSearch] = useState(``);
   const [schoolsSearch, setUsersSearch] = useState(schools);
   useEffect(() => {
-<<<<<<< HEAD
-    const schoolsSearch = schools.filter((school) => {
-      if (
-        (school.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return school;
-      }
-    });
-    setUsersSearch(schoolsSearch);
-=======
     setUsersSearch(Search(`name`, search, schools));
->>>>>>> nhofix
   }, [search, schools]);
 
 

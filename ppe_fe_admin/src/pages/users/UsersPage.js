@@ -26,19 +26,7 @@ const UsersPage = () => {
   const [search, setSearch] = useState(``);
   const [usersSearch, setUsersSearch] = useState(users);
   useEffect(() => {
-<<<<<<< HEAD
-    const usersSearch = users.filter((user) => {
-      if (
-        (user.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return user;
-      }
-    });
-
-    setUsersSearch(usersSearch);
-=======
     setUsersSearch(Search(`name`, search, users));
->>>>>>> nhofix
   }, [search, users]);
 
   const [learners, setLearners] = useState({});

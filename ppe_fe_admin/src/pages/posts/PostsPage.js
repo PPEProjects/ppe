@@ -8,16 +8,11 @@ import Language from "../../components/Language";
 import { setDetailData } from "../../slices/details";
 import { filterSelector } from "../../slices/filter";
 import { setFormData } from "../../slices/form";
+import PostsDetailPage from "./PostsDetailPage";
 import { getPosts, postsSelector } from "../../slices/posts";
 import { setSidebarData, sidebarSelector } from "../../slices/sidebar";
 import { usersSelector } from "../../slices/users";
-<<<<<<< HEAD
-import PostsDetailPage from "./PostsDetailPage";
-
-
-=======
 import Search from "../../components/Search";
->>>>>>> nhofix
 const PostsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();

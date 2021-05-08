@@ -11,13 +11,8 @@ import { classesSelector, getClasses } from "../../slices/classes";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import { setFormData } from "../../slices/form";
-<<<<<<< HEAD
-// import Language from "../../components/Language";
-
-=======
 import Language from "../../components/Language";
 import Search from "../../components/Search";
->>>>>>> nhofix
 const ClassesPage = () => {
   const { class1, classes, status } = useSelector(classesSelector);
   // const { classesObj } = useSelector(classesSelector);
