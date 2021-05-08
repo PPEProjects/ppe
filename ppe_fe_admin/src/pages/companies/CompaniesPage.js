@@ -43,21 +43,12 @@ const CompaniesPage = () => {
     // dispatch(setSidebarData({ url: url }));
   }, [dispatch, location.pathname, location.search, filterOpen]);
 
-  const handleOnclickWidgets = () => {
+  const handleOnclick = (company) => {
     let checkboxes = {
       syllabus_ids: company.syllabus_ids,
       teachers: company.teachers,
     };
     dispatch(setFormData({ checkboxes: checkboxes }));
-    dispatch(setDetailData({ isShow: true, company: company }));
-  };
-
-  const handleOnclick = () => {
-    dispatch(
-      setFormData({
-        checkboxes: { types: company.types },
-      })
-    );
     dispatch(setDetailData({ isShow: true, company: company }));
   };
 
@@ -76,7 +67,11 @@ const CompaniesPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{companies?.length}</b>
-                  <p className="text-gray-600">{companies?.length ===0 || companies?.length === 1 ? "Company" : "Companies"}</p>
+                  <p className="text-gray-600">
+                    {companies?.length === 0 || companies?.length === 1
+                      ? "Company"
+                      : "Companies"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -190,7 +185,7 @@ const CompaniesPage = () => {
                           )}
                         </button>
                         <div
-                          onClick={handleOnclickWidgets}
+                          onClick={(e) => handleOnclick(company)}
                           className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
                         >
                           <img
@@ -201,7 +196,7 @@ const CompaniesPage = () => {
                         </div>
                         <div
                           className="mx-2 my-2"
-                          onClick={handleOnclickWidgets}
+                          onClick={(e) => handleOnclick(company)}
                         >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {company.name}
@@ -254,13 +249,13 @@ const CompaniesPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 w-10 truncate cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e) => handleOnclick(company)}
                         >
                           {company.id}
                         </td>
                         <td
                           className="px-2 py-1 text-indigo-700 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e) => handleOnclick(company)}
                         >
                           <figure className="flex items-center">
                             <div className="w-10">
@@ -274,7 +269,7 @@ const CompaniesPage = () => {
                             </div>
                             <figcaption
                               className="ml-2 cursor-pointer"
-                              onClick={handleOnclick}
+                              onClick={(e) => handleOnclick(company)}
                             >
                               {company.name}
                             </figcaption>
@@ -282,13 +277,13 @@ const CompaniesPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 truncate w-24 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e) => handleOnclick(company)}
                         >
                           {Object.keys(company.more.members).length}
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e) => handleOnclick(company)}
                         >
                           {company.more.address}
                         </td>
