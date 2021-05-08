@@ -29,6 +29,7 @@ const CoursesPage = () => {
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [coursesSearch, setUsersSearch] = useState(courses);
+
   useEffect(() => {
     const coursesSearch = courses.filter((course) => {
       if (
@@ -45,7 +46,6 @@ const CoursesPage = () => {
     dispatch(getCourses(filterOpen));
 
     // let url = window.location.href;
-
     // dispatch(setSidebarData({ url: url }));
   }, [dispatch, location.pathname, location.search, filterOpen]);
 

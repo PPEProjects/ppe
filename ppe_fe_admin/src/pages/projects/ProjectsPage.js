@@ -10,7 +10,7 @@ import {
   getProjects,
   deleteProjects,
 } from "../../slices/projects";
-import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
+// import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 // import { setSidebarData} from "../../slices/sidebar";
 import Filter from "../../components/Filter";
@@ -22,7 +22,7 @@ const ProjectsPage = () => {
   const { project1, projects, project, status } = useSelector(projectsSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
@@ -45,10 +45,10 @@ const ProjectsPage = () => {
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjects(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const handleOnclickWidgets = () => {
     dispatch(

@@ -79,7 +79,7 @@ export function deleteUser(user) {
 
 export function deleteUsers(user) {
   return async (dispatch, getState) => {
-    const {selects} = getState().form
+    const { selects } = getState().form;
     let confirm = await Confirm({
       t: `Confirm`,
       c: [`Do you want to delete: ${Object.keys(selects).length} users`],

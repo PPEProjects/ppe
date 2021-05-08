@@ -11,9 +11,9 @@ import {
   getCompanies,
   deleteCompanys,
 } from "../../slices/companies";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
 
@@ -22,7 +22,7 @@ import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 const CompaniesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { company, companies, status } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
@@ -46,10 +46,10 @@ const CompaniesPage = () => {
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCompanies(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const handleOnclickWidgets = () => {
     let checkboxes = {
