@@ -123,15 +123,16 @@ class Project extends Component {
                     ))}
                   </section>
                   <section className="overflow-auto">
-                  {tasks.map((task, key) => (
+                  {/* {tasks.map((task, key) => (
                     <div key={key}>
-                  { [task.name].length !== 0 && [task.name].length !== "" && 
+                  { [task.name].length !== 0 && [task.name].length !== "" &&  */}
+                   {Object.entries(tasks).length !== 0 &&
                     <h3 className="text-2xl font-semibold mt-3">
                       {t("Tasks")}
                     </h3>
                     }
-                    </div>
-                  ))}
+                    {/* </div> */}
+                  {/* ))} */}
                     {tasks.map((task, key) => (
                     <div key={key}>
                   { [task.name].length === 0 && [task.name].length === "" && 
@@ -284,7 +285,10 @@ class Project extends Component {
                               </div>
                             </div>
                             <figcaption className="mt-2 truncate-2y leading-5 h-10">
-                              {users[user_id]?.name}
+                              {/* {users[user_id]?.name} */}
+                              {users[user_id].name !== null
+                            ? users[user_id].name 
+                            : users[user_id]?.infos_lang?.vi?.name}
                              
                             </figcaption>
                           </a>

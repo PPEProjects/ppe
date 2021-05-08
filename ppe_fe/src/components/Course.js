@@ -140,7 +140,9 @@ class Course extends Component {
                                       </div>
                                     </div>
                                     <figcaption className="ml-3 truncate">
-                                      <p className="">{user.name}</p>
+                                      <p className="">  {user.name !== null
+                            ? user.name
+                            : user?.infos_lang?.vi?.name}</p>
                                       <div className="truncate text-gray-500">
                                         {" "}
                                         {t("Associate Professor at PPE")}
