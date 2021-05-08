@@ -14,6 +14,7 @@ class Header extends Component {
             access_token: null,
             lang: ``,
             menus: {},
+            mouseOnLanguageSelection: false,
         };
     }
 
@@ -65,7 +66,7 @@ class Header extends Component {
                 image: "/assets/images/flags/vietnam.png",
             },
         ];
-        const {openMenu, openLanguage, access_token, menus, lang} = this.state;
+        const {openMenu, openLanguage, access_token, menus, lang, mouseOnLanguageSelection} = this.state;
         const yourList = [
             "Create a Wish List",
             "Find a Wish List",
@@ -279,55 +280,61 @@ class Header extends Component {
                             <i className="material-icons">menu</i>
                         </button>
                         <div className="lg:flex hidden relative">
-                            <ul
-                                className={`${
-                                    openLanguage == `language` ? `block` : `hidden`
-                                } w-64 border shadow-md rounded-md mt-16 bg-white arrow arrow-left-2 absolute z-20 top-0 left-0 -ml-2 `}
+                            <section
+                                onMouseEnter={() => this.set_state({mouseOnLanguageSelection: true})}
+                                onMouseLeave={() => this.set_state({mouseOnLanguageSelection: false})}
                             >
-                                {languages.map((language, i) => (
-                                    <li className="" key={i}>
-                                        <button
-                                            onClick={() => this.changeLanguage(language.key)}
-                                            className={`w-full flex items-center py-3 px-3 hover:opacity-75 ${
-                                                i ? "border-t" : ""
-                                            }`}
-                                        >
-                                            <div className="w-6">
-                                                <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
-                                                    <img
-                                                        alt=""
-                                                        src={language.image}
-                                                        className="absolute h-full w-full object-cover"
-                                                    />
+                                <ul
+                                    className={`${
+                                        openLanguage == `language` ? `block` : `hidden`
+                                    } w-64 border shadow-md rounded-md mt-16 bg-white arrow arrow-left-2 absolute z-20 top-0 left-0 -ml-2 `}
+                                >
+                                    {languages.map((language, i) => (
+                                        <li className="" key={i}>
+                                            <button
+                                                onClick={() => this.changeLanguage(language.key)}
+                                                className={`w-full flex items-center py-3 px-3 hover:opacity-75 ${
+                                                    i ? "border-t" : ""
+                                                }`}
+                                            >
+                                                <div className="w-6">
+                                                    <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                                                        <img
+                                                            alt=""
+                                                            src={language.image}
+                                                            className="absolute h-full w-full object-cover"
+                                                        />
+                                                    </div>
                                                 </div>
+                                                <figcaption className="ml-2">{language.name}</figcaption>
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                                <button
+                                    type="button"
+                                    onClick={() => this.set_state({openLanguage: openLanguage===`language` ? null: `language`})}
+                                    
+                                    onBlur={() => this.set_state({openLanguage: mouseOnLanguageSelection==false ? null : openLanguage})}
+
+                                    className="bg-transparent text-white h-12 px-2 rounded-sm hover:opacity-75 flex items-center justify-center hover:border-white border border-transparent "
+                                >
+                                    <figure className="flex items-center">
+                                        <div className="w-6">
+                                            <div className="pb-4x3 relative rounded-sm overflow-hidden bg-gray-300">
+                                                <img
+                                                    alt=""
+                                                    src={languages.find(item => item.key === lang)?.image}
+                                                    // src="/assets/images/flags/united-kingdom.png"
+                                                    className="absolute h-full w-full object-cover"
+                                                />
                                             </div>
-                                            <figcaption className="ml-2">{language.name}</figcaption>
-                                        </button>
-                                    </li>
-                                ))}
-                            </ul>
-                            <button
-                                type="button"
-                                onClick={() => this.set_state({openLanguage: openLanguage===`language` ? null: `language`})}
-                             
-
-                                className="bg-transparent text-white h-12 px-2 rounded-sm hover:opacity-75 flex items-center justify-center hover:border-white border border-transparent "
-                            >
-                                <figure className="flex items-center">
-                                    <div className="w-6">
-                                        <div className="pb-4x3 relative rounded-sm overflow-hidden bg-gray-300">
-                                            <img
-                                                alt=""
-                                                src={languages.find(item => item.key === lang)?.image}
-                                                // src="/assets/images/flags/united-kingdom.png"
-                                                className="absolute h-full w-full object-cover"
-                                            />
                                         </div>
-                                    </div>
-                                </figure>
-                                <i className="material-icons ml-2">arrow_drop_down</i>
-                            </button>
-
+                                    </figure>
+                                    <i className="material-icons ml-2">arrow_drop_down</i>
+                                </button>
+                            </section>
+                            
                             <section
                                 className={`${
                                     openLanguage == `sign-in` ? `block` : `hidden`

@@ -5,24 +5,29 @@ import { useDispatch, useSelector } from "react-redux";
 import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import ProjectsDetailPage from "./ProjectsDetailPage";
-import { projectsSelector, getProjects } from "../../slices/projects";
-import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
+import {
+  projectsSelector,
+  getProjects,
+  deleteProjects,
+} from "../../slices/projects";
+// import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 // import { setSidebarData} from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
-import { setFormData } from "../../slices/form";
+import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 import Language from "../../components/Language";
 
 const ProjectsPage = () => {
-  const { project1, projects, status } = useSelector(projectsSelector);
+  const { project1, projects, project, status } = useSelector(projectsSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
+  const { selects } = useSelector(formSelector);
   const [projectsSearch, setUsersSearch] = useState(projects);
   useEffect(() => {
     const projectsSearch = projects.filter((project) => {
@@ -40,10 +45,28 @@ const ProjectsPage = () => {
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjects(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
+
+  const handleOnclickWidgets = () => {
+    dispatch(
+      setFormData({
+        checkboxes: { members: project.members },
+      })
+    );
+    dispatch(setDetailData({ isShow: true, project: project }));
+  };
+
+  const handleOnclick = () => {
+    dispatch(
+      setFormData({
+        checkboxes: { types: project.types },
+      })
+    );
+    dispatch(setDetailData({ isShow: true, project: project }));
+  };
 
   const renderMain = () => {
     return (
@@ -81,21 +104,29 @@ const ProjectsPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`Select All`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", projects));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
+                  />
+                  <Button
+                    type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", projects));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deleteProjects())}
                   />
-
-                  {/* <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -142,19 +173,7 @@ const ProjectsPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {projectsSearch.map((project, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { members: project.members },
-                            })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, project: project })
-                          );
-                        }}
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         {Object.keys(project.more.ranking ?? {}).length !==
                           0 && (
                           <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
@@ -170,18 +189,27 @@ const ProjectsPage = () => {
 
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={() => dispatch(setFormSelects(project.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[project.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
-                        <div className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                        <div
+                          onClick={handleOnclickWidgets}
+                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
+                        >
                           <img
                             alt=""
                             src={project.image}
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={handleOnclickWidgets}
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {project.name}
                           </h1>
@@ -222,34 +250,30 @@ const ProjectsPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {projectsSearch.map((project, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({
-                              checkboxes: { types: project.types },
-                            })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, project: project })
-                          );
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(project.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[project.id] && (
+                              <i className="group-hover:block text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
                           <p className="w-10 truncate">{project.id}</p>
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
+                        <td
+                          className="px-2 py-1 text-indigo-700 cursor-pointer "
+                          onClick={handleOnclick}
+                        >
                           <figure className="flex items-center">
                             <div className="w-10">
                               <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
@@ -265,14 +289,28 @@ const ProjectsPage = () => {
                             </figcaption>
                           </figure>
                         </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">
-                            {project.more.deadline}
-                          </p>
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
+                          {project.more.deadline}
                         </td>
-                        <td className="px-2 py-1">{project.more.cost}</td>
-                        <td className="px-2 py-1">{project.more.revenue}</td>
-                        <td className="px-2 py-1">
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
+                          {project.more.cost}
+                        </td>
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
+                          {project.more.revenue}
+                        </td>
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
                           {project.more.installs_number}
                         </td>
                       </tr>

@@ -2,26 +2,27 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { tasksSelector, getTasks } from "../../slices/tasks";
+import { tasksSelector, getTasks, deleteTask } from "../../slices/tasks";
 import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import { projectsSelector, getProjectsObj } from "../../slices/projects";
+import { deleteTasks } from "../../slices/tasks";
 import TasksDetailPage from "./TasksDetailPage";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
-import Language from "../../components/Language";
-import { setFormData } from "../../slices/form";
+import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 const TasksPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { task, tasks, status } = useSelector(tasksSelector);
   const { projectsObj } = useSelector(projectsSelector);
   const [mode, setMode] = useState(`grid`);
+  const { selects } = useSelector(formSelector);
   const [type, setType] = useState(``);
 
   const [search, setSearch] = useState(``);
@@ -43,9 +44,23 @@ const TasksPage = () => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getProjectsObj());
     dispatch(getTasks(filterOpen));
-    let url = window.location.href;
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // let url = window.location.href;
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
+
+  const handleOnclickWidgets = () =>
+    dispatch(
+      setDetailData({
+        isShow: true,
+        task: task,
+        project: projectsObj[task.project_id],
+      })
+    );
+
+  const handleOnclick = () => {
+    dispatch(setFormData({ checkboxes: { types: task.types } }));
+    dispatch(setDetailData({ isShow: true, task: task }));
+  };
 
   const renderMain = () => {
     return (
@@ -82,21 +97,29 @@ const TasksPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`Select All`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", tasks));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
+                  />
+                  <Button
+                    type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", tasks));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deleteTasks())}
                   />
-
-                  {/* <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -143,31 +166,26 @@ const TasksPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {tasksSearch.map((task, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() =>
-                          dispatch(
-                            setDetailData({
-                              isShow: true,
-                              task: task,
-                              project: projectsObj[task.project_id],
-                            })
-                          )
-                        }
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={() => dispatch(setFormSelects(task.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[task.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
 
-                        <div className="mx-2">
+                        <div className="mx-2" onClick={handleOnclickWidgets}>
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {task.name}
                           </h1>
                         </div>
-                        <div className="w-full pb-1x1 relative bg-gray-300">
+                        <div
+                          className="w-full pb-1x1 relative bg-gray-300"
+                          onClick={handleOnclickWidgets}
+                        >
                           <div className="absolute top-0 left-0 right-0 bottom-0 bg-black-30 z-10 flex items-center justify-center">
                             <h3 className="text-white font-black mx-2 truncate-2y">
                               {projectsObj[task?.project_id]?.name}
@@ -179,7 +197,10 @@ const TasksPage = () => {
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={handleOnclickWidgets}
+                        >
                           <h2 className="truncate-2y text-sm leading-5 font-semibold">
                             {task.content}
                           </h2>
@@ -211,33 +232,36 @@ const TasksPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {tasksSearch.map((task, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({ checkboxes: { types: task.types } })
-                          );
-                          dispatch(setDetailData({ isShow: true, task: task }));
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(task.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[task.id] && (
+                              <i className="group-hover:block text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
-                          <p className="w-10 truncate">{task.id}</p>
+                        <td
+                          className="px-2 py-1 cursor-pointer w-10 truncate"
+                          onClick={handleOnclick}
+                        >
+                          {task.id}
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
+                        <td
+                          className="px-2 py-1 text-indigo-700 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
                           {task.contents[0].name}
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
+                        <td
+                          className="px-2 py-1 text-indigo-700 cursor-pointer"
+                          onClick={handleOnclick}
+                        >
                           {task.contents[0].status}
                         </td>
                       </tr>

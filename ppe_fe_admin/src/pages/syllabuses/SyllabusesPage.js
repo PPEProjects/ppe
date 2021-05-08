@@ -10,7 +10,7 @@ import Ajax from "../../components/Ajax";
 import { InputIcon, Button } from "../../components/Form";
 import SyllabusesDetailPage from "./SyllabusesDetailPage";
 import { useLocation } from "react-router-dom";
-import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
+// import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import Language from "../../components/Language";
@@ -21,7 +21,7 @@ const SyllabusesPage = () => {
   const { usersObj } = useSelector(usersSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { syllabuse, syllabuses, status } = useSelector(syllabusesSelector);
   const [mode, setMode] = useState(`grid`);
@@ -44,12 +44,13 @@ const SyllabusesPage = () => {
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
-    dispatch(getCoursesObj());
+    // dispatch(getCoursesObj());
     dispatch(getSyllabuses(filterOpen));
-    let url = window.location.href;
+    console.log(location);
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -147,7 +148,7 @@ const SyllabusesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {syllabusesSearch.map((syllabuse, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
+                      <div
                         onClick={() =>
                           dispatch(
                             setDetailData({
@@ -183,7 +184,7 @@ const SyllabusesPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

@@ -82,7 +82,6 @@ const PostsEditForm = () => {
             </div>
             <Input name={`title`} type={`text`} value={post.title} />
           </label>
-         
 
           <label className="block mt-4">
             <div className="flex -mb-3">

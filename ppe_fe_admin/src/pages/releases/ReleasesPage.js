@@ -5,20 +5,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { releasesSelector, getReleases } from "../../slices/releases";
 import { setDetailData } from "../../slices/details";
 import Ajax from "../../components/Ajax";
+
 import { InputIcon, Button } from "../../components/Form";
 import { projectsSelector, getProjectsObj } from "../../slices/projects";
+import { deleteReleases } from "../../slices/releases";
 import ReleasesDetailPage from "./ReleasesDetailPage";
-import { sidebarSelector } from "../../slices/sidebar";
+// import { sidebarSelector } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
-import { setSidebarData } from "../../slices/sidebar";
+// import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
-import Language from "../../components/Language";
-import { setFormData } from "../../slices/form";
+// import Language from "../../components/Language";
+import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 const ReleasesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
+  const { selects } = useSelector(formSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
   const { release, releases, status } = useSelector(releasesSelector);
   const { projectsObj } = useSelector(projectsSelector);
@@ -42,10 +45,10 @@ const ReleasesPage = () => {
   useEffect(() => {
     dispatch(getProjectsObj());
     dispatch(getReleases(filterOpen));
-    let url = window.location.href;
+    // let url = window.location.href;
 
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+    // dispatch(setSidebarData({ url: url }));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
   const renderMain = () => {
     return (
@@ -81,21 +84,29 @@ const ReleasesPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`Select All`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", releases));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
+                  />
+                  <Button
+                    type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", releases));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deleteReleases())}
                   />
-                  {/* 
-                  <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -156,9 +167,12 @@ const ReleasesPage = () => {
                       >
                         <button
                           type="button"
+                          onClick={() => dispatch(setFormSelects(release.id))}
                           className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[release.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
 
                         <div className="mx-2">
@@ -227,11 +241,14 @@ const ReleasesPage = () => {
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(release.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[release.id] && (
+                              <i className="group-hover:block text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
                         <td className="px-2 py-1 ">

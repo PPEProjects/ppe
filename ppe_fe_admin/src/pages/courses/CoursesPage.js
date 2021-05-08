@@ -2,47 +2,55 @@ import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import moment from "moment";
 import Ajax from "../../components/Ajax";
+
 import { useDispatch, useSelector } from "react-redux";
 import { setDetailData } from "../../slices/details";
 import { InputIcon, Button } from "../../components/Form";
 import CourseDetailPage from "./CourseDetailPage";
-import { coursesSelector, getCourses } from "../../slices/courses";
-import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
+import {
+  coursesSelector,
+  getCourses,
+  deleteCourses,
+} from "../../slices/courses";
+// import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
-import { setFormData } from "../../slices/form";
+import { setFormData, formSelector, setFormSelects } from "../../slices/form";
 import Language from "../../components/Language";
+import Search from "../../components/Search";
 
 const CoursesPage = () => {
   const { course, courses, status } = useSelector(coursesSelector);
   const location = useLocation();
   const dispatch = useDispatch();
-  const { url, opens } = useSelector(sidebarSelector);
-  // const { filterOpen } = useSelector(filterSelector);
+  // const { url, opens } = useSelector(sidebarSelector);
+  const { selects } = useSelector(formSelector);
   const { filterOpen } = useSelector(filterSelector);
   const [mode, setMode] = useState(`grid`);
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [coursesSearch, setUsersSearch] = useState(courses);
+
   useEffect(() => {
-    const coursesSearch = courses.filter((course) => {
-      if (
-        (course.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return course;
-      }
-    });
-    setUsersSearch(coursesSearch);
+    setUsersSearch(Search(`name`, search, courses));
   }, [search, courses]);
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);
     dispatch(getCourses(filterOpen));
+  }, [dispatch, location.pathname, location.search, filterOpen]);
 
-    let url = window.location.href;
-
-    dispatch(setSidebarData({ url: url }));
-  }, [dispatch, location, filterOpen]);
+  const handleOnclick = (course) => {
+    let checkboxes = {
+      syllabus_ids: course.syllabus_ids,
+      teachers: course.teachers,
+    };
+    dispatch(setFormData({ checkboxes: checkboxes }));
+    dispatch(setDetailData({ isShow: true, course: course }));
+    try {
+      dispatch(setFormData({ editorData: JSON.parse(course.content) }));
+    } catch (e) {}
+  };
 
   const renderMain = () => {
     return (
@@ -79,13 +87,28 @@ const CoursesPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`Select All`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", courses));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
                   />
                   <Button
                     type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", courses));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
+                  />
+
+                  <Button
+                    type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deleteCourses())}
                   />
                 </div>
                 <div className="flex">
@@ -134,19 +157,7 @@ const CoursesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {coursesSearch.map((course, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() => {
-                          let checkboxes = {
-                            syllabus_ids: course.syllabus_ids,
-                            teachers: course.teachers,
-                          };
-                          dispatch(setFormData({ checkboxes: checkboxes }));
-                          dispatch(
-                            setDetailData({ isShow: true, course: course })
-                          );
-                        }}
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         {Object.keys(course.more.ranking ?? {}).length !==
                           0 && (
                           <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
@@ -162,18 +173,27 @@ const CoursesPage = () => {
 
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={() => dispatch(setFormSelects(course.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[course.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
-                        <div className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
+                        <div
+                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
+                          onClick={(e) => handleOnclick(course)}
+                        >
                           <img
                             alt=""
                             src={course.image}
                             className="absolute h-full w-full object-cover"
                           />
                         </div>
-                        <div className="mx-2 my-2">
+                        <div
+                          className="mx-2 my-2"
+                          onClick={(e) => handleOnclick(course)}
+                        >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {course.name}
                           </h1>
@@ -207,32 +227,30 @@ const CoursesPage = () => {
                   )}
                   <tbody className="text-gray-600 border-gray-500 border-b overflow-hidden">
                     {coursesSearch.map((course, key) => (
-                      <tr
-                        className="cursor-pointer"
-                        key={key}
-                        onClick={() => {
-                          dispatch(
-                            setFormData({ checkboxes: { types: course.types } })
-                          );
-                          dispatch(
-                            setDetailData({ isShow: true, course: course })
-                          );
-                        }}
-                      >
+                      <tr className="cursor-pointer" key={key}>
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(course.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[course.id] && (
+                              <i className="group-hover:block  text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
-                        <td className="px-2 py-1 ">
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={(e) => handleOnclick(course)}
+                        >
                           <p className="w-10 truncate">{course.id}</p>
                         </td>
-                        <td className="px-2 py-1 text-indigo-700 ">
+                        <td
+                          className="px-2 py-1 text-indigo-700 cursor-pointer "
+                          onClick={(e) => handleOnclick(course)}
+                        >
                           <figure className="flex items-center">
                             <div className="w-10">
                               <div className="pb-1x1 relative rounded-sm overflow-hidden bg-gray-300">
@@ -243,16 +261,37 @@ const CoursesPage = () => {
                                 />
                               </div>
                             </div>
-                            <figcaption className="ml-2">
+                            <figcaption
+                              className="ml-2 cursor-pointer"
+                              onClick={(e) => handleOnclick(course)}
+                            >
                               {course.name}
                             </figcaption>
                           </figure>
                         </td>
-                        <td className="px-2 py-1">
-                          <p className="truncate w-24">{course.more.time}</p>
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={(e) => handleOnclick(course)}
+                        >
+                          <p
+                            className="truncate w-24 cursor-pointer"
+                            onClick={(e) => handleOnclick(course)}
+                          >
+                            {course.more.time}
+                          </p>
                         </td>
-                        <td className="px-2 py-1">{course.more.price}</td>
-                        <td className="px-2 py-1">{course.more.discount}</td>
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={(e) => handleOnclick(course)}
+                        >
+                          {course.more.price}
+                        </td>
+                        <td
+                          className="px-2 py-1 cursor-pointer"
+                          onClick={(e) => handleOnclick(course)}
+                        >
+                          {course.more.discount}
+                        </td>
                       </tr>
                     ))}
                   </tbody>

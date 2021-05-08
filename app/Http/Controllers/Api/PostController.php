@@ -2,26 +2,26 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Post;
-use Illuminate\Http\Request;
-use Validator;
-use Auth;
-use URL;
 use App\File;
+use App\Post;
+use Auth;
+use Illuminate\Http\Request;
+use URL;
+use Validator;
 
 class PostController extends BaseController
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
         //
         $data = [];
-        if($request->keyBy){
+        if ($request->keyBy) {
             $data['posts'] = Post::select('*')
                 ->get()
                 ->keyBy($request->keyBy)
@@ -29,11 +29,15 @@ class PostController extends BaseController
 //            $data['posts'] = File::getImageDescription($data['posts']);
             return response()->json($data);
         }
-        if($request->lang && !$request->status){
+        if ($request->lang) {
             $data['posts'] = Post::select('*')
                 ->where('language', $request->lang)
                 ->whereRaw("(status IS NULL OR status != 'Deleted')")
-                ->orderBy('id', 'desc')
+                ->orderBy('id', 'desc');
+            if ($request->status) {
+                $data['posts'] = $data['posts']->where('status', $request->status);
+            }
+            $data['posts'] = $data['posts']
                 ->get()
                 ->toArray();
 //            $data['posts'] = File::getImageDescription($data['posts']);
@@ -64,14 +68,14 @@ class PostController extends BaseController
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
         //
         $validator = Post::validator($request);
-        if($validator && $validator->fails()){
+        if ($validator && $validator->fails()) {
             return $this->checkSendError($validator);
         }
         $user = auth('api')->user()->toArray();
@@ -87,7 +91,7 @@ class PostController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param  \App\Post  $post
+     * @param \App\Post $post
      * @return \Illuminate\Http\Response
      */
     public function show(Post $post)
@@ -101,7 +105,7 @@ class PostController extends BaseController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Post  $post
+     * @param \App\Post $post
      * @return \Illuminate\Http\Response
      */
     public function edit(Post $post)
@@ -112,20 +116,21 @@ class PostController extends BaseController
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
         //
         $validator = Post::validator($request);
-        if($validator && $validator->fails()){
+        if ($validator && $validator->fails()) {
             return $this->checkSendError($validator);
         }
         $data = $request->except(['_method', 'files_before']);
         $data['files'] = File::add_images(@$data['files']);
 //        $data['descriptions'] = File::descriptions_files(@$data['descriptions']);
+        \Illuminate\Support\Facades\Log::channel('single')->info('$data', [$data]);
 
         $update = Post::where('id', $id)->update($data);
         return response()->json($data);
@@ -134,7 +139,7 @@ class PostController extends BaseController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Request $request
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request)
