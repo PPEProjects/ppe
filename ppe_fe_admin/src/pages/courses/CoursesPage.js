@@ -49,16 +49,16 @@ const CoursesPage = () => {
     // dispatch(setSidebarData({ url: url }));
   }, [dispatch, location.pathname, location.search, filterOpen]);
 
-  const handleOnclick = () => {
-    dispatch(
-      setFormData({
-        checkboxes: { types: course.types },
-      })
-    );
-    dispatch(setDetailData({ isShow: true, course: course }));
-  };
+  // const handleOnclick = (course) => {
+  //   dispatch(
+  //     setFormData({
+  //       checkboxes: { types: course.types },
+  //     })
+  //   );
+  //   dispatch(setDetailData({ isShow: true, course: course }));
+  // };
 
-  const handleOnclickWidgets = () => {
+  const handleOnclick = (course) => {
     let checkboxes = {
       syllabus_ids: course.syllabus_ids,
       teachers: course.teachers,
@@ -196,7 +196,7 @@ const CoursesPage = () => {
                         </button>
                         <div
                           className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
-                          onClick={handleOnclickWidgets}
+                          onClick={(e)=>handleOnclick(course)}
                         >
                           <img
                             alt=""
@@ -206,7 +206,7 @@ const CoursesPage = () => {
                         </div>
                         <div
                           className="mx-2 my-2"
-                          onClick={handleOnclickWidgets}
+                          onClick={(e)=>handleOnclick(course)}
                         >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">
                             {course.name}
@@ -257,13 +257,13 @@ const CoursesPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e)=>handleOnclick(course)}
                         >
                           <p className="w-10 truncate">{course.id}</p>
                         </td>
                         <td
                           className="px-2 py-1 text-indigo-700 cursor-pointer "
-                          onClick={handleOnclick}
+                          onClick={(e)=>handleOnclick(course)}
                         >
                           <figure className="flex items-center">
                             <div className="w-10">
@@ -277,7 +277,7 @@ const CoursesPage = () => {
                             </div>
                             <figcaption
                               className="ml-2 cursor-pointer"
-                              onClick={handleOnclick}
+                              onClick={(e)=>handleOnclick(course)}
                             >
                               {course.name}
                             </figcaption>
@@ -285,24 +285,24 @@ const CoursesPage = () => {
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e)=>handleOnclick(course)}
                         >
                           <p
                             className="truncate w-24 cursor-pointer"
-                            onClick={handleOnclick}
+                            onClick={(e)=>handleOnclick(course)}
                           >
                             {course.more.time}
                           </p>
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e)=>handleOnclick(course)}
                         >
                           {course.more.price}
                         </td>
                         <td
                           className="px-2 py-1 cursor-pointer"
-                          onClick={handleOnclick}
+                          onClick={(e)=>handleOnclick(course)}
                         >
                           {course.more.discount}
                         </td>
