@@ -181,7 +181,7 @@ const CoursesPage = () => {
                           )}
                         </button>
                         <div
-                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300"
+                          className="w-full pb-1x1 relative rounded-sm overflow-hidden bg-gray-300 cursor-pointer"
                           onClick={(e) => handleOnclick(course)}
                         >
                           <img
@@ -191,7 +191,7 @@ const CoursesPage = () => {
                           />
                         </div>
                         <div
-                          className="mx-2 my-2"
+                          className="mx-2 my-2 cursor-pointer"
                           onClick={(e) => handleOnclick(course)}
                         >
                           <h1 className="truncate-2y text-sm leading-5 font-semibold">

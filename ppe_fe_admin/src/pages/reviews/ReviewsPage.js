@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from "react";
 import moment from "moment";
 import { useDispatch, useSelector } from "react-redux";
-import { reviewsSelector, getReviews } from "../../slices/reviews";
+import {
+  reviewsSelector,
+  getReviews,
+  deleteReviews,
+} from "../../slices/reviews";
 import { setDetailData } from "../../slices/details";
 // import Ajax from "../../components/Ajax";
-import { setFormData } from "../../slices/form";
+import { setFormData, setFormSelects, formSelector } from "../../slices/form";
 import { InputIcon, Button } from "../../components/Form";
 import { companiesSelector, getCompaniesObj } from "../../slices/companies";
 import ReviewsDetailPage from "./ReviewsDetailPage";
@@ -19,6 +23,7 @@ const ReviewsPage = () => {
   const dispatch = useDispatch();
   // const { url, opens } = useSelector(sidebarSelector);
   const { filterOpen } = useSelector(filterSelector);
+  const { selects } = useSelector(formSelector);
   const { review, reviews, status } = useSelector(reviewsSelector);
   const { companiesObj } = useSelector(companiesSelector);
   const [mode, setMode] = useState(`grid`);
@@ -46,6 +51,16 @@ const ReviewsPage = () => {
 
     // dispatch(setSidebarData({ url: url }));
   }, [dispatch, location.pathname, location.search, filterOpen]);
+
+  const handleOnclick = (review) => {
+    dispatch(
+      setDetailData({
+        isShow: true,
+        review: review,
+        company: companiesObj[review.company_id],
+      })
+    );
+  };
 
   const renderMain = () => {
     return (
@@ -82,21 +97,29 @@ const ReviewsPage = () => {
                 <div className="flex items-center">
                   <Button
                     type={`button`}
-                    title={`Select All`}
+                    title={`${Object.keys(selects).length} Selected`}
+                    onClick={() => {
+                      dispatch(setFormSelects("all", reviews));
+                    }}
                     className={`bg-gray-300 text-gray-800`}
+                  />
+                  <Button
+                    type={`button`}
+                    title={`x ${Object.keys(selects).length} Select All`}
+                    onClick={() => {
+                      console.log("1");
+                      dispatch(setFormSelects("all", reviews));
+                    }}
+                    className={`bg-gray-300 hidden text-gray-800 `}
                   />
 
                   <Button
                     type={`button`}
+                    disabled={Object.keys(selects).length === 0}
                     title={`Delete`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
+                    className={`bg-gray-300 text-gray-800 mx-2`}
+                    onClick={(e) => dispatch(deleteReviews())}
                   />
-
-                  {/* <Button
-                    type={`button`}
-                    title={`Banned`}
-                    className={`bg-gray-300 text-gray-800 ml-2`}
-                  /> */}
                 </div>
                 <div className="flex">
                   <button
@@ -143,23 +166,15 @@ const ReviewsPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {reviewsSearch.map((review, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link
-                        onClick={() =>
-                          dispatch(
-                            setDetailData({
-                              isShow: true,
-                              review: review,
-                              company: companiesObj[review.company_id],
-                            })
-                          )
-                        }
-                        className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group"
-                      >
+                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          onClick={() => dispatch(setFormSelects(review.id))}
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
-                          <i className="text-xl material-icons">done</i>
+                          {selects[review.id] && (
+                            <i className="text-xl material-icons">done</i>
+                          )}
                         </button>
 
                         <div className="mx-2">
@@ -228,11 +243,14 @@ const ReviewsPage = () => {
                         <td className="px-2 py-1 ">
                           <button
                             type="button"
+                            onClick={() => dispatch(setFormSelects(review.id))}
                             className="overflow-hidden group border rounded-md bg-white text-gray-600 h-6 w-6 hover:border-indigo-500 relative"
                           >
-                            <i className="group-hover:block hidden text-xl material-icons absolute absolute-x absolute-y">
-                              done
-                            </i>
+                            {selects[review.id] && (
+                              <i className="group-hover:block  text-xl material-icons absolute absolute-x absolute-y">
+                                done
+                              </i>
+                            )}
                           </button>
                         </td>
                         <td className="px-2 py-1 ">
