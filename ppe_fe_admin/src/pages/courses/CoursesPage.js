@@ -17,6 +17,7 @@ import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import { setFormData, formSelector, setFormSelects } from "../../slices/form";
 import Language from "../../components/Language";
+import Search from "../../components/Search";
 
 const CoursesPage = () => {
   const { course, courses, status } = useSelector(coursesSelector);
@@ -29,15 +30,9 @@ const CoursesPage = () => {
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [coursesSearch, setUsersSearch] = useState(courses);
+
   useEffect(() => {
-    const coursesSearch = courses.filter((course) => {
-      if (
-        (course.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return course;
-      }
-    });
-    setUsersSearch(coursesSearch);
+    setUsersSearch(Search(`name`, search, courses));
   }, [search, courses]);
 
   useEffect(() => {
