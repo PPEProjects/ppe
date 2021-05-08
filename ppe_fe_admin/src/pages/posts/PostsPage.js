@@ -11,9 +11,13 @@ import { setFormData } from "../../slices/form";
 import { getPosts, postsSelector } from "../../slices/posts";
 import { setSidebarData, sidebarSelector } from "../../slices/sidebar";
 import { usersSelector } from "../../slices/users";
+<<<<<<< HEAD
 import PostsDetailPage from "./PostsDetailPage";
 
 
+=======
+import Search from "../../components/Search";
+>>>>>>> nhofix
 const PostsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -25,15 +29,9 @@ const PostsPage = () => {
   const { users } = useSelector(usersSelector);
   const [search, setSearch] = useState(``);
   const [postsSearch, setUsersSearch] = useState(posts);
+ 
   useEffect(() => {
-    const postsSearch = posts.filter((post) => {
-      if (
-        (post.title ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
-      ) {
-        return post;
-      }
-    });
-    setUsersSearch(postsSearch);
+    setUsersSearch(Search(`name`, search, posts));
   }, [search, posts]);
 
   useEffect(() => {

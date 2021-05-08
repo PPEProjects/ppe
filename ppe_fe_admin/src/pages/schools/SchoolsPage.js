@@ -15,6 +15,7 @@ import { filterSelector } from "../../slices/filter";
 import Filter from "../../components/Filter";
 import { setFormData } from "../../slices/form";
 import Language from "../../components/Language";
+import Search from "../../components/Search";
 
 const SchoolsPage = () => {
   const { classesObj } = useSelector(classesSelector);
@@ -30,6 +31,7 @@ const SchoolsPage = () => {
   const [search, setSearch] = useState(``);
   const [schoolsSearch, setUsersSearch] = useState(schools);
   useEffect(() => {
+<<<<<<< HEAD
     const schoolsSearch = schools.filter((school) => {
       if (
         (school.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
@@ -38,7 +40,11 @@ const SchoolsPage = () => {
       }
     });
     setUsersSearch(schoolsSearch);
+=======
+    setUsersSearch(Search(`name`, search, schools));
+>>>>>>> nhofix
   }, [search, schools]);
+
 
   useEffect(() => {
     setType(new URL(window.location.href).searchParams.get("type") ?? ``);

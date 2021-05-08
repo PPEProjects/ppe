@@ -14,6 +14,7 @@ import { filterSelector } from "../../slices/filter";
 import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { setFormData, setFormSelects, formSelector } from "../../slices/form";
+import Search from "../../components/Search";
 const TasksPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -28,16 +29,7 @@ const TasksPage = () => {
   const [search, setSearch] = useState(``);
   const [tasksSearch, setUsersSearch] = useState(tasks);
   useEffect(() => {
-    const tasksSearch = tasks.filter((task) => {
-      if (
-        (task.contents[0].name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return tasks;
-      }
-    });
-    setUsersSearch(tasksSearch);
+    setUsersSearch(Search(`name`, search, tasks));
   }, [search, tasks]);
 
   useEffect(() => {

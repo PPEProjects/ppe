@@ -19,6 +19,7 @@ import { Link, useLocation } from "react-router-dom";
 
 import Language from "../../components/Language";
 import { setFormData, setFormSelects, formSelector } from "../../slices/form";
+import Search from "../../components/Search";
 const CompaniesPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -31,16 +32,7 @@ const CompaniesPage = () => {
   const [search, setSearch] = useState(``);
   const [companiesSearch, setUsersSearch] = useState(companies);
   useEffect(() => {
-    const companiesSearch = companies.filter((company) => {
-      if (
-        (company.name ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return company;
-      }
-    });
-    setUsersSearch(companiesSearch);
+    setUsersSearch(Search(`name`, search, companies));
   }, [search, companies]);
 
   useEffect(() => {

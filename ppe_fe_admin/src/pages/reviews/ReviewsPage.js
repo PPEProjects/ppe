@@ -17,7 +17,12 @@ import { filterSelector } from "../../slices/filter";
 // import { setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { Link, useLocation } from "react-router-dom";
+<<<<<<< HEAD
 // import Language from "../../components/Language";
+=======
+import Language from "../../components/Language";
+import Search from "../../components/Search";
+>>>>>>> nhofix
 const ReviewsPage = () => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -31,16 +36,7 @@ const ReviewsPage = () => {
   const [search, setSearch] = useState(``);
   const [reviewsSearch, setUsersSearch] = useState(reviews);
   useEffect(() => {
-    const reviewsSearch = reviews.filter((review) => {
-      if (
-        (review.title ?? ``)
-          .toLowerCase()
-          .includes((search ?? ``).toLowerCase())
-      ) {
-        return review;
-      }
-    });
-    setUsersSearch(reviewsSearch);
+    setUsersSearch(Search(`title`, search, reviews));
   }, [search, reviews]);
 
   useEffect(() => {

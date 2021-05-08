@@ -11,6 +11,7 @@ import UserDetailPage from "./UserDetailPage";
 // import { sidebarSelector, setSidebarData } from "../../slices/sidebar";
 import Filter from "../../components/Filter";
 import { setFormData, formSelector, setFormSelects } from "../../slices/form";
+import Search from "../../components/Search";
 
 const UsersPage = () => {
   const location = useLocation();
@@ -25,6 +26,7 @@ const UsersPage = () => {
   const [search, setSearch] = useState(``);
   const [usersSearch, setUsersSearch] = useState(users);
   useEffect(() => {
+<<<<<<< HEAD
     const usersSearch = users.filter((user) => {
       if (
         (user.name ?? ``).toLowerCase().includes((search ?? ``).toLowerCase())
@@ -34,6 +36,9 @@ const UsersPage = () => {
     });
 
     setUsersSearch(usersSearch);
+=======
+    setUsersSearch(Search(`name`, search, users));
+>>>>>>> nhofix
   }, [search, users]);
 
   const [learners, setLearners] = useState({});
