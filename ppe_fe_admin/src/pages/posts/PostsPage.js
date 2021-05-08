@@ -1,20 +1,18 @@
-import React, {useState, useEffect} from "react";
-
 import moment from "moment";
-import Ajax from "../../components/Ajax";
-import {useDispatch, useSelector} from "react-redux";
-import {setDetailData} from "../../slices/details";
-import {InputIcon, Button} from "../../components/Form";
-import PostsDetailPage from "./PostsDetailPage";
-import { postsSelector, getPosts } from "../../slices/posts";
-import { sidebarSelector } from "../../slices/sidebar";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useLocation } from "react-router-dom";
+import Filter from "../../components/Filter";
+import { Button, InputIcon } from "../../components/Form";
+import Language from "../../components/Language";
+import { setDetailData } from "../../slices/details";
 import { filterSelector } from "../../slices/filter";
 import { setFormData } from "../../slices/form";
-import { setSidebarData } from "../../slices/sidebar";
-import Filter from "../../components/Filter";
-import {Link, useLocation} from "react-router-dom";
-import Language from "../../components/Language";
-import {usersSelector} from "../../slices/users";
+import { getPosts, postsSelector } from "../../slices/posts";
+import { setSidebarData, sidebarSelector } from "../../slices/sidebar";
+import { usersSelector } from "../../slices/users";
+import PostsDetailPage from "./PostsDetailPage";
+
 
 const PostsPage = () => {
   const location = useLocation();
@@ -55,7 +53,6 @@ const PostsPage = () => {
         } catch (e) {}
     }
 
-  const [text, setText] = useState("Select All ");
 
   const renderMain = () => {
     return (
