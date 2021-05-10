@@ -4,6 +4,7 @@ import { usersSelector } from "../slices/users";
 import { sidebarSelector, setSidebarData } from "../slices/sidebar";
 import { Link, useLocation } from "react-router-dom";
 import { getPosts } from "../slices/posts";
+import { setFormData } from "../slices/form";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -18,6 +19,8 @@ const Sidebar = () => {
     if (url.match(/type/g)) {
       handleOpenClose(null, tab);
     }
+
+    dispatch(setFormData({ selects: {} }));
   }, [location]);
 
   const getOpenInit = (url) => {
