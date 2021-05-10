@@ -160,7 +160,7 @@ const ClassesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {classesSearch.map((classe, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
+                      <div className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
                           onClick={() => dispatch(setFormSelects(classe.id))}
@@ -199,7 +199,7 @@ const ClassesPage = () => {
                             </p> */}
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

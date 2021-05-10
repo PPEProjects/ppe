@@ -162,7 +162,7 @@ const ReviewsPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {reviewsSearch.map((review, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
+                      <div className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         <button
                           type="button"
                           onClick={() => dispatch(setFormSelects(review.id))}
@@ -212,7 +212,7 @@ const ReviewsPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>
