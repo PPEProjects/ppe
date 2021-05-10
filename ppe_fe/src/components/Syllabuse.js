@@ -100,7 +100,7 @@ class Syllabuse extends Component {
                             Syllabus of{" "}
                             <span class="text-gray-600">{course?.name}</span>
                           </h3>
-                          <div className="grid grid-cols-12 gap-4 my-4 max-h-56 overflow-y-auto">
+                          <div className="grid grid-cols-12 gap-4 my-4 overflow-y-auto" style={{height:1900}}>
                           <div className="col-span-12">
                             {(syllabuses ?? []).map((syllabuse, key) => (
                               (syllabuse.contents ?? []).map((content, key1) => (
