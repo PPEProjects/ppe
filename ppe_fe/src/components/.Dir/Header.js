@@ -425,7 +425,9 @@ class Header extends Component {
                                 <li key={i} className={`align-top inline ${i ? "ml-3" : ""}`}>
                                     <Link
                                         to={`${value?.link ?? `#`}`}
-                                        className="text-gray-200 px-2 py-1 hover:border-white border border-transparent uppercase font-bold"
+                                        //className="text-gray-200 px-2 py-1 hover:border-white border border-transparent uppercase font-bold"
+                                        className={`text-gray-200 px-2 py-1 hover:border-white border border-transparent uppercase font-bold
+                                                    ${this.props.menuId==i ? "border-gray-500" : ""}`}
                                     >
                                         {t(key)}
                                     </Link>

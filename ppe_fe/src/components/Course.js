@@ -66,7 +66,7 @@ class Course extends Component {
     let { t } = this.props;
     return (
       <React.Fragment>
-        <Header />
+        <Header menuId="0"/>
         <main className="">
           <CourseHeaderImage course={course} />
           {course_id !== 0 && (

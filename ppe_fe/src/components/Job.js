@@ -63,7 +63,7 @@ class Job extends Component {
     let { t } = this.props;
     return (
       <React.Fragment>
-        <Header />
+        <Header menuId="2" />
         <main className="">
           <div className="grid grid-cols-12 gap-4 w-full max-w-screen-xl mx-auto lg:px-4 px-4 ">
             <JobHeaderSlider company={company} />
