@@ -161,7 +161,7 @@ const CompaniesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {companiesSearch.map((company, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
+                      <div className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         {Object.keys(company.more.ranking ?? {}).length !==
                           0 && (
                           <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
@@ -213,7 +213,7 @@ const CompaniesPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

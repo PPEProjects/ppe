@@ -50,7 +50,7 @@ const CoursesPage = () => {
     try {
       dispatch(setFormData({ editorData: JSON.parse(course.content) }));
     } catch (e) {
-      dispatch(setFormData({ editorData: course.content}));
+      dispatch(setFormData({ editorData: course.content }));
     }
   };
 
@@ -163,7 +163,7 @@ const CoursesPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {coursesSearch.map((course, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
+                      <div className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         {Object.keys(course.more.ranking ?? {}).length !==
                           0 && (
                           <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
@@ -212,7 +212,7 @@ const CoursesPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>

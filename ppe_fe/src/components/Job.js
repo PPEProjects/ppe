@@ -65,8 +65,9 @@ class Job extends Component {
       <React.Fragment>
         <Header menuId="2" />
         <main className="">
+          <JobHeaderSlider company={company} />
           <div className="grid grid-cols-12 gap-4 w-full max-w-screen-xl mx-auto lg:px-4 px-4 ">
-            <JobHeaderSlider company={company} />
+            
             <JobSidebar company={company} />
             <div className="lg:col-span-9 col-span-12 ">
               <div className="grid grid-cols-12 gap-4">
@@ -74,13 +75,14 @@ class Job extends Component {
                   <section className="">
                     <h1 className="text-3xl">{job.title}</h1>
                     <div className="mt-2">
-                        <a
+                        <p
                           href="#"
                           className="uppercase text-sm border px-2 py-1 text-gray-700 hover:border-red-600 hover:text-red-700"
                         >
-                         <span className="truncate">{job?.more?.skills}</span>
-                        </a>
+                         <span className="">{job?.more?.skills}</span>
+                        </p>
                     </div>
+
                     <div className="">
                       <button
                         type="button"
@@ -115,7 +117,7 @@ class Job extends Component {
                       <h3 className="text-2xl font-semibold mt-4">
                         {item.heading}
                       </h3>
-                      <p className="leading-7 mt-3">{item.value}</p>
+                      <p className="leading-7 mt-3 whitespace-pre-wrap ">{item.value}</p>
                     </section>
                   ))}
                 </div>
@@ -168,7 +170,7 @@ class Job extends Component {
                               </button>
                             ))}
                           </div>
-                          <p className="mt-2">{review.content}</p>
+                          <p className="mt-2 whitespace-pre-wrap">{review.content}</p>
                         </li>
                       ))}
                     </ul>

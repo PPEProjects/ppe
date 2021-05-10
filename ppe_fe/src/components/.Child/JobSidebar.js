@@ -24,7 +24,7 @@ class JobSidebar extends Component {
             </div>
             <figcaption className="">
               <h3 className="text-xl mt-3 ">{company.name}</h3>
-              <p className="text-gray-600 leading-5 mt-2">{company.about_us}</p>
+              <p className="text-gray-600 leading-5 mt-2 whitespace-pre-wrap ">{company.about_us}</p>
             </figcaption>
           </figure>
 

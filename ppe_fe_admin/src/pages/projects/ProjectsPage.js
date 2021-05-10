@@ -75,7 +75,11 @@ const ProjectsPage = () => {
               <div className="flex items-center justify-between mx-4">
                 <div className="">
                   <b className="">{projects?.length}</b>
-                  <p className="text-gray-600">{projects?.length ===0 ||projects?.length === 1 ? "Project" : "Projects"}</p>
+                  <p className="text-gray-600">
+                    {projects?.length === 0 || projects?.length === 1
+                      ? "Project"
+                      : "Projects"}
+                  </p>
                 </div>
                 <div className="flex ">
                   <Link
@@ -165,7 +169,7 @@ const ProjectsPage = () => {
                 <div className=" grid grid-cols-12 gap-3 mx-3 ">
                   {projectsSearch.map((project, key) => (
                     <div className="col-span-3" key={key}>
-                      <Link className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
+                      <div className="block relative border hover:border-indigo-700 rounded-md overflow-hidden group">
                         {Object.keys(project.more.ranking ?? {}).length !==
                           0 && (
                           <span className="absolute left-0 top-0 z-10 mt-2 ml-2 text-xs rounded-sm px-1 bg-black-50 text-white h-4 flex items-center">
@@ -238,7 +242,7 @@ const ProjectsPage = () => {
                             </p>
                           </div>
                         </div>
-                      </Link>
+                      </div>
                     </div>
                   ))}
                 </div>
