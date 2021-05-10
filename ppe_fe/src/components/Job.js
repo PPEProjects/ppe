@@ -79,7 +79,7 @@ class Job extends Component {
                           className="uppercase text-sm border px-2 py-1 text-gray-700 hover:border-red-600 hover:text-red-700"
                         >
                          <span className="">{job?.more?.skills}</span>
-                        </p>
+                        </a>
                     </div>
                     <div className="">
                       <button
