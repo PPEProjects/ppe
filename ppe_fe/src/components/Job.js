@@ -65,8 +65,9 @@ class Job extends Component {
       <React.Fragment>
         <Header />
         <main className="">
+          <JobHeaderSlider company={company} />
           <div className="grid grid-cols-12 gap-4 w-full max-w-screen-xl mx-auto lg:px-4 px-4 ">
-            <JobHeaderSlider company={company} />
+            
             <JobSidebar company={company} />
             <div className="lg:col-span-9 col-span-12 ">
               <div className="grid grid-cols-12 gap-4">
