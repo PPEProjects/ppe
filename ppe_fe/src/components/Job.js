@@ -73,7 +73,7 @@ class Job extends Component {
                 <div className="lg:col-span-8 col-span-12 ">
                   <section className="">
                     <h1 className="text-3xl">{job.title}</h1>
-                    <div className="mt-2">
+                    <div className="mt-2  truncate">
                         <a
                           href="#"
                           className="uppercase text-sm border px-2 py-1 text-gray-700 hover:border-red-600 hover:text-red-700"
@@ -115,7 +115,7 @@ class Job extends Component {
                       <h3 className="text-2xl font-semibold mt-4">
                         {item.heading}
                       </h3>
-                      <p className="leading-7 mt-3">{item.value}</p>
+                      <p className="leading-7 mt-3 whitespace-pre-wrap ">{item.value}</p>
                     </section>
                   ))}
                 </div>
@@ -168,7 +168,7 @@ class Job extends Component {
                               </button>
                             ))}
                           </div>
-                          <p className="mt-2">{review.content}</p>
+                          <p className="mt-2 whitespace-pre-wrap">{review.content}</p>
                         </li>
                       ))}
                     </ul>
