@@ -34,7 +34,7 @@ const CommentsPage = () => {
   const [type, setType] = useState(``);
   const [search, setSearch] = useState(``);
   const [commentsSearch, setUsersSearch] = useState(comments);
- 
+
   useEffect(() => {
     setUsersSearch(Search(`name`, search, comments));
   }, [search, comments]);
@@ -99,7 +99,7 @@ const CommentsPage = () => {
                     type={`button`}
                     title={`${Object.keys(selects).length} Selected`}
                     onClick={() => {
-                      dispatch(setFormSelects("all", comment));
+                      dispatch(setFormSelects("all", comments));
                     }}
                     className={`bg-gray-300 text-gray-800`}
                   />
@@ -108,7 +108,7 @@ const CommentsPage = () => {
                     title={`x ${Object.keys(selects).length} Select All`}
                     onClick={() => {
                       console.log("1");
-                      dispatch(setFormSelects("all", comment));
+                      dispatch(setFormSelects("all", comments));
                     }}
                     className={`bg-gray-300 hidden text-gray-800 `}
                   />

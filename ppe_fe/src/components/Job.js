@@ -78,8 +78,8 @@ class Job extends Component {
                           href="#"
                           className="uppercase text-sm border px-2 py-1 text-gray-700 hover:border-red-600 hover:text-red-700"
                         >
-                         <span className="truncate">{job?.more?.skills}</span>
-                        </a>
+                         <span className="">{job?.more?.skills}</span>
+                        </p>
                     </div>
                     <div className="">
                       <button
