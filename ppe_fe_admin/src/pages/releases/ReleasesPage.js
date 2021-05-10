@@ -29,7 +29,7 @@ const ReleasesPage = () => {
   const [search, setSearch] = useState(``);
   const [releasesSearch, setUsersSearch] = useState(releases);
   useEffect(() => {
-    setUsersSearch(Search(`contents[0].name`, search, releases))
+    setUsersSearch(Search(`contents[0].name`, search, releases));
   }, [search, releases]);
 
   useEffect(() => {
@@ -151,7 +151,7 @@ const ReleasesPage = () => {
                         <button
                           type="button"
                           onClick={() => dispatch(setFormSelects(release.id))}
-                          className="group-hover:block hidden border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
+                          className="group-hover:block border border-indigo-700 absolute top-0 right-0 z-20 mt-2 mr-2 bg-white text-gray-600 h-6 w-6 rounded-full hover:opacity-75 hover:bg-white hover:text-blue-700 flex items-center justify-center"
                         >
                           {selects[release.id] && (
                             <i className="text-xl material-icons">done</i>

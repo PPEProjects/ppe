@@ -210,7 +210,12 @@ class Project extends Component {
                     </table>
                   </section>
                   <section className="">
-                  {releases.map((release, key) => (
+                      {Object.entries(releases).length !== 0 &&
+                    <h3 className="text-2xl font-semibold mt-3">
+                      {t("Release")}
+                    </h3>
+                    }
+                  {/* {releases.map((release, key) => (
                     <div key={key}>
                   { [release.name].length !== 0 && [release.name].length !== "" && 
                     <h3 className="text-2xl font-semibold mt-3">
@@ -218,7 +223,7 @@ class Project extends Component {
                     </h3>
                     }
                     </div>
-                  ))}
+                  ))} */}
                     {releases.map((release, key) => (
                     <div key={key}>
                   { [release.name].length === 0 && [release.name].length === "" && 
