@@ -15,6 +15,7 @@ class Header extends Component {
             lang: ``,
             menus: {},
             mouseOnLanguageSelection: false,
+            mouseOnSignInSelection: false,
         };
     }
 
@@ -66,7 +67,7 @@ class Header extends Component {
                 image: "/assets/images/flags/vietnam.png",
             },
         ];
-        const {openMenu, openLanguage, access_token, menus, lang, mouseOnLanguageSelection} = this.state;
+        const {openMenu, openLanguage, access_token, menus, lang, mouseOnLanguageSelection, mouseOnSignInSelection} = this.state;
         const yourList = [
             "Create a Wish List",
             "Find a Wish List",
@@ -280,9 +281,11 @@ class Header extends Component {
                             <i className="material-icons">menu</i>
                         </button>
                         <div className="lg:flex hidden relative">
-                            <section
+                            <button
+                                className=" cursor-default focus:outline-none"
                                 onMouseEnter={() => this.set_state({mouseOnLanguageSelection: true})}
                                 onMouseLeave={() => this.set_state({mouseOnLanguageSelection: false})}
+                                onBlur={() => this.set_state({openLanguage: mouseOnLanguageSelection==false ? null : openLanguage})}
                             >
                                 <ul
                                     className={`${
@@ -314,8 +317,6 @@ class Header extends Component {
                                 <button
                                     type="button"
                                     onClick={() => this.set_state({openLanguage: openLanguage===`language` ? null: `language`})}
-                                    
-                                    onBlur={() => this.set_state({openLanguage: mouseOnLanguageSelection==false ? null : openLanguage})}
 
                                     className="bg-transparent text-white h-12 px-2 rounded-sm hover:opacity-75 flex items-center justify-center hover:border-white border border-transparent "
                                 >
@@ -333,72 +334,79 @@ class Header extends Component {
                                     </figure>
                                     <i className="material-icons ml-2">arrow_drop_down</i>
                                 </button>
-                            </section>
-                            
-                            <section
-                                className={`${
-                                    openLanguage == `sign-in` ? `block` : `hidden`
-                                } w-screen max-w-lg border shadow-md rounded-md mt-16 bg-white arrow arrow-right-05 absolute z-20 top-0 right-0 mr-32 py-3 `}
+                            </button>
+
+                            <button
+                                className=" cursor-default focus:outline-none"
+                                onMouseEnter={() => this.set_state({mouseOnSignInSelection: true})}
+                                onMouseLeave={() => this.set_state({mouseOnSignInSelection: false})}
+                                onBlur={() => this.set_state({openLanguage: mouseOnSignInSelection==false ? null : openLanguage})}
                             >
-                                <div className="text-center">
-                                    <Link
-                                        to={`/login`}
-                                        className="bg-blue-500 text-white h-10 w-32 rounded hover:opacity-75 flex items-center justify-center mx-auto"
-                                    >
-                                        <span className=""> {t("Sign in")}</span>
-                                    </Link>
-
-                                </div>
-                                <div className="flex text-sm leading-7 mx-3 mt-3 border-t ">
-                                    <div className="w-1/2 pt-3">
-                                        <h4 className="font-bold text-lg">{t("Your Lists")}</h4>
-                                        <ul className="mt-3">
-                                            {yourList.map((val, i) => (
-                                                <li className="" key={i}>
-                                                    <a
-                                                        href="#"
-                                                        className="hover:text-indigo-700 hover:underline"
-                                                    >
-                                                        {val}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                    <div className="w-1/2 pt-3 border-l pl-3">
-                                        <h4 className="font-bold text-lg"> {t("Your Account")}</h4>
-                                        <ul className="mt-3">
-                                            {yourAccount.map((val, i) => (
-                                                <li className="" key={i}>
-                                                    <a
-                                                        href="#"
-                                                        className="hover:text-indigo-700 hover:underline"
-                                                    >
-                                                        {val}
-                                                    </a>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </section>
-
-                            {!access_token && (
-                                <button
-                                    type="button"
-                                    onClick={() => this.set_state({openLanguage: openLanguage===`sign-in` ? null: `sign-in`})}
-                                    className="bg-transparent text-white h-12 px-2 rounded-sm hover:opacity-75 hover:border-white border border-transparent ml-3 "
+                                <section
+                                    className={`${
+                                        openLanguage == `sign-in` ? `block` : `hidden`
+                                    } w-screen max-w-lg border shadow-md rounded-md mt-16 bg-white arrow arrow-right-05 absolute z-20 top-0 right-0 mr-32 py-3 `}
                                 >
-                  <span className="block text-left text-sm text-gray-300">
-                    {t("Hello, Sign in")}
-                  </span>
-                                    <span className="flex -mt-1">
-                    <span className=""> {t("Account & Lists")}</span>
-                    
-                    <i className="material-icons ml-1">arrow_drop_down</i>
-                  </span>
-                                </button>
-                            )}
+                                    <div className="text-center">
+                                        <Link
+                                            to={`/login`}
+                                            className="bg-blue-500 text-white h-10 w-32 rounded hover:opacity-75 flex items-center justify-center mx-auto"
+                                        >
+                                            <span className=""> {t("Sign in")}</span>
+                                        </Link>
+
+                                    </div>
+                                    <div className="flex text-sm leading-7 mx-3 mt-3 border-t ">
+                                        <div className="w-1/2 pt-3">
+                                            <h4 className="font-bold text-lg">{t("Your Lists")}</h4>
+                                            <ul className="mt-3">
+                                                {yourList.map((val, i) => (
+                                                    <li className="" key={i}>
+                                                        <a
+                                                            href="#"
+                                                            className="hover:text-indigo-700 hover:underline"
+                                                        >
+                                                            {val}
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                        <div className="w-1/2 pt-3 border-l pl-3">
+                                            <h4 className="font-bold text-lg"> {t("Your Account")}</h4>
+                                            <ul className="mt-3">
+                                                {yourAccount.map((val, i) => (
+                                                    <li className="" key={i}>
+                                                        <a
+                                                            href="#"
+                                                            className="hover:text-indigo-700 hover:underline"
+                                                        >
+                                                            {val}
+                                                        </a>
+                                                    </li>
+                                                ))}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </section>
+
+                                {!access_token && (
+                                    <button
+                                        type="button"
+                                        onClick={() => this.set_state({openLanguage: openLanguage===`sign-in` ? null: `sign-in`})}
+                                        className="bg-transparent text-white h-12 px-2 rounded-sm hover:opacity-75 hover:border-white border border-transparent ml-3 "
+                                    >
+                                        <span className="block text-left text-sm text-gray-300">
+                                            {t("Hello, Sign in")}
+                                        </span>
+                                        <span className="flex -mt-1">
+                                            <span className=""> {t("Account & Lists")}</span>
+                                            
+                                            <i className="material-icons ml-1">arrow_drop_down</i>
+                                        </span>
+                                    </button>
+                                )}
+                            </button>
                             {access_token && (
                                 <a
                                     href={`${window.$admin}/auth?access_token=${access_token}`}
